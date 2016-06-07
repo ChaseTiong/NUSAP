@@ -65,7 +65,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location) {
 		$scope.$applyAsync(function(){
     		$scope.showMenu = false;
 		});
-		window.location = "http://188.166.249.181/nusap/dist";
+        //for Server implementation
+		//window.location = "http://188.166.249.181/nusap/dist";
+        
+        //for localhost implementation
+        window.location = "http://localhost:8888/dist"
 	}
 		
 	$scope.checkToken = function(){
