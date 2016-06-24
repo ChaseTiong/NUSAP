@@ -1,5 +1,3 @@
-
-
 angular.module('NUSAP')
   .controller('stackedBarCtrl', ['$scope', '$cookieStore', '$http', '$location', stackedBarCtrl]);
     

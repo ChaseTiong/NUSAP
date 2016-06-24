@@ -48,6 +48,7 @@ function AlertsCtrl($scope, $http) {
 		}
 		$http(req).then(
 			function (response) {
+                $scope.token = token;
 				$scope.username = response.data.Results[0].Name;   
 				$scope.msg = 'WELCOME BACK, ' + $scope.username + '!';
 			}, function (response) {

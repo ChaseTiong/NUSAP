@@ -1,4 +1,3 @@
-//Graduation Progress
 var randomScalingFactor = function(){
 	return Math.round(Math.random()*100);
 };
@@ -7,17 +6,17 @@ var barChartData = {
 	labels : ["Core","ULR","UE"],
 	datasets : [
 		{
-			fillColor : "rgba(220,220,220,0.5)",
-			strokeColor : "rgba(220,220,220,0.8)",
-			highlightFill: "rgba(220,220,220,0.75)",
-			highlightStroke: "rgba(220,220,220,1)",
+			fillColor : "#98FB98",
+			strokeColor : "#00FF7F",
+			highlightFill: "#00FF7F",
+			highlightStroke: "#00FF7F",
 			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
 		},
 		{
-			fillColor : "rgba(151,187,205,0.5)",
-			strokeColor : "rgba(151,187,205,0.8)",
-			highlightFill : "rgba(151,187,205,0.75)",
-			highlightStroke : "rgba(151,187,205,1)",
+			fillColor : "#FA8072",
+			strokeColor : "#FA8072",
+			highlightFill : "#E58270",
+			highlightStroke : "#FA8072",
 			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
 		}
 	]
