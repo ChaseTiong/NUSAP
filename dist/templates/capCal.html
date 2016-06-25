@@ -1,5 +1,30 @@
-<div class="row">
-  <div class="col-lg-12">
+
+ <div class="row">
+  <div class="container animate-slide">
+    <input type="checkbox" ng-model="boxClass" ng-click="slide=!slide">
+    <div class="box rotate" ng-show="slide" ng-class="{'box': boxClass, 'circle': !boxClass} ">  Test </div>
+  </div>
+  
+  <div class="row">
+    <div class="animate-slide" ng-show="slide" ng-click="slide=!slide">
+      <center>AngularJS ng-animate</center>
+    </div>
+  </div>
+  
+<!--  <div class="col-lg-12">
+   
+   <div ng-click="widgetExpanded = !widgetExpanded" class="head">
+    Click to slide in/out
+  </div>
+  <div ng-slide-down="widgetExpanded" lazy-render duration="1">
+    <div class="content">
+      Some awesome content here
+    </div>
+  </div>
+  <div class="footer">
+    After content
+  </div> !-->
+
     <rd-widget>
       <rd-widget-header icon="fa-tasks" title="Cap Calculator">
         <a href="#">Manage</a>
@@ -38,4 +63,4 @@
     </rd-widget>
   </div>
   
-</div>
+

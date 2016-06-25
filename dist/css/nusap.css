@@ -21,3 +21,21 @@
   overflow: hidden;
   transition: all 1.5s; 
 }
+
+.box {
+  margin: 20px auto;
+  background: #5FCF80;
+  width: 150px;
+  height: 150px;
+}
+.circle {
+  transform: rotate(360deg);
+  background: #9351A6;
+  border-radius: 50%;
+  margin: 20px auto;
+  width: 150px;
+  height: 150px;
+}
+.rotate {
+  transition: all 1s ease-in-out;
+}
