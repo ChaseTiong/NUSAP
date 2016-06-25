@@ -17,86 +17,38 @@
 				<div class="table-responsive">
 					<table class="table">
 						<tr>
-                            <th> </th>
                             <th>Year 1</th>
                             <th>Year 2</th>
                             <th>Year 3</th>
                             <th>Year 4</th>
                         </tr>
                         <tr>
-                            <th rowspan="5">Sem 1</th>
-                            <td>CS </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <th>Semester 1</th>
+                            <th></th>
+                            <th></th>
+                            <th><i class="fa fa-caret-down pull-right"></i></th>
+                        </tr>
+                        <tr data-ng-repeat="x in max1"> <!--count = max # of mod taken in sem 1-->
+                            <td>{{x.modTaken.year1.sem1}} </td>
+                            <td>{{x.modTaken.year2.sem1}} </td>
+                            <td>{{x.modTaken.year3.sem1}} </td>
+                            <td>{{x.modTaken.year4.sem1}} </td>
                         </tr>
                         <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <th>Semester 2</th>                            
+                            <th></th>
+                            <th></th>
+                            <th><i class="fa fa-caret-down pull-right"></i></th>
                         </tr>
-                        <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                            <th rowspan="5">Sem 2</th>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        
-                        <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr> 
-                        <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                        <tr data-ng-repeat="x in max2"> <!--count = max # of mod taken in sem 2-->
+                            <td>{{x.modTaken.year1.sem2}} </td>
+                            <td>{{x.modTaken.year2.sem2}} </td>
+                            <td>{{x.modTaken.year3.sem2}} </td>
+                            <td>{{x.modTaken.year4.sem2}} </td>
                         </tr>
                         <tbody>
-							 <!--<tr ng-repeat="x in names">
-                                  <td>RDVMPC001</td><td>238.103.133.37</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>-->
-							<tr><td>RDVMPC002</td><td>68.66.63.170</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-							<tr><td>RDVMPC003</td><td>76.117.212.33</td><td><span tooltip="Server Down!" class="text-danger"><i class="fa fa-warning"></i></span></td></tr>
-							<tr><td>RDPHPC001</td><td>91.88.224.5</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-							<tr><td>RDESX001</td><td>197.188.15.93</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-							<tr><td>RDESX002</td><td>168.85.154.251</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-							<tr><td>RDESX003</td><td>209.25.191.61</td><td><span tooltip="Server Down!" class="text-danger"><i class="fa fa-warning"></i></span></td></tr>
-							<tr><td>RDESX004</td><td>252.37.192.235</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-							<tr><td>RDTerminal01</td><td>139.71.18.207</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-							<tr><td>RDTerminal02</td><td>136.80.122.212</td><td><span tooltip="Could not connect!" class="text-warning"><i class="fa fa-flash"></i></span></td></tr>
-							<tr><td>RDDomainCont01</td><td>196.80.245.33</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+							 <!--<tr><td>RDVMPC001</td><td>238.103.133.37</td><td><span class="text-success" means green and "text-danger" means red><i class="fa fa-check"></i></span></td></tr>-->
+							
 						</tbody>
 					</table>
 				</div>
