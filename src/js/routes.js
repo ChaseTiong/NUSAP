@@ -20,9 +20,9 @@ angular.module('NUSAP').config(['$stateProvider', '$urlRouterProvider',
                 url: '/login',
                 templateUrl: 'templates/login.html'
             })
-            .state('tables', {
-                url: '/tables',
-                templateUrl: 'templates/tables.html'
+            .state('capCal', {
+                url: '/capCal',
+                templateUrl: 'templates/capCal.html'
             });
     }
 ]);

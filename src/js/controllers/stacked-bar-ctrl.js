@@ -1,3 +1,6 @@
+//To be deleted. Scrap away stacked bar ctrl
+
+/*
 angular.module('NUSAP')
   .controller('stackedBarCtrl', ['$scope', '$cookieStore', '$http', '$location', stackedBarCtrl]);
     
@@ -37,3 +40,4 @@ function stackedBarCtrl($scope) {
     }]
     });
 }
+*/

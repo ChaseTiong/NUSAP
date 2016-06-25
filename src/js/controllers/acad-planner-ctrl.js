@@ -1,7 +1,7 @@
 /**
  * Alerts Controller
  */
-var token;
+/*var token;
 
 if(sessionStorage.getItem("token") == null){
 	token = getUrlVars()["token"];
@@ -49,4 +49,4 @@ function AcadPlannerCtrl($scope, $http) {
     };	  
 
     
-}
+}*/
