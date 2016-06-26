@@ -3,47 +3,60 @@
 /*angular.module('NUSAP')
 .controller('CapCalCtrl', function($scope) {
   $scope.boxClass = true;
-}); /*
-/*var randomScalingFactor = function(){
-	return Math.round(Math.random()*100);
-};
+}); */
 
-var barChartData = {
-	labels : ["Core","ULR","UE"],
-	datasets : [
-		{
-			fillColor : "#98FB98",
-			strokeColor : "#00FF7F",
-			highlightFill: "#00FF7F",
-			highlightStroke: "#00FF7F",
-			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-		},
-		{
-			fillColor : "#FA8072",
-			strokeColor : "#FA8072",
-			highlightFill : "#E58270",
-			highlightStroke : "#FA8072",
-			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-		}
-	]
+var token;
 
-};
-//End of Graduation Progress
+if(sessionStorage.getItem("token") == null){
+	token = getUrlVars()["token"];
+	sessionStorage.setItem("isValidToken",false);
+} else{
+	token = sessionStorage.getItem("token");
+	sessionStorage.setItem("isValidToken",true);
+}
+
+function getUrlVars() {
+	var vars = {};
+	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+	vars[key] = value;
+	});
+	return vars;
+}  
+
+var userName;
+var studentId;
 
 angular.module('NUSAP')
     .controller('CapCalCtrl', ['$scope', '$cookieStore', '$http', '$location', CapCalCtrl]);
 
 function CapCalCtrl($scope, $cookieStore, $http, $location) {
-	$scope.getBarChart = function(){
-		var ctx = document.getElementById("canvas").getContext("2d");
-
-		var chart = new Chart(ctx).HorizontalBar(barChartData, {
-			responsive: true,
-			barShowStroke: false
-	  	}); 
-    }	
+    
+	$scope.modsTaken = function(){
+		var req = {
+			method : 'GET',
+			url    : 'index.php?id=modsTaken&token=' + token +'&studentID=' + sessionStorage['netid']
+		}
+		$http(req).then(
+			function (response) {
+                $scope.modsCount = response.data.Results.length;
+                $scope.takenMods = response.data.Results;
+                //$scope.mods = response.data.Results.length;
+                //console.log(response.data.Results[0].Name);
+			//sessionStorage.setItem("userName", $scope.username);
+			//sessionStorage.setItem("netid", response.data.Results[0].UserID);
+			// success function
+			//console.log(response.data.Results[0]);
+			//$scope.username = response.data;
+			}, function (response) {
+                console.log("error");
+			// Failure Function
+			//$scope.username = "Invalid User";
+			}
+		);
+	}    
+	
 }    
-*/
+
 
 /*(function () {
   'use strict';
