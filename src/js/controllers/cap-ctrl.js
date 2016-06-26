@@ -31,6 +31,20 @@ angular.module('NUSAP')
 
 function CapCalCtrl($scope, $cookieStore, $http, $location) {
     
+    $scope.testMcs = function(){
+       var modsReq = {
+            method : 'GET',
+            url    : 'index.php?id=checkMod&modCode=CP3200'
+        }
+        $http(modsReq). then(
+            function (response2) {
+                $scope.testResults = response2.data.ModuleCredit;
+            },function (response2){
+                console.log("error");
+            }
+        );  
+    }
+    
 	$scope.modsTaken = function(){
 		var req = {
 			method : 'GET',
@@ -39,7 +53,62 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
 		$http(req).then(
 			function (response) {
                 $scope.modsCount = response.data.Results.length;
-                $scope.takenMods = response.data.Results;
+                $scope.takenMods = [];
+                //$scope.takenMods = response.data.Results;
+                var count = 0;
+                for(var i = 0; i < $scope.modsCount; i ++){
+                    //geting the result from IVLE API
+                   
+                  
+                    //accessing NUSmods API
+                    if(response.data.Results[i].Semester == 1){
+                        $scope.takenMods[count] = {}
+                        
+                        
+                        var currentMod = response.data.Results[i].ModuleCode;
+                        $scope.$applyAsync(function(){
+                            console.log(currentMod);
+                            var modsReq = {
+                                method : 'GET',
+                                url    : 'index.php?id=checkMod&modCode=' + currentMod
+                            }
+                            $http(modsReq). then(
+                                function (response2) {
+                                    $scope.credit = {}
+                                    if(response2.data.ModuleCredit != null){
+                                        $scope.credit = {
+                                            "ModuleCredit":response2.data.ModuleCredit
+                                        }
+                                    } else {
+                                        $scope.credit = {
+                                            "ModuleCredit": 10
+                                        }
+                                    }
+                                    //$scope.credit = {
+                                    //    "ModuleCredit":4
+                                    //}
+                                    console.log($scope.credit);
+                                    angular.extend(response.data.Results[i],$scope.credit);
+                                    console.log(response.data.Results[i]);
+                                    //var unit = new function(){                       
+                                    //    this.ModuleCredit = response2.data.ModuleCredit;
+                                    //};
+                                    //if(unit != undefined){
+                                    //    $scope.takenMods[count].push(unit);
+                                    //}
+                                    //$scope.creditUnit = unit;
+                                    //var unit = "test"
+                                    //$scope.takenMods[count].ModuleCode = unit;
+                                },function (response2){
+                                    console.log("error");
+                                }
+                            );
+                        });
+                        
+                        $scope.takenMods[count] = response.data.Results[i];
+                        count ++;
+                    }
+                }
                 //$scope.mods = response.data.Results.length;
                 //console.log(response.data.Results[0].Name);
 			//sessionStorage.setItem("userName", $scope.username);
