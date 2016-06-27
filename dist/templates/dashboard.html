@@ -16,40 +16,95 @@
       		<rd-widget-body classes="large no-padding">
 				<div class="table-responsive">
 					<table class="table">
-						<tr>
-                            <th>Year 1</th>
-                            <th>Year 2</th>
-                            <th>Year 3</th>
-                            <th>Year 4</th>
-                        </tr>
-                        <tr>
-                            <th>Semester 1</th>
-                            <th></th>
-                            <th></th>
-                            <th><i class="fa fa-caret-down pull-right"></i></th>
-                        </tr>
-                        <tr data-ng-repeat="x in max1"> <!--count = max # of mod taken in sem 1-->
-                            <td>{{x.modTaken.year1.sem1}} </td>
-                            <td>{{x.modTaken.year2.sem1}} </td>
-                            <td>{{x.modTaken.year3.sem1}} </td>
-                            <td>{{x.modTaken.year4.sem1}} </td>
-                        </tr>
-                        <tr>
-                            <th>Semester 2</th>                            
-                            <th></th>
-                            <th></th>
-                            <th><i class="fa fa-caret-down pull-right"></i></th>
-                        </tr>
-                        <tr data-ng-repeat="x in max2"> <!--count = max # of mod taken in sem 2-->
-                            <td>{{x.modTaken.year1.sem2}} </td>
-                            <td>{{x.modTaken.year2.sem2}} </td>
-                            <td>{{x.modTaken.year3.sem2}} </td>
-                            <td>{{x.modTaken.year4.sem2}} </td>
-                        </tr>
+						<thead>
+                            <tr>
+                                <th class="text-center" width="25%">Year 1</th>
+                                <th class="text-center" width="25%">Year 2</th>
+                                <th class="text-center" width="25%">Year 3</th>
+                                <th class="text-center" width="25%">Year 4</th>
+                            </tr>
+                        </thead>
                         <tbody>
-							 <!--<tr><td>RDVMPC001</td><td>238.103.133.37</td><td><span class="text-success" means green and "text-danger" means red><i class="fa fa-check"></i></span></td></tr>-->
-							
-						</tbody>
+                            <tr>
+                                <th class="text-center" width="25%">Semester 1</th>
+                                <th></th>
+                                <th></th>
+                                <th><i class="fa fa-caret-down pull-right"></i></th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1231</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">GER1000</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">MA1521</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1010</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" width="25%">Semester 2</th>
+                                <th></th>
+                                <th></th>
+                                <th><i class="fa fa-caret-down pull-right"></i></th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1020</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS2100</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS2010</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1231</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                                                        <tr>
+                                <td class="text-center" width="25%">MA1101R</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <!--<tr data-ng-repeat = 5> <!--count = max # of mod taken in sem 1
+                                <td data-ng-repeat = 4>{{modTaken[x][1]}} </td>
+                            </tr>
+                            
+                            <tr>
+                                <th class="text-center" width = "25%">Semester 2</th>
+                                <th></th>
+                                <th></th>
+                                <th><i class="fa fa-caret-down pull-right"></i></th>
+                            </tr>
+                            <tr data-ng-repeat = "x in max2"> <!--count = max # of mod taken in sem 2
+                                <td data-ng-repeat = "x in maxYear">{{modTaken[x][2]}} </td>
+                            </tr>-->
+                        </tbody>
 					</table>
 				</div>
 			</rd-widget-body>

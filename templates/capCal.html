@@ -1,0 +1,61 @@
+
+ <div class="row" data-ng-controller ="CapCalCtrl">
+  
+    <div class="col-lg-12">
+    <rd-widget>
+      <rd-widget-header icon="fa-calculator" title="Cap Calculator" data-ng-init = "modsTaken()">
+        <a href="">{{modsCount}}</a>
+      </rd-widget-header>
+      <rd-widget-body classes="no-padding">
+        <div class="table-responsive">
+          <table class="table fixed">
+           <thead>
+              <tr>
+                  <th class="text-left"> Year 1 Semester 2</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+              </tr>
+               <tr>
+                   <th class="text-center" width = "10%">Module Code</th>
+                   <th class="text-center" width = "25%">Module Title</th>
+                   <th class="text-center" width = "10%">MCs</th>
+                   <th class="text-center" width = "10%">S/U? / Exemptions</th>
+                   <th class="text-center" width = "10%">Module Grade</th>
+                   
+               </tr>
+           </thead>
+
+            <tbody data-ng-init = "takenMods">
+             
+              <tr  data-ng-repeat = "modules in takenMods track by $index"><td class="text-center"> {{modules.ModuleCode}}</td><td class="text-center">{{modules.ModuleTitle}}</td><td class="text-center">{{modules.ModuleCredit}}</td><td class="text-center">NO</td><td class="text-center">B+</td><!-- <td>{{modules | json}}</td> !--></tr>
+            </tbody>
+            
+            <!-- Testing/Debug Functions To be deleted 
+            <tbody data-ng-init = "testMcs()">
+                <tr><td>{{testResults}}</td></tr>
+            </tbody>
+            !-->
+            
+          </table>
+        </div>      
+      </rd-widget-body>
+      <rd-widget-footer>
+        <!--
+        <ul class="pagination pagination-sm pull-right">
+          <li><a href="#">&laquo;</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>
+        <div class="clearfix"></div>
+        !-->
+      </rd-widget-footer>
+    </rd-widget>
+  </div>
+  
+</div>
