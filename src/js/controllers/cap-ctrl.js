@@ -61,11 +61,12 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                    
                   
                     //accessing NUSmods API
-                    if(response.data.Results[i].Semester == 1){
+                    if(response.data.Results[i].Semester == 2){
                         
                         
                         //$scope.$applyAsync(function(){
                             var currentMod = response.data.Results[i].ModuleCode;
+                            var currentTitle = response.data.Results[i].ModuleTitle;
                             var semester = response.data.Results[i].Semester;
                         
                             console.log(currentMod);
@@ -78,14 +79,30 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                                     console.log("current count : " + count);
                                    
                                     if(response2.data == ""){
+                                        
+                                        $scope.takenMods.push({
+                                            ModuleCode: currentMod,
+                                            ModuleTitle: currentTitle,
+                                            ModuleCredit: 4
+                                            
+                                        });
+                                        /*
                                         $scope.takenMods[count] ={
                                             "ModuleCode":response.data.Results[i].ModuleCode,
                                             "ModuleTitle":response.data.Results[i].ModuleTitle,
                                             "ModuleCredit":4
-                                        }
+                                        }*/
                                     }
                                     else{
-                                         $scope.takenMods[count] = response2.data;
+                                        $scope.takenMods.push({
+                                            ModuleCode: response2.data.ModuleCode,
+                                            ModuleTitle: response2.data.ModuleTitle,
+                                            ModuleCredit: response2.data.ModuleCredit
+                                            
+                                        });
+                                        
+                                        
+                                         //$scope.takenMods[count] = response2.data;
                                     }
                                     count = count + 1;
                                     console.log($scope.takenMods[count]);
