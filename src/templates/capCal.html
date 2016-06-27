@@ -11,7 +11,7 @@
           <table class="table fixed">
            <thead>
               <tr>
-                  <th class="text-left"> Year 1 Semester 1</th>
+                  <th class="text-left"> Year 1 Semester 2</th>
                   <th></th>
                   <th></th>
                   <th></th>
@@ -29,7 +29,7 @@
 
             <tbody data-ng-init = "takenMods">
              
-              <tr  data-ng-repeat = "modules in takenMods"><td class="text-center"> {{modules.ModuleCode}}</td><td class="text-center">{{modules.ModuleTitle}}</td><td class="text-center">{{modules.ModuleCredit}}</td><td class="text-center">NO</td><td class="text-center">B+</td><!-- <td>{{modules | json}}</td> !--></tr>
+              <tr  data-ng-repeat = "modules in takenMods track by $index"><td class="text-center"> {{modules.ModuleCode}}</td><td class="text-center">{{modules.ModuleTitle}}</td><td class="text-center">{{modules.ModuleCredit}}</td><td class="text-center">NO</td><td class="text-center">B+</td><!-- <td>{{modules | json}}</td> !--></tr>
             </tbody>
             
             <!-- Testing/Debug Functions To be deleted 

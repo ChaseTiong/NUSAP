@@ -61,20 +61,35 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                    
                   
                     //accessing NUSmods API
-                    if(response.data.Results[i].Semester == 1){
-                        $scope.takenMods[count] = {}
+                    if(response.data.Results[i].Semester == 2){
                         
                         
-                        var currentMod = response.data.Results[i].ModuleCode;
-                        $scope.$applyAsync(function(){
+                        //$scope.$applyAsync(function(){
+                            var currentMod = response.data.Results[i].ModuleCode;
+                            var semester = response.data.Results[i].Semester;
+                        
                             console.log(currentMod);
                             var modsReq = {
                                 method : 'GET',
-                                url    : 'index.php?id=checkMod&modCode=' + currentMod
+                                url    : 'index.php?id=checkMod&modCode=' + currentMod + '&sem=' + semester
                             }
                             $http(modsReq). then(
                                 function (response2) {
-                                    $scope.credit = {}
+                                    console.log("current count : " + count);
+                                    $scope.takenMods[count] = response2.data;
+                                    if(response2.data == ""){
+                                        $scope.takenMods[count] ={
+                                            "ModuleCode":response.data.Results[i].ModuleCode,
+                                            "ModuleTitle":response.data.Results[i].ModuleTitle,
+                                            "ModuleCredit":4
+                                        }
+                                            
+                                        
+                                    }
+                                    count = count + 1;
+                                    console.log($scope.takenMods[count]);
+                                    //$scope.credit = {}
+                                    /*
                                     if(response2.data.ModuleCredit != null){
                                         $scope.credit = {
                                             "ModuleCredit":response2.data.ModuleCredit
@@ -84,12 +99,14 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                                             "ModuleCredit": 10
                                         }
                                     }
+                                    */
                                     //$scope.credit = {
                                     //    "ModuleCredit":4
                                     //}
-                                    console.log($scope.credit);
-                                    angular.extend(response.data.Results[i],$scope.credit);
-                                    console.log(response.data.Results[i]);
+                                    //console.log($scope.credit);
+                                    //angular.extend(response.data.Results[i],$scope.credit);
+                                    //console.log(response.data.Results[i]);
+                                    
                                     //var unit = new function(){                       
                                     //    this.ModuleCredit = response2.data.ModuleCredit;
                                     //};
@@ -103,10 +120,10 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                                     console.log("error");
                                 }
                             );
-                        });
+                        //});
                         
-                        $scope.takenMods[count] = response.data.Results[i];
-                        count ++;
+                        //$scope.takenMods[count] = response.data.Results[i];
+                        
                     }
                 }
                 //$scope.mods = response.data.Results.length;
