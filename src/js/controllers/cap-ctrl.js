@@ -61,7 +61,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                    
                   
                     //accessing NUSmods API
-                    if(response.data.Results[i].Semester == 2){
+                    if(response.data.Results[i].Semester == 1){
                         
                         
                         //$scope.$applyAsync(function(){
@@ -76,15 +76,16 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                             $http(modsReq). then(
                                 function (response2) {
                                     console.log("current count : " + count);
-                                    $scope.takenMods[count] = response2.data;
+                                   
                                     if(response2.data == ""){
                                         $scope.takenMods[count] ={
                                             "ModuleCode":response.data.Results[i].ModuleCode,
                                             "ModuleTitle":response.data.Results[i].ModuleTitle,
                                             "ModuleCredit":4
                                         }
-                                            
-                                        
+                                    }
+                                    else{
+                                         $scope.takenMods[count] = response2.data;
                                     }
                                     count = count + 1;
                                     console.log($scope.takenMods[count]);
