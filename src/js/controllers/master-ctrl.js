@@ -20,9 +20,6 @@ function getUrlVars() {
 }  
 
 
-
-
-
 var userName;
 var studentId;
 
@@ -51,7 +48,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location) {
 			sessionStorage.setItem("userName", $scope.username);
 			sessionStorage.setItem("netid", response.data.Results[0].UserID);
             
-            sessionStorage.setItem("acadYear", response.data.Results[0].MatriculationYear + "/" + (parseInt(response.data.Results[0].MatriculationYear) + 1) );
+            sessionStorage.setItem("matricYear", response.data.Results[0].MatriculationYear);
 			// success function
 			console.log(response.data.Results[0]);
 			//$scope.username = response.data;
