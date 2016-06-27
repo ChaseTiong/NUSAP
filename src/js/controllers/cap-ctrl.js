@@ -56,12 +56,13 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                 $scope.takenMods = [];
                 //$scope.takenMods = response.data.Results;
                 var count = 0;
+                //use a unique mod count to keep track poly mod/ unique mod
                 for(var i = 0; i < $scope.modsCount; i ++){
                     //geting the result from IVLE API
                    
                   
                     //accessing NUSmods API
-                    if(response.data.Results[i].Semester == 2){
+                    if(response.data.Results[i].Semester == 1){
                         
                         
                         //$scope.$applyAsync(function(){
