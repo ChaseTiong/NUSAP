@@ -54,6 +54,9 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
 			function (response) {
                 $scope.modsCount = response.data.Results.length;
                 $scope.takenMods = [];
+                $scope.specialMods = [];
+                var specialModsCount = 0;
+                
                 //$scope.takenMods = response.data.Results;
                 var count = 0;
                 //use a unique mod count to keep track poly mod/ unique mod
@@ -67,9 +70,17 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                         
                         //$scope.$applyAsync(function(){
                             var currentMod = response.data.Results[i].ModuleCode;
+                            console.log("currentmod: " + currentMod);
                             var currentTitle = response.data.Results[i].ModuleTitle;
+                            console.log("curr title: " + currentTitle);
                             var semester = response.data.Results[i].Semester;
                         
+                        
+                            $scope.specialMods.push({
+                                ModuleCode: currentMod,
+                                ModuleTitle: currentTitle,
+                                ModuleCredit: 4
+                            });
                             console.log(currentMod);
                             var modsReq = {
                                 method : 'GET',
@@ -82,17 +93,10 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                                     if(response2.data == ""){
                                         
                                         $scope.takenMods.push({
-                                            ModuleCode: currentMod,
-                                            ModuleTitle: currentTitle,
-                                            ModuleCredit: 4
-                                            
+                                            ModuleCode: $scope.specialMods[count].ModuleCode,
+                                            ModuleTitle: $scope.specialMods[count].ModuleTitle,
+                                            ModuleCredit: $scope.specialMods[count].ModuleCredit
                                         });
-                                        /*
-                                        $scope.takenMods[count] ={
-                                            "ModuleCode":response.data.Results[i].ModuleCode,
-                                            "ModuleTitle":response.data.Results[i].ModuleTitle,
-                                            "ModuleCredit":4
-                                        }*/
                                     }
                                     else{
                                         $scope.takenMods.push({
@@ -101,40 +105,10 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
                                             ModuleCredit: response2.data.ModuleCredit
                                             
                                         });
-                                        
-                                        
-                                         //$scope.takenMods[count] = response2.data;
                                     }
                                     count = count + 1;
                                     console.log($scope.takenMods[count]);
-                                    //$scope.credit = {}
-                                    /*
-                                    if(response2.data.ModuleCredit != null){
-                                        $scope.credit = {
-                                            "ModuleCredit":response2.data.ModuleCredit
-                                        }
-                                    } else {
-                                        $scope.credit = {
-                                            "ModuleCredit": 10
-                                        }
-                                    }
-                                    */
-                                    //$scope.credit = {
-                                    //    "ModuleCredit":4
-                                    //}
-                                    //console.log($scope.credit);
-                                    //angular.extend(response.data.Results[i],$scope.credit);
-                                    //console.log(response.data.Results[i]);
                                     
-                                    //var unit = new function(){                       
-                                    //    this.ModuleCredit = response2.data.ModuleCredit;
-                                    //};
-                                    //if(unit != undefined){
-                                    //    $scope.takenMods[count].push(unit);
-                                    //}
-                                    //$scope.creditUnit = unit;
-                                    //var unit = "test"
-                                    //$scope.takenMods[count].ModuleCode = unit;
                                 },function (response2){
                                     console.log("error");
                                 }

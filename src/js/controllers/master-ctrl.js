@@ -50,6 +50,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location) {
 			$scope.username = response.data.Results[0].Name;
 			sessionStorage.setItem("userName", $scope.username);
 			sessionStorage.setItem("netid", response.data.Results[0].UserID);
+            
+            sessionStorage.setItem("acadYear", response.data.Results[0].MatriculationYear + "/" + (parseInt(response.data.Results[0].MatriculationYear) + 1) );
 			// success function
 			console.log(response.data.Results[0]);
 			//$scope.username = response.data;
