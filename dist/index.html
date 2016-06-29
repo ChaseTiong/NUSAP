@@ -17,7 +17,7 @@
   <script src="https://code.highcharts.com/highcharts.js"></script>
    <!--  <script type="text/javascript" src="js/angular.min.js"></script>
   <script type="text/javascript" src="js/angular-animate.min.js"></script> -->
-  
+
   <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="css/nusap.css"> 
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -26,7 +26,7 @@
   <link rel="stylesheet" type="text/css" href="css/ng-animation.css">  -->
   
 </head>
-<body ng-controller="MasterCtrl" data-ng-init="checkToken()" >
+<body data-ng-controller="MasterCtrl" data-ng-init="checkToken()" >
 
   <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
 
@@ -73,10 +73,10 @@
       <div class="page-content">
 
         <!-- Header Bar -->
-        <div class="row header">
+        <div class="row header" data-ng-init="getProfile()">
           <div class="col-xs-12">
             <div class="user pull-right">
-              <div class="item dropdown" uib-dropdown data-ng-init="getProfile()">
+              <div class="item dropdown" uib-dropdown>
                 <a ng-show = "showMenu" href="#" class="dropdown-toggle" uib-dropdown-toggle>
                   <img src="img/avatar.jpg">
                 </a>

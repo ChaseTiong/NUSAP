@@ -31,6 +31,7 @@ angular.module('NUSAP')
 
 function CapCalCtrl($scope, $cookieStore, $http, $location) {
     
+    /* Debugging ..
     $scope.testMcs = function(){
        var modsReq = {
             method : 'GET',
@@ -44,7 +45,9 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
             }
         );  
     }
+`   End Debugging ..*/
     
+    /*
 	$scope.modsTaken = function(){
 		var req = {
 			method : 'GET',
@@ -53,6 +56,9 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
 		$http(req).then(
 			function (response) {
                 $scope.modsCount = response.data.Results.length;
+                sessionStorage.setItem("ModsTaken", JSON.stringify(response.data.Results));
+                //console.log(JSON.parse(sessionStorage.getItem("ModsTaken")));
+                //console.log(response.data.Results);
                 $scope.takenMods = [];
                 $scope.specialMods = [];
                 var specialModsCount = 0;
@@ -133,7 +139,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
 			}
 		);
 	}    
-	
+*/	
 }    
 
 
