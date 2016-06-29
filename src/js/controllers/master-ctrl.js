@@ -153,6 +153,18 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                 AcadYear        : userModsTaken[key].AcadYear,
                                                 Semester        : userModsTaken[key].Semester
                                             });
+                                            
+                                            sessionStorage.setItem(userModsTaken[key].ModuleCode,JSON.stringify(
+                                                {
+                                                    ModuleTitle     : userModsTaken[key].ModuleTitle,
+                                                    ModuleCredit    : 4,
+                                                    ModuleStatus    : "Exempted",
+                                                    ModuleSuStatus  : "Yes",
+                                                    ModuleGrade     : "-",
+                                                    AcadYear        : userModsTaken[key].AcadYear,
+                                                    Semester        : userModsTaken[key].Semester
+                                                }
+                                            ));
                                         } else{
                                             console.log("Success : " + responseModInfo.data.ModuleCode);
                                             $scope.takenMods.push({
@@ -165,6 +177,19 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                 AcadYear        : userModsTaken[key].AcadYear,
                                                 Semester        : userModsTaken[key].Semester
                                             });
+                                            
+                                            sessionStorage.setItem(responseModInfo.data.ModuleCode,JSON.stringify(
+                                                {
+                                                    ModuleTitle     : responseModInfo.data.ModuleTitle,
+                                                    ModuleCredit    : responseModInfo.data.ModuleCredit,
+                                                    ModuleStatus    : "Normal",
+                                                    ModuleSuStatus  : "No",
+                                                    ModuleGrade     : "-",
+                                                    AcadYear        : userModsTaken[key].AcadYear,
+                                                    Semester        : userModsTaken[key].Semester
+                                                }
+                                            ));
+                                            
                                         }
                                     }
                                 );
