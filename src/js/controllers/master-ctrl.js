@@ -89,13 +89,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
     }
     
 	$scope.getProfile = function(){
-//		var reqToGetProfile = {
-//			method : 'GET',
-//			url    : 'index.php?id=profile&token=' + token
-//		}
-//        function getUserProfile(){
-//            return $http(reqToGetProfile);
-//        }
     
 		getUserProfile().then(
 			function (responseProfile) {
@@ -148,8 +141,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                 ModuleTitle     : userModsTaken[key].ModuleTitle,
                                                 ModuleCredit    : 4,
                                                 ModuleStatus    : "Exempted",
-                                                ModuleSuStatus  : "Yes",
-                                                ModuleGrade     : "-",
+                                                ModuleSuStatus  : ["Exempted"],
+                                                ModuleGrade     : ["-"],
                                                 AcadYear        : userModsTaken[key].AcadYear,
                                                 Semester        : userModsTaken[key].Semester
                                             });
@@ -172,8 +165,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                 ModuleTitle     : responseModInfo.data.ModuleTitle,
                                                 ModuleCredit    : responseModInfo.data.ModuleCredit,
                                                 ModuleStatus    : "Normal",
-                                                ModuleSuStatus  : "No",
-                                                ModuleGrade     : "-",
+                                                ModuleSuStatus  : ["No","Yes","Exempted","Waived"],
+                                                ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
                                                 AcadYear        : userModsTaken[key].AcadYear,
                                                 Semester        : userModsTaken[key].Semester
                                             });
@@ -197,123 +190,13 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                             
                         });
                         
-                        /*
-                        for(var i = 0; i < totalModsCount; i ++) {
-                            //geting the result from IVLE API
-                            
-                            //accessing NUSmods API
-                            if(responseModTaken.data.Results[i].Semester == 1){
-                                //console.log("count : " + count);
-                                var currentMod = responseModTaken.data.Results[i].ModuleCode;
-                                //console.log("currentmod: " + currentMod);
-                                var currentTitle = responseModTaken.data.Results[i].ModuleTitle;
-                                //console.log("curr title: " + currentTitle);
-                                var semester = responseModTaken.data.Results[i].Semester;
-                                var acadYear = responseModTaken.data.Results[i].AcadYear;
-                                var status = "Exempted";
-                                var suStatus = "Yes";
-                                var currentGrade = "-";
-                                var currentCredit = 4;
-
-                                //specialMod array created to store information for poly/exempted mods
-                                $scope.specialMods.push({
-                                    ModuleCode     : responseModTaken.data.Results[i].ModuleCode,
-                                    ModuleTitle    : responseModTaken.data.Results[i].ModuleTitle,
-                                    ModuleCredit   : currentCredit,
-                                    ModuleStatus   : status,
-                                    ModuleSuStatus : suStatus,
-                                    ModuleGrade    : currentGrade,
-                                    AcadYear       : responseModTaken.data.Results[i].AcadYear,
-                                    Semester       : responseModTaken.data.Results[i].Semester
-                                });
-                                
-                                
-                                console.log("Module Code : " + responseModTaken.data.Results[i].ModuleCode);
-
-//                                var reqModInfo = {
-//                                    method : 'GET',
-//                                    url    : 'index.php?id=checkMod&modCode=' + currentMod + '&sem=' + semester
-//                                }
-
-
-                                getModInfo(currentMod,semester). then(
-                                    function (responseModInfo) {
-                                        //console.log("current count : " + count);
-                                        //console.log("Result 1 : " + responseModInfo.data.status);
-                                        //console.log("REsult 2 : " + responseModInfo.data.statusText);
-                                        console.log(responseModInfo);
-                                        if(responseModInfo.data === ""){
-                                            console.log("error : " + responseModInfo.data);
-                                            console.log("current Count : " + count);
-                                            console.log("No Info found for " + $scope.specialMods[count].ModuleCode);
-                                            
-                                            $scope.takenMods.push({
-                                                ModuleCode     : $scope.specialMods[count].ModuleCode,
-                                                ModuleTitle    : $scope.specialMods[count].ModuleTitle,
-                                                ModuleCredit   : $scope.specialMods[count].ModuleCredit,
-                                                ModuleStatus   : status,
-                                                ModuleSuStatus : suStatus,
-                                                ModuleGrade    : currentGrade,
-                                                AcadYear       : acadYear,
-                                                Semester       : semester
-                                            });
-                                            
-                                            //Temp function to save in session
-                                            sessionStorage.setItem($scope.specialMods[count].ModuleCode, JSON.stringify(
-                                                {
-                                                    ModuleTitle    : $scope.specialMods[count].ModuleTitle,
-                                                    ModuleCredit   : $scope.specialMods[count].ModuleCredit,
-                                                    ModuleStatus   : status,
-                                                    ModuleSuStatus : suStatus,
-                                                    ModuleGrade    : currentGrade,
-                                                    AcadYear       : acadYear,
-                                                    Semester       : semester
-                                                }
-                                            ));
-                                            //count = count + 1;
-                                        }
-                                        else{
-                                            console.log(responseModInfo.data.ModuleCode + " found in NUSMods API");
-                                            $scope.takenMods.push({
-                                                ModuleCode     : responseModInfo.data.ModuleCode,
-                                                ModuleTitle    : responseModInfo.data.ModuleTitle,
-                                                ModuleCredit   : responseModInfo.data.ModuleCredit,
-                                                ModuleStatus   : $scope.specialMods[count].ModuleStatus,
-                                                ModuleSuStatus : $scope.specialMods[count].ModuleSuStatus,
-                                                ModuleGrade    : $scope.specialMods[count].ModuleGrade,
-                                                AcadYear       : $scope.specialMods[count].AcadYear,
-                                                Semester       : $scope.specialMods[count].Semester
-
-                                            });
-                                            //count = count + 1;
-                                            
-                                        }
-
-                                        //count = count + 1;
-                                        //console.log($scope.takenMods[count]);
-
-                                    },function (responseModInfo){
-                                        console.log("error no mods info found");
-                                    }
-                                ).finally(function(){
-                                    
-                                    count = count + 1;
-                                });
-
-                            //$scope.takenMods[count] = response.data.Results[i];
-                            }
-                            
-                        }
-                      */  
-                      
-                        
                     }, function (responseModTaken) {
                         console.log("error no mods found");
                         // Failure Function
-                        //$scope.username = "Invalid User";
+                        
                     }
                 );        
-                //$scope.username = response.data;
+                
             }, function (responseProfile) {
 			// Failure Function
                 console.log("Invalid User");

@@ -21,15 +21,34 @@
                    <th class="text-center" width = "10%">Module Code</th>
                    <th class="text-center" width = "25%">Module Title</th>
                    <th class="text-center" width = "10%">MCs</th>
-                   <th class="text-center" width = "10%">S/U? / Exemptions</th>
+                   <th class="text-center" width = "10%">S/U Status</th>
                    <th class="text-center" width = "10%">Module Grade</th>
+                   
                    
                </tr>
            </thead>
 
             <tbody>
              
-              <tr  data-ng-repeat = "modules in takenMods track by $index"><td class="text-center"> {{modules.ModuleCode}}</td><td class="text-center">{{modules.ModuleTitle}}</td><td class="text-center">{{modules.ModuleCredit}}</td><td class="text-center">NO</td><td class="text-center">B+</td><!-- <td>{{modules | json}}</td> !--></tr>
+              <tr  data-ng-repeat = "modules in takenMods | orderBy:'ModuleCode' track by $index">
+              <td class="text-center">{{modules.ModuleCode}}</td>
+              <td class="text-center">{{modules.ModuleTitle}}</td>
+              <td class="text-center">{{modules.ModuleCredit}}</td>
+              <td class="text-center">
+                <select data-ng-options="val for val in modules.ModuleSuStatus" name="" ng-model="selectedModStatus">
+                    <!-- <option value="">-- Select Status --</option> !-->
+                </select>
+              </td>
+              <td class ="text-center">
+                <select data-ng-options="val for val in modules.ModuleGrade" name="" ng-model="selectedModGrade">
+                    <!-- <option value="">-- Select Status --</option> !-->
+                </select>                  
+              </td>
+              <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
+              <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td>
+              <!-- <td>Selected : {{selectedModStatus}}</td> !-->
+              <!-- <td>{{modules | json}}</td> !-->
+              </tr>
             </tbody>
             
             <!-- Testing/Debug Functions To be deleted 
