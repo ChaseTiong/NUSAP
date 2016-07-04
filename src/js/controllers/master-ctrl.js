@@ -111,7 +111,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                         sessionStorage.setItem("modsTaken", JSON.stringify(responseModTaken.data.Results));
                         //Debugging
                         //This is how you retreive the array
-                        console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
+                        //console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
                         //console.log(response.data.Results);
                         $scope.takenMods = [];
                         $scope.specialMods = [];
@@ -135,13 +135,15 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                 getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester). then(
                                     function(responseModInfo) {
                                         if(responseModInfo.data === ""){
-                                            console.log("Failed : " + userModsTaken[key].ModuleCode);
+                                            //console.log("Failed : " + userModsTaken[key].ModuleCode);
                                             $scope.takenMods.push({
                                                 ModuleCode      : userModsTaken[key].ModuleCode,
                                                 ModuleTitle     : userModsTaken[key].ModuleTitle,
                                                 ModuleCredit    : 4,
                                                 ModuleStatus    : "Exempted",
                                                 ModuleSuStatus  : ["Exempted"],
+                                                selectedModSuStatus : null,
+                                                selectedModGrade: null,
                                                 ModuleGrade     : ["-"],
                                                 AcadYear        : userModsTaken[key].AcadYear,
                                                 Semester        : userModsTaken[key].Semester
@@ -153,6 +155,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                     ModuleCredit    : 4,
                                                     ModuleStatus    : "Exempted",
                                                     ModuleSuStatus  : "Yes",
+                                                    selectedModSuStatus : null,
+                                                    selectedModGrade: null,
                                                     ModuleGrade     : "-",
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester
@@ -166,6 +170,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                 ModuleCredit    : responseModInfo.data.ModuleCredit,
                                                 ModuleStatus    : "Normal",
                                                 ModuleSuStatus  : ["No","Yes","Exempted","Waived"],
+                                                selectedModSuStatus : null,
+                                                selectedModGrade: null,
                                                 ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
                                                 AcadYear        : userModsTaken[key].AcadYear,
                                                 Semester        : userModsTaken[key].Semester
@@ -177,6 +183,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                     ModuleCredit    : responseModInfo.data.ModuleCredit,
                                                     ModuleStatus    : "Normal",
                                                     ModuleSuStatus  : "No",
+                                                    selectedModSuStatus : null,
+                                                    selectedModGrade: null,
                                                     ModuleGrade     : "-",
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester
@@ -189,6 +197,13 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                             }
                             
                         });
+                        
+//                        angular.forEach($scope.takenMods, function(value,key){
+//                            $scope.modules = {
+//                                selectedModSuStatus : $scope.takenMods[key].ModuleSuStatus[0],
+//                                selectedModGrade    : $scope.takenMods[key].ModuleGrade[0]
+//                            };
+//                        });
                         
                     }, function (responseModTaken) {
                         console.log("error no mods found");

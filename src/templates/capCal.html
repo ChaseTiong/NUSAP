@@ -3,15 +3,16 @@
   
     <div class="col-lg-12">
     <rd-widget>
-      <rd-widget-header icon="fa-calculator" title="Cap Calculator" data-ng-init = "modsTaken()">
-        <a href="">{{modsCount}}</a>
+      <rd-widget-header icon="fa-calculator" title="Cap Calculator">
+        <!-- <a href="">{{modsCount}}</a> !-->
+        <span>Cumulative Cap : {{capResult}}</span>
       </rd-widget-header>
       <rd-widget-body classes="no-padding">
         <div class="table-responsive">
           <table class="table fixed">
            <thead>
               <tr>
-                  <th class="text-left"> Year 1 Semester 2</th>
+                  <th class="text-left"> Year 1 Semester 1</th>
                   <th></th>
                   <th></th>
                   <th></th>
@@ -35,17 +36,19 @@
               <td class="text-center">{{modules.ModuleTitle}}</td>
               <td class="text-center">{{modules.ModuleCredit}}</td>
               <td class="text-center">
-                <select data-ng-options="val for val in modules.ModuleSuStatus" name="" ng-model="selectedModStatus">
+                <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change = "changeValue(modules , {{modules}})">
+                   <option value="" ng-if="false"></option>
                     <!-- <option value="">-- Select Status --</option> !-->
                 </select>
               </td>
               <td class ="text-center">
-                <select data-ng-options="val for val in modules.ModuleGrade" name="" ng-model="selectedModGrade">
+                <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change = "changeValue(modules , {{modules}})">
                     <!-- <option value="">-- Select Status --</option> !-->
                 </select>                  
               </td>
               <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
-              <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td>
+              <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
+              <td class = "text-center">{{modules | json }}</td>
               <!-- <td>Selected : {{selectedModStatus}}</td> !-->
               <!-- <td>{{modules | json}}</td> !-->
               </tr>
