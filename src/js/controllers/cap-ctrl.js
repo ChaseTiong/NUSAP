@@ -35,7 +35,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
     
     var totalGradedMC = 0;
     var totalGradePoint = 0;
-    
+    //$scope.capResult = 0;
     $scope.changeValue = function(currentMod , oldModValue){
         sessionStorage.setItem(currentMod.ModuleCode, JSON.stringify(
             {
@@ -52,15 +52,24 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
         ));
         
         $scope.$applyAsync(function(){
+            if(oldModValue.selectedModSuStatus === "No" && oldModValue.selectedModGrade !== null){
+                totalGradedMC = totalGradedMC - parseInt(oldModValue.ModuleCredit);
+                totalGradePoint = totalGradePoint - (convertGradeLetter(oldModValue.selectedModGrade) * oldModValue.ModuleCredit);
+            }
+            
             if(currentMod.selectedModSuStatus === "No" && currentMod.selectedModGrade !== null){
                 totalGradedMC = totalGradedMC + parseInt(currentMod.ModuleCredit);
                 totalGradePoint = totalGradePoint + (convertGradeLetter(currentMod.selectedModGrade) * currentMod.ModuleCredit);
             }
             
             $scope.capResult = (totalGradePoint / totalGradedMC).toFixed(2);
+            if(isNaN($scope.capResult)){
+                $scope.capResult = "calculating ..."
+            }    
+            
         
-            console.log(currentMod);
-            console.log(oldModValue);
+            //console.log(currentMod);
+            //console.log(oldModValue);
             console.log("Total graded Mc : " + totalGradedMC);
             console.log("Total Graded point : " + totalGradePoint);
         });

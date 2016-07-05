@@ -43,6 +43,7 @@
               </td>
               <td class="text-center">
                 <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                   <option value="" ng-if="false"></option>
                     <!-- <option value="">-- Select Status --</option> !-->
                 </select>                  
               </td>
