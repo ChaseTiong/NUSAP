@@ -37,6 +37,18 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
     var totalGradePoint = 0;
     //$scope.capResult = 0;
     $scope.changeValue = function(currentMod , oldModValue){
+        
+        if(currentMod.selectedModSuStatus === "Exempted" || currentMod.selectedModSuStatus === "Waived" || currentMod.selectedModSuStatus === "Yes"){
+            //console.log(currentMod.ModuleGrade);
+            currentMod.selectedModGrade = "-";
+            currentMod.ModuleGrade = "-";
+            //currentMod.ModuleGrade.unshift("-");
+            //currentMod.ModuleGrade = JSON.parse(currentMod.ModuleGrade)[0];
+            //Trying to implemet auto "-" when exempted and waived selected
+        } else{
+            currentMod.ModuleGrade = ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"];
+        }
+        
         sessionStorage.setItem(currentMod.ModuleCode, JSON.stringify(
             {
                 ModuleTitle     : currentMod.ModuleTitle,
@@ -64,14 +76,14 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
             
             $scope.capResult = (totalGradePoint / totalGradedMC).toFixed(2);
             if(isNaN($scope.capResult)){
-                $scope.capResult = "calculating ..."
+                $scope.capResult = "0.00";
             }    
             
         
             //console.log(currentMod);
             //console.log(oldModValue);
-            console.log("Total graded Mc : " + totalGradedMC);
-            console.log("Total Graded point : " + totalGradePoint);
+            //console.log("Total graded Mc : " + totalGradedMC);
+            //console.log("Total Graded point : " + totalGradePoint);
         });
         
         

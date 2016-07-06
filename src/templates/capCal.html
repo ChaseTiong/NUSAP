@@ -1,84 +1,151 @@
 
- <div class="row" data-ng-controller ="CapCalCtrl">
-  
+<div class="row" data-ng-controller ="CapCalCtrl">
+
     <div class="col-lg-12">
-    <rd-widget>
-      <rd-widget-header icon="fa-calculator" title="Cap Calculator">
+        <rd-widget>
+        <rd-widget-header icon="fa-calculator" title="Cap Calculator">
         <!-- <a href="">{{modsCount}}</a> !-->
         <span>Cumulative Cap : {{capResult}}</span>
-      </rd-widget-header>
-      <rd-widget-body classes="no-padding">
+        </rd-widget-header>
+        <rd-widget-body classes="no-padding">
         <div class="table-responsive">
-          <table class="table fixed">
-           <thead>
-              <tr>
-                  <th class="text-left"> Year 1 Semester 1</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-              </tr>
-               <tr>
-                   <th class="text-center" width = "10%">Module Code</th>
-                   <th class="text-center" width = "25%">Module Title</th>
-                   <th class="text-center" width = "10%">MCs</th>
-                   <th class="text-center" width = "10%">S/U Status</th>
-                   <th class="text-center" width = "10%">Module Grade</th>
-                   
-                   
-               </tr>
-           </thead>
+            <table class="table fixed">
+                <thead>
+                    
+                    <!--   
+                    <tr>
+                        <th class="text-left"> Year 1 Semester 1</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" width = "10%">Module Code</th>
+                        <th class="text-center" width = "25%">Module Title</th>
+                        <th class="text-center" width = "10%">MCs</th>
+                        <th class="text-center" width = "10%">S/U Status</th>
+                        <th class="text-center" width = "10%">Module Grade</th>
 
-            <tbody>
-             
-              <tr  data-ng-repeat = "modules in takenMods | orderBy:'ModuleCode' track by $index">
-              <td class="text-center">{{modules.ModuleCode}}</td>
-              <td class="text-center">{{modules.ModuleTitle}}</td>
-              <td class="text-center">{{modules.ModuleCredit}}</td>
-              <td class="text-center">
-                <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change = "changeValue(modules , {{modules}})">
-                   <option value="" ng-if="false"></option>
-                    <!-- <option value="">-- Select Status --</option> !-->
-                </select>
-              </td>
-              <td class ="text-center">
-                <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change = "changeValue(modules , {{modules}})">
-                   <option value="" ng-if="false"></option>
-                    <!-- <option value="">-- Select Status --</option> !-->
-                </select>                  
-              </td>
-              <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
-              <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
-              <td class = "text-center">{{modules | json }}</td>
-              <!-- <td>Selected : {{selectedModStatus}}</td> !-->
-              <!-- <td>{{modules | json}}</td> !-->
-              </tr>
-            </tbody>
-            
-            <!-- Testing/Debug Functions To be deleted 
-            <tbody data-ng-init = "testMcs()">
-                <tr><td>{{testResults}}</td></tr>
-            </tbody>
-            !-->
-            
-          </table>
+
+                    </tr>
+                    !-->
+                </thead>
+
+                <tbody>
+                   
+                    <tr>
+                        <th class="text-center"> Year 1 Semester 1</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" width = "10%">Module Code</th>
+                        <th class="text-center" width = "25%">Module Title</th>
+                        <th class="text-center" width = "10%">MCs</th>
+                        <th class="text-center" width = "10%">S/U Status</th>
+                        <th class="text-center" width = "10%">Module Grade</th>
+
+
+                    </tr>
+                    
+                    <tr  data-ng-repeat = "modules in modsPerSem[0] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change = "changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class ="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change = "changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+
+                        <!-- <td class = "text-center">{{modules | json }}</td> !-->
+
+                        <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
+                        <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
+                        <!-- <td>Selected : {{selectedModStatus}}</td> !-->
+                        <!-- <td>{{modules | json}}</td> !-->
+                    </tr>
+                </tbody>
+
+                <!-- Year 1 Semester 2 !-->               
+                <tbody>
+                   
+                    <tr>
+                        <th class="text-center"> Year 1 Semester 2</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" width = "10%">Module Code</th>
+                        <th class="text-center" width = "25%">Module Title</th>
+                        <th class="text-center" width = "10%">MCs</th>
+                        <th class="text-center" width = "10%">S/U Status</th>
+                        <th class="text-center" width = "10%">Module Grade</th>
+
+
+                    </tr>
+                    
+                    <tr  data-ng-repeat = "modules in modsPerSem[1] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change = "changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class ="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change = "changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+
+                        <!-- <td class = "text-center">{{modules | json }}</td> !-->
+
+                        <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
+                        <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
+                        <!-- <td>Selected : {{selectedModStatus}}</td> !-->
+                        <!-- <td>{{modules | json}}</td> !-->
+                    </tr>
+                </tbody>               
+                <!-- Testing/Debug Functions To be deleted 
+                <tbody data-ng-init = "testMcs()">
+                    <tr><td>{{testResults}}</td></tr>
+                </tbody>
+                !-->
+
+            </table>
         </div>      
-      </rd-widget-body>
-      <rd-widget-footer>
+        </rd-widget-body>
+        <rd-widget-footer>
         <!--
         <ul class="pagination pagination-sm pull-right">
-          <li><a href="#">&laquo;</a></li>
-          <li><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li><a href="#">&raquo;</a></li>
+            <li><a href="#">&laquo;</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
         </ul>
         <div class="clearfix"></div>
         !-->
-      </rd-widget-footer>
-    </rd-widget>
-  </div>
-  
+        </rd-widget-footer>
+        </rd-widget>
+    </div>
+
 </div>

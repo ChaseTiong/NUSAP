@@ -88,8 +88,32 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
         });            
     }
     
-	$scope.getProfile = function(){
+
     
+	$scope.getProfile = function(){
+        
+        function getAllAcadYear(matricYear){
+            var lastSem = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(0,4));
+            var resultArr = [];
+            //Debug purpose to be deleted
+            //var lastSem = 2017;
+            //
+            var date = new Date();
+            var month = date.getMonth();
+            var semCount = 1;
+            for(var i = matricYear; i <= lastSem; i ++){
+                var appendYear = i + 1;
+                appendYear = i + "/" + appendYear + "-" + semCount;
+                resultArr.push(appendYear);
+                appendYear = i + 1;
+                appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+                resultArr.push(appendYear);
+            }
+            return resultArr;
+
+        }
+        
+        
 		getUserProfile().then(
 			function (responseProfile) {
                 $scope.username = responseProfile.data.Results[0].Name;
@@ -105,6 +129,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 //                    url    : 'index.php?id=modsTaken&token=' + token +'&studentID=' + responseProfile.data.Results[0].UserID
 //                }
                 
+                
                 getModTaken(responseProfile.data.Results[0].UserID).then(
                     function (responseModTaken) {
                         $scope.modsCount = responseModTaken.data.Results.length;
@@ -113,8 +138,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                         //This is how you retreive the array
                         //console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
                         //console.log(response.data.Results);
-                        $scope.takenMods = [];
+                        
+                        
                         $scope.specialMods = [];
+                        $scope.modsPerSem = [];
 
                     //$scope.takenMods = response.data.Results;
                         var count = 0;
@@ -125,76 +152,132 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                         var userModsTaken = JSON.parse(sessionStorage.getItem("modsTaken"));
                         
                         var totalModsCount = JSON.parse(sessionStorage.getItem("modsTaken")).length;
-                        console.log("total mods : " + totalModsCount);
+                        //console.log("total mods : " + totalModsCount);
+                        
+                        //getting all the academic year of the users
+                        sessionStorage.setItem("userSem", JSON.stringify(getAllAcadYear(JSON.parse(sessionStorage.getItem("matricYear")))));   
+                        console.log("test result : " + getAllAcadYear(JSON.parse(sessionStorage.getItem("matricYear")))); 
+                        var userSem = JSON.parse(sessionStorage.getItem("userSem"));
+                        var currentSem = 1;
+                        //console.log(userSem[2]);
                         
                         //use a unique mod count to keep track poly mod/ unique mod
-                        
-                        angular.forEach(userModsTaken, function(value,key){
-                            //console.log("key : " + userModsTaken[key].ModuleCode);
-                            if(userModsTaken[key].Semester == 1){
-                                getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester). then(
-                                    function(responseModInfo) {
-                                        if(responseModInfo.data === ""){
-                                            //console.log("Failed : " + userModsTaken[key].ModuleCode);
-                                            $scope.takenMods.push({
-                                                ModuleCode      : userModsTaken[key].ModuleCode,
-                                                ModuleTitle     : userModsTaken[key].ModuleTitle,
-                                                ModuleCredit    : 4,
-                                                ModuleStatus    : "Exempted",
-                                                ModuleSuStatus  : ["Exempted"],
-                                                selectedModSuStatus : null,
-                                                selectedModGrade: null,
-                                                ModuleGrade     : ["-"],
-                                                AcadYear        : userModsTaken[key].AcadYear,
-                                                Semester        : userModsTaken[key].Semester
-                                            });
-                                            
-                                            sessionStorage.setItem(userModsTaken[key].ModuleCode,JSON.stringify(
-                                                {
+                        angular.forEach(userSem, function(result,index){
+                            $scope.takenMods = [];
+                            var currentSemMod = [];
+                            //console.log("current index " + index);
+                            angular.forEach(userModsTaken, function(value,key){
+                                //console.log("key : " + userModsTaken[key].ModuleCode);
+                                console.log(userSem[index].substring(10,11));
+                                if(userModsTaken[key].Semester == userSem[index].substring(10,11) && userModsTaken[key].AcadYear == userSem[index].substring(0,9)){ 
+                                    getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester). then(
+                                        function(responseModInfo) {
+                                            if(responseModInfo.data === ""){
+                                                //console.log("Failed : " + userModsTaken[key].ModuleCode);
+                                                currentSemMod.push({
+                                                    ModuleCode      : userModsTaken[key].ModuleCode,
                                                     ModuleTitle     : userModsTaken[key].ModuleTitle,
                                                     ModuleCredit    : 4,
                                                     ModuleStatus    : "Exempted",
-                                                    ModuleSuStatus  : "Yes",
+                                                    ModuleSuStatus  : ["Exempted"],
                                                     selectedModSuStatus : null,
                                                     selectedModGrade: null,
-                                                    ModuleGrade     : "-",
+                                                    ModuleGrade     : ["-"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester
-                                                }
-                                            ));
-                                        } else{
-                                            console.log("Success : " + responseModInfo.data.ModuleCode);
-                                            $scope.takenMods.push({
-                                                ModuleCode      : responseModInfo.data.ModuleCode,
-                                                ModuleTitle     : responseModInfo.data.ModuleTitle,
-                                                ModuleCredit    : responseModInfo.data.ModuleCredit,
-                                                ModuleStatus    : "Normal",
-                                                ModuleSuStatus  : ["No","Yes","Exempted","Waived"],
-                                                selectedModSuStatus : null,
-                                                selectedModGrade: null,
-                                                ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
-                                                AcadYear        : userModsTaken[key].AcadYear,
-                                                Semester        : userModsTaken[key].Semester
-                                            });
-                                            
-                                            sessionStorage.setItem(responseModInfo.data.ModuleCode,JSON.stringify(
-                                                {
+                                                });
+                                                
+                                                $scope.takenMods.push({
+                                                    ModuleCode      : userModsTaken[key].ModuleCode,
+                                                    ModuleTitle     : userModsTaken[key].ModuleTitle,
+                                                    ModuleCredit    : 4,
+                                                    ModuleStatus    : "Exempted",
+                                                    ModuleSuStatus  : ["Exempted"],
+                                                    selectedModSuStatus : null,
+                                                    selectedModGrade: null,
+                                                    ModuleGrade     : ["-"],
+                                                    AcadYear        : userModsTaken[key].AcadYear,
+                                                    Semester        : userModsTaken[key].Semester
+                                                });
+
+                                                //console.log($scope.takenMods[count]);
+                                                $scope.takenMods[count].selectedModGrade = $scope.takenMods[count].ModuleGrade[0];
+                                                $scope.takenMods[count].selectedModSuStatus = $scope.takenMods[count].ModuleSuStatus[0];
+                                                count ++;
+                                                sessionStorage.setItem(userModsTaken[key].ModuleCode,JSON.stringify(
+                                                    {
+                                                        ModuleTitle     : userModsTaken[key].ModuleTitle,
+                                                        ModuleCredit    : 4,
+                                                        ModuleStatus    : "Exempted",
+                                                        ModuleSuStatus  : "Yes",
+                                                        selectedModSuStatus : null,
+                                                        selectedModGrade: null,
+                                                        ModuleGrade     : "-",
+                                                        AcadYear        : userModsTaken[key].AcadYear,
+                                                        Semester        : userModsTaken[key].Semester
+                                                    }
+                                                ));
+                                            } else{
+                                                //console.log("Success : " + responseModInfo.data.ModuleCode);
+                                                currentSemMod.push({
+                                                    ModuleCode      : responseModInfo.data.ModuleCode,
                                                     ModuleTitle     : responseModInfo.data.ModuleTitle,
                                                     ModuleCredit    : responseModInfo.data.ModuleCredit,
                                                     ModuleStatus    : "Normal",
-                                                    ModuleSuStatus  : "No",
+                                                    ModuleSuStatus  : ["No","Yes","Exempted","Waived"],
                                                     selectedModSuStatus : null,
                                                     selectedModGrade: null,
-                                                    ModuleGrade     : "-",
+                                                    ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester
-                                                }
-                                            ));
-                                            
+                                                });
+                                                
+                                                
+                                                $scope.takenMods.push({
+                                                    ModuleCode      : responseModInfo.data.ModuleCode,
+                                                    ModuleTitle     : responseModInfo.data.ModuleTitle,
+                                                    ModuleCredit    : responseModInfo.data.ModuleCredit,
+                                                    ModuleStatus    : "Normal",
+                                                    ModuleSuStatus  : ["No","Yes","Exempted","Waived"],
+                                                    selectedModSuStatus : null,
+                                                    selectedModGrade: null,
+                                                    ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                                    AcadYear        : userModsTaken[key].AcadYear,
+                                                    Semester        : userModsTaken[key].Semester
+                                                });
+                                                //console.log($scope.takenMods[count]);
+                                                count ++;
+                                                sessionStorage.setItem(responseModInfo.data.ModuleCode,JSON.stringify(
+                                                    {
+                                                        ModuleTitle     : responseModInfo.data.ModuleTitle,
+                                                        ModuleCredit    : responseModInfo.data.ModuleCredit,
+                                                        ModuleStatus    : "Normal",
+                                                        ModuleSuStatus  : "No",
+                                                        selectedModSuStatus : null,
+                                                        selectedModGrade: null,
+                                                        ModuleGrade     : "-",
+                                                        AcadYear        : userModsTaken[key].AcadYear,
+                                                        Semester        : userModsTaken[key].Semester
+                                                    }
+                                                ));
+
+                                            }
                                         }
-                                    }
-                                );
-                            }
+                                    );
+                                }
+
+                            });
+                            
+                            $scope.modsPerSem.push(currentSemMod);
+                            //console.log($scope.takenMods);
+                            /*$scope.$applyAsync(function(){
+                                //var currentArr = $scope.takenMods;
+                                var currentArr = [];
+                                angular.extend($scope.takenMods,currentArr);
+                                $scope.modsPerSem.push($scope.takenMods);
+                                //console.log("mods per sem : " + $scope.modsPerSem[index]);
+                                
+                            });*/
                             
                         });
                         
@@ -219,6 +302,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 			}
 		);
 	}
+    
+    
 	
 	$scope.logout = function(){
 		sessionStorage.clear();
@@ -240,8 +325,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 		$http(req).then(
 			function (response) {
 			// success function
-			console.log("test : " + response.data);
-			console.log(response.data.Success);
+			//console.log("test : " + response.data);
+			//console.log(response.data.Success);
 			$result = response.data.Success;
 				//if token is invalid
 				if($result == false){
