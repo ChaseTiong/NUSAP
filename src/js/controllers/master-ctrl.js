@@ -174,7 +174,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                         function(responseModInfo) {
                                             if(responseModInfo.data === ""){
                                                 //console.log("Failed : " + userModsTaken[key].ModuleCode);
-                                                currentSemMod.push({
+                                                currentSemMod.unshift({
                                                     ModuleCode      : userModsTaken[key].ModuleCode,
                                                     ModuleTitle     : userModsTaken[key].ModuleTitle,
                                                     ModuleCredit    : 4,
@@ -201,9 +201,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                 });
 
                                                 //console.log($scope.takenMods[count]);
-                                                $scope.takenMods[count].selectedModGrade = $scope.takenMods[count].ModuleGrade[0];
-                                                $scope.takenMods[count].selectedModSuStatus = $scope.takenMods[count].ModuleSuStatus[0];
-                                                count ++;
+                                                currentSemMod[0].selectedModGrade = currentSemMod[0].ModuleGrade[0];
+                                                currentSemMod[0].selectedModSuStatus = currentSemMod[0].ModuleSuStatus[0];
+                                                //count ++;
                                                 sessionStorage.setItem(userModsTaken[key].ModuleCode,JSON.stringify(
                                                     {
                                                         ModuleTitle     : userModsTaken[key].ModuleTitle,
@@ -246,7 +246,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                                                     Semester        : userModsTaken[key].Semester
                                                 });
                                                 //console.log($scope.takenMods[count]);
-                                                count ++;
+                                                //count ++;
                                                 sessionStorage.setItem(responseModInfo.data.ModuleCode,JSON.stringify(
                                                     {
                                                         ModuleTitle     : responseModInfo.data.ModuleTitle,
@@ -269,6 +269,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                             });
                             
                             $scope.modsPerSem.push(currentSemMod);
+                            //count = 0;
                             //console.log($scope.takenMods);
                             /*$scope.$applyAsync(function(){
                                 //var currentArr = $scope.takenMods;
