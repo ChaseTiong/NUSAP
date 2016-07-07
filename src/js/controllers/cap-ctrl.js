@@ -33,9 +33,12 @@ angular.module('NUSAP')
 
 function CapCalCtrl($scope, $cookieStore, $http, $location) {
     
+    
     var totalGradedMC = 0;
     var totalGradePoint = 0;
     //$scope.capResult = 0;
+    //$scope.showSem1 = false;
+    
     $scope.changeValue = function(currentMod , oldModValue){
         
         if(currentMod.selectedModSuStatus === "Exempted" || currentMod.selectedModSuStatus === "Waived" || currentMod.selectedModSuStatus === "Yes"){

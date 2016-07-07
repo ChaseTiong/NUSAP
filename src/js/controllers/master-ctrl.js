@@ -93,21 +93,56 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 	$scope.getProfile = function(){
         
         function getAllAcadYear(matricYear){
-            var lastSem = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(0,4));
+            var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
             var resultArr = [];
+            
             //Debug purpose to be deleted
-            //var lastSem = 2017;
-            //
+            //var lastYear = 2017;
+            //End of debug
             var date = new Date();
+            var year = date.getFullYear();
             var month = date.getMonth();
+            matricYear = parseInt(matricYear);
             var semCount = 1;
-            for(var i = matricYear; i <= lastSem; i ++){
+            for(var i = matricYear; i <= lastYear; i ++){
                 var appendYear = i + 1;
-                appendYear = i + "/" + appendYear + "-" + semCount;
-                resultArr.push(appendYear);
-                appendYear = i + 1;
-                appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-                resultArr.push(appendYear);
+                var nextYear = appendYear;
+
+                if(appendYear == lastYear){
+                    if(month < 9){
+                        appendYear = i + "/" + appendYear + "-" + semCount;
+                        resultArr.push(appendYear);
+                    
+                        appendYear = i + 1;
+                        
+                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+                        resultArr.push(appendYear);
+  
+                    }else{
+                        appendYear = i + "/" + appendYear + "-" + semCount;
+                        resultArr.push(appendYear);
+                    
+                        appendYear = i + 1;
+                        
+                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+                        resultArr.push(appendYear);
+                        
+                        appendYear = i + 2;
+                        
+                        appendYear = (i + 1) + "/" + appendYear + "-" + semCount;
+                        resultArr.push(appendYear);
+                        
+                    }
+                //if the appendYear is lower than the current Year , add in sem 2
+                } else if(appendYear < lastYear){
+                    appendYear = i + "/" + appendYear + "-" + semCount;
+                    resultArr.push(appendYear);
+                    
+                    appendYear = i + 1;
+                    appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+                    resultArr.push(appendYear);
+                } 
+                
             }
             return resultArr;
 
@@ -168,7 +203,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                             //console.log("current index " + index);
                             angular.forEach(userModsTaken, function(value,key){
                                 //console.log("key : " + userModsTaken[key].ModuleCode);
-                                console.log(userSem[index].substring(10,11));
+                                //console.log(userSem[index].substring(10,11));
                                 if(userModsTaken[key].Semester == userSem[index].substring(10,11) && userModsTaken[key].AcadYear == userSem[index].substring(0,9)){ 
                                     getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester). then(
                                         function(responseModInfo) {
