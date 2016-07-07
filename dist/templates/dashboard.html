@@ -1,0 +1,230 @@
+
+<div class="row alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length" data-ng-init="welcomeUser()">
+  <div class="col-xs-12">
+    <uib-alert type="{{type}}" close="closeAlert(0)" ng-hide="alert">{{msg}}</uib-alert>
+    <!-- <uib-alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert> -->
+  </div>
+</div>
+
+<div>
+     <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
+	<div class="col-lg-8">
+		<rd-widget>
+      		<rd-widget-header icon="fa-tasks" title="Academic Planner">
+				<a href="https://nusmods.com">NUSmods</a>
+      		</rd-widget-header>
+      		<rd-widget-body classes="large no-padding">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+                            <tr>
+                                <th class="text-center" width="25%">Year 1</th>
+                                <th class="text-center" width="25%">Year 2</th>
+                                <th class="text-center" width="25%">Year 3</th>
+                                <th class="text-center" width="25%">Year 4</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="text-center" width="25%">Semester 1</th>
+                                <th></th>
+                                <th></th>
+                                <th><i class="fa fa-caret-down pull-right"></i></th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1231</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">GER1000</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">MA1521</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1010</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" width="25%">Semester 2</th>
+                                <th></th>
+                                <th></th>
+                                <th><i class="fa fa-caret-down pull-right"></i></th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1020</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS2100</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS2010</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" width="25%">CS1231</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                                                        <tr>
+                                <td class="text-center" width="25%">MA1101R</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                                <td class="text-center" width="25%">CS</td>
+                            </tr>
+                            <!--<tr data-ng-repeat = 5> <!--count = max # of mod taken in sem 1
+                                <td data-ng-repeat = 4>{{modTaken[x][1]}} </td>
+                            </tr>
+                            
+                            <tr>
+                                <th class="text-center" width = "25%">Semester 2</th>
+                                <th></th>
+                                <th></th>
+                                <th><i class="fa fa-caret-down pull-right"></i></th>
+                            </tr>
+                            <tr data-ng-repeat = "x in max2"> <!--count = max # of mod taken in sem 2
+                                <td data-ng-repeat = "x in maxYear">{{modTaken[x][2]}} </td>
+                            </tr>-->
+                        </tbody>
+					</table>
+				</div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+	
+    
+    <!-- Graduation Progress -->
+	<div class="col-lg-4 col-sm-6 col-xs-12">
+        <rd-widget>
+			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
+                <div data-ng-controller="BarCtrl" data-ng-init="getBarChart()">
+                    <canvas class="col-lg-4 col-sm-6 col-xs-12 pull-right" id="canvas" height="220"></canvas>
+                </div>
+        </rd-widget>
+    </div>
+            
+	<!-- End of Graduation Progress
+    <div data-ng-controller="stackedBarCtrl" id="stackedBar" data-ng-init="getBarChart()">
+        <canvas class="col-lg-4 pull-right" id="canvas" height="50"></canvas>
+        Placeholder for chart
+    
+    </div> 
+    
+   <!-- 
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="widget-icon green pull-left">
+					<i class="fa fa-users"></i>
+				</div>
+				<div class="title">100</div>
+				<div class="comment">Users</div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="widget-icon red pull-left">
+					<i class="fa fa-tasks"></i>
+				</div>
+				<div class="title">16</div>
+				<div class="comment">Servers</div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="widget-icon orange pull-left">
+					<i class="fa fa-sitemap"></i>
+				</div>
+				<div class="title">225</div>
+				<div class="comment">Documents</div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="widget-icon blue pull-left">
+					<i class="fa fa-support"></i>
+				</div>
+				<div class="title">62</div>
+				<div class="comment">Tickets</div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+</div>
+-->
+
+	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right">
+		<rd-widget>
+			<rd-widget-header icon="fa-search" title="Module Search">
+				<input type="text" placeholder="Search" class="form-control input-md">
+			</rd-widget-header>
+			<rd-widget-body classes="medium no-padding">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr><th class="text-center">Module Code</th><th>Module Name</th><th>MCs</th></tr>
+						</thead>
+						<tbody>
+						    <!-- 
+							<tr><td class="text-center">1</td><td>Joe Bloggs</td><td>Super Admin</td><td>AZ23045</td></tr>
+							<tr><td class="text-center">2</td><td>Timothy Hernandez</td><td>Admin</td><td>AU24783</td></tr>
+							<tr><td class="text-center">3</td><td>Joe Bickham</td><td>User</td><td>AM23781</td></tr> !-->
+						</tbody>
+					</table>
+        		</div>
+			</rd-widget-body>
+		<rd-widget>
+	</rd-widget></rd-widget></div>
+</div>
+<!--
+<div class="row">
+	<div class="col-lg-6">
+   		<rd-widget>
+   			<rd-widget-header icon="fa-plus" title="Extras">
+   				<button class="btn btn-sm btn-info">Button</button>
+   			</rd-widget-header>
+   			<rd-widget-body>
+				<div class="message">
+					This is a standard message which will also work the ".no-padding" class, I can also <span class="error">be an error message!</span>
+				</div>
+				<hr />
+				<div class="message">
+					<a href="http://angular-ui.github.io/bootstrap/" target="_blank">UI Bootstrap</a> is included, so you can use <a href="#" tooltip="I'm a tooltip!">tooltips</a> and all of the other native Bootstrap JS components!
+				</div>
+   			</rd-widget-body>
+   		</rd-widget>
+	</div>
+	<!-- <div class="col-lg-6">
+		<rd-widget>
+			<rd-widget-header icon="fa-cog fa-spin" title="Loading Directive">
+				<a href="http://tobiasahlin.com/spinkit/" target="_blank">SpinKit</a>
+			</rd-widget-header>
+			<rd-widget-body>
+				<rd-loading></rd-loading>
+			</rd-widget-body>
+		</rd-widget>
+	</div> !-->
