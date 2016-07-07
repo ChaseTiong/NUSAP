@@ -88,13 +88,68 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
         });            
     }
     
+    function getModList(){
+        return $http({
+            method : 'GET',
+            url    : 'index.php?id=modSearch'           
+        });            
+    }
+    
+    /*function allowDrop(ev) {
+        ev.preventDefault();
+    }
 
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+    $scope.modList = [];
+       
+    //not working 
+    /*
+    getModList().then(
+        function (responseModList) {
+            sessionStorage.setItem("modsList", JSON.stringify(responseModList.data.Results));
+            var moduleList = JSON.parse(sessionStorage.getItem("modsList"));
+            angular.forEach(moduleList, function(value,key){
+                $scope.modList.push({
+                    ModuleCode      : moduleList[key].ModuleCode,
+                    ModuleTitle     : moduleList[key].ModuleTitle,
+                    Semesters       : moduleList[key].Semesters
+                });
+        });
+    });  
+    */
     
 	$scope.getProfile = function(){
         
         function getAllAcadYear(matricYear){
             var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
             var resultArr = [];
+            
+            $scope.plannerSize = [];
+            
+            //start of ruiwen code
+            //default candidature: 3 years
+            
+            var year = 3;
+            var matricYear = responseProfile.data.Results[0].MatriculationYear;
+            
+            for(var i=0;i<year;i++) {
+                $scope.plannerSize.push({ candidatureYear: (parseInt(matricYear)+i) + "/" + (parseInt(matricYear)+i+1), modsPerSem: 5 });
+            }
+            //add year
+            $scope.addYear = function() {
+                year = year + 1;
+                var newYear = { candidatureYear: (parseInt(matricYear)+year-1) + "/" + (parseInt(matricYear)+year), modsPerSem: 5 }
+                $scope.plannerSize.push(newYear);
+            }
+            //end of ruiwen code
             
             //Debug purpose to be deleted
             //var lastYear = 2017;

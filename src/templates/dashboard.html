@@ -10,104 +10,40 @@
      <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
 	<div class="col-lg-8">
 		<rd-widget>
-      		<rd-widget-header icon="fa-tasks" title="Academic Planner">
+      		<!--
+            <rd-widget-header icon="fa-tasks" title="Academic Planner">
 				<a href="https://nusmods.com">NUSmods</a>
       		</rd-widget-header>
       		<rd-widget-body classes="large no-padding">
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
-                            <tr>
-                                <th class="text-center" width = "25%">Year 1</th>
-                                <th class="text-center" width = "25%">Year 2</th>
-                                <th class="text-center" width = "25%">Year 3</th>
-                                <th class="text-center" width = "25%">Year 4</th>
+                           <tr>
+                                <th class="text-center" ng-repeat="year in plannerSize track by $index">{{year.candidatureYear}}</th>
+                                <th class="text-center" width = "5%"><input type="button" value="Add"  data-ng-click="addYear()" /></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th class="text-center" width = "25%">Semester 1</th>
-                                <th></th>
-                                <th></th>
+                                <th class="text-center">Semester 1</th>
+                                <th class="text-center" ng-repeat="year in plannerSize track by $index"></th>
                                 <th><i class="fa fa-caret-down pull-right"></i></th>
                             </tr>
                             <tr>
-                                <td class="text-center" width = "25%">CS1231</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center" width = "25%">GER1000</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center" width = "25%">MA1521</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center" width = "25%">CS1010</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                            </tr>
-                            <tr>
-                                <th class="text-center" width = "25%">Semester 2</th>
-                                <th></th>
-                                <th></th>
+                                <th class="text-center">Semester 2</th>
+                                <th class="text-center" ng-repeat="year in plannerSize track by $index"></th>
                                 <th><i class="fa fa-caret-down pull-right"></i></th>
                             </tr>
-                            <tr>
-                                <td class="text-center" width = "25%">CS1020</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
                             </tr>
-                            <tr>
-                                <td class="text-center" width = "25%">CS2100</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
+                            <tr  data-ng-repeat = "modules in takenMods | orderBy:'ModuleCode' track by $index">
+                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" data-ng-init="formButton">{{modules.ModuleCode}} {{modules.ModuleTitle}}</td>
+                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
                             </tr>
-                            <tr>
-                                <td class="text-center" width = "25%">CS2010</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center" width = "25%">CS1231</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                            </tr>
-                                                        <tr>
-                                <td class="text-center" width = "25%">MA1101R</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                                <td class="text-center" width = "25%">CS</td>
-                            </tr>
-                            <!--<tr data-ng-repeat = 5> <!--count = max # of mod taken in sem 1
-                                <td data-ng-repeat = 4>{{modTaken[x][1]}} </td>
-                            </tr>
-                            
-                            <tr>
-                                <th class="text-center" width = "25%">Semester 2</th>
-                                <th></th>
-                                <th></th>
-                                <th><i class="fa fa-caret-down pull-right"></i></th>
-                            </tr>
-                            <tr data-ng-repeat = "x in max2"> <!--count = max # of mod taken in sem 2
-                                <td data-ng-repeat = "x in maxYear">{{modTaken[x][2]}} </td>
-                            </tr>-->
                         </tbody>
 					</table>
 				</div>
-			</rd-widget-body>
+			</rd-widget-body> !-->
 		</rd-widget>
 	</div>
 	
@@ -184,17 +120,25 @@
 			</rd-widget-header>
 			<rd-widget-body classes="medium no-padding">
 				<div class="table-responsive">
-					<table class="table">
+					<!--
+                    <table class="table">
 						<thead>
-							<tr><th class="text-center">Module Code</th><th>Module Name</th><th>MCs</th></tr>
-						</thead>
-						<tbody>
-						    <!-- 
-							<tr><td class="text-center">1</td><td>Joe Bloggs</td><td>Super Admin</td><td>AZ23045</td></tr>
-							<tr><td class="text-center">2</td><td>Timothy Hernandez</td><td>Admin</td><td>AU24783</td></tr>
-							<tr><td class="text-center">3</td><td>Joe Bickham</td><td>User</td><td>AM23781</td></tr> !-->
-						</tbody>
-					</table>
+                            <tr><th class="text-center" data-ng-click="orderBy('ModuleCode')">Module Code</th><th  class="text-center" data-ng-click="orderBy('ModuleTitle')">Module Name</th><th class="text-center" data-ng-click="orderBy('Semesters')">Semester</th></tr>
+                        </thead>
+                        <tbody>
+                            <!-- not working
+                            <tr  data-ng-repeat = "mods in modList | orderBy:'ModuleCode' track by $index">
+                                <td class="text-center">{{mods.ModuleCode}}</td>
+                                <td class="text-center">{{mods.ModuleTitle}}</td>
+                                <td class="text-center">{{mods.Semesters}}</td>
+                            </tr> !-->
+                            <!--
+                                <tr  data-ng-repeat = "modules in takenMods | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
+                                <td class="text-center">{{modules.ModuleCode}}</td>
+                                <td class="text-center">{{modules.ModuleTitle}}</td>
+                            </tr>
+                        </tbody>
+					</table> !-->
         		</div>
 			</rd-widget-body>
 		<rd-widget>
