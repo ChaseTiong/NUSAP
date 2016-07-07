@@ -10,7 +10,7 @@
      <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
 	<div class="col-lg-8">
 		<rd-widget>
-      		<!--
+
             <rd-widget-header icon="fa-tasks" title="Academic Planner">
 				<a href="https://nusmods.com">NUSmods</a>
       		</rd-widget-header>
@@ -43,7 +43,7 @@
                         </tbody>
 					</table>
 				</div>
-			</rd-widget-body> !-->
+			</rd-widget-body> 
 		</rd-widget>
 	</div>
 	
@@ -120,7 +120,7 @@
 			</rd-widget-header>
 			<rd-widget-body classes="medium no-padding">
 				<div class="table-responsive">
-					<!--
+					
                     <table class="table">
 						<thead>
                             <tr><th class="text-center" data-ng-click="orderBy('ModuleCode')">Module Code</th><th  class="text-center" data-ng-click="orderBy('ModuleTitle')">Module Name</th><th class="text-center" data-ng-click="orderBy('Semesters')">Semester</th></tr>
@@ -132,13 +132,13 @@
                                 <td class="text-center">{{mods.ModuleTitle}}</td>
                                 <td class="text-center">{{mods.Semesters}}</td>
                             </tr> !-->
-                            <!--
+                            
                                 <tr  data-ng-repeat = "modules in takenMods | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
                                 <td class="text-center">{{modules.ModuleCode}}</td>
                                 <td class="text-center">{{modules.ModuleTitle}}</td>
                             </tr>
                         </tbody>
-					</table> !-->
+					</table> 
         		</div>
 			</rd-widget-body>
 		<rd-widget>

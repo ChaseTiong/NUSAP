@@ -107,11 +107,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
-    }
+    }*/
     $scope.modList = [];
        
     //not working 
-    /*
+    
     getModList().then(
         function (responseModList) {
             sessionStorage.setItem("modsList", JSON.stringify(responseModList.data.Results));
@@ -124,7 +124,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                 });
         });
     });  
-    */
+    
     
 	$scope.getProfile = function(){
         
@@ -132,24 +132,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
             var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
             var resultArr = [];
             
-            $scope.plannerSize = [];
-            
-            //start of ruiwen code
-            //default candidature: 3 years
-            
-            var year = 3;
-            var matricYear = responseProfile.data.Results[0].MatriculationYear;
-            
-            for(var i=0;i<year;i++) {
-                $scope.plannerSize.push({ candidatureYear: (parseInt(matricYear)+i) + "/" + (parseInt(matricYear)+i+1), modsPerSem: 5 });
-            }
-            //add year
-            $scope.addYear = function() {
-                year = year + 1;
-                var newYear = { candidatureYear: (parseInt(matricYear)+year-1) + "/" + (parseInt(matricYear)+year), modsPerSem: 5 }
-                $scope.plannerSize.push(newYear);
-            }
-            //end of ruiwen code
             
             //Debug purpose to be deleted
             //var lastYear = 2017;
@@ -203,7 +185,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 
         }
         
-        
 		getUserProfile().then(
 			function (responseProfile) {
                 $scope.username = responseProfile.data.Results[0].Name;
@@ -212,7 +193,23 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 
                 sessionStorage.setItem("matricYear", responseProfile.data.Results[0].MatriculationYear);
                 
-                
+                $scope.plannerSize = [];
+            
+                //start of ruiwen code
+                //default candidature: 3 years
+
+                var year = 3;
+                var matricYear = responseProfile.data.Results[0].MatriculationYear;
+
+                for(var i=0;i<year;i++) {
+                    $scope.plannerSize.push({ candidatureYear: (parseInt(matricYear)+i) + "/" + (parseInt(matricYear)+i+1), modsPerSem: 5 });
+                }
+                //add year
+                $scope.addYear = function() {
+                    year = year + 1;
+                    var newYear = { candidatureYear: (parseInt(matricYear)+year-1) + "/" + (parseInt(matricYear)+year), modsPerSem: 5 }
+                    $scope.plannerSize.push(newYear);
+                }
                 //To sync with profile view, retreiving modules taken by the user    
 //                var reqForModTaken = {
 //                    method : 'GET',
@@ -228,7 +225,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                         //This is how you retreive the array
                         //console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
                         //console.log(response.data.Results);
-                        
                         
                         $scope.specialMods = [];
                         $scope.modsPerSem = [];
