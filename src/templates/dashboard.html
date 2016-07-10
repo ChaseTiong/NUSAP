@@ -133,9 +133,10 @@
                                 <td class="text-center">{{mods.Semesters}}</td>
                             </tr> !-->
                             
-                                <tr  data-ng-repeat = "modules in takenMods | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
+                                <tr  data-ng-repeat = "modules in modList | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
                                 <td class="text-center">{{modules.ModuleCode}}</td>
                                 <td class="text-center">{{modules.ModuleTitle}}</td>
+                                <td class="text-center">{{modules.Semesters}}</td>
                             </tr>
                         </tbody>
 					</table> 

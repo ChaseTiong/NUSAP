@@ -25,7 +25,7 @@
         $json = file_get_contents("$url");
         echo $json;     
     }else if (strcmp($id, "modSearch") == 0){
-        $url = "http://api.nusmods.com/2015-2016/moduleList.json";
+        $url = "http://api.nusmods.com/2016-2017/moduleList.json";
         $json = file_get_contents("$url");
         echo $json; 
     }

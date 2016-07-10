@@ -114,7 +114,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
     
     getModList().then(
         function (responseModList) {
-            sessionStorage.setItem("modsList", JSON.stringify(responseModList.data.Results));
+            sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));
             var moduleList = JSON.parse(sessionStorage.getItem("modsList"));
             angular.forEach(moduleList, function(value,key){
                 $scope.modList.push({
@@ -213,6 +213,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                     var newYear = { candidatureYear: (parseInt(matricYear)+year-1) + "/" + (parseInt(matricYear)+year), modsPerSem: 5 }
                     $scope.plannerSize.push(newYear);
                 }
+                
+                
                 //To sync with profile view, retreiving modules taken by the user    
 //                var reqForModTaken = {
 //                    method : 'GET',
