@@ -27,19 +27,79 @@ var userName;
 var studentId;
 
 angular.module('NUSAP')
-    .controller('CapCalCtrl', ['$scope', '$cookieStore', '$http', '$location', CapCalCtrl]);
+    .controller('CapCalCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', CapCalCtrl]);
 
 
 
-function CapCalCtrl($scope, $cookieStore, $http, $location) {
-    
-    
+function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
     var totalGradedMC = 0;
     var totalGradePoint = 0;
+    
+    //console.log($scope.showYear1Sem1);
+    $scope.addSemester = function(){
+        //console.log("test");
+        var currentTotalSem = [];
+//        $scope.showYear2Sem1 = !$scope.showYear2Sem1;
+        var currentTotalSemCount = JSON.parse(sessionStorage.getItem("userSem")).length;
+        currentTotalSem = JSON.parse(sessionStorage.getItem("userSem"));
+        //console.log(currentTotalSem);
+        
+        var previousAcadSem = JSON.parse(sessionStorage.getItem("userSem"))[currentTotalSemCount - 1];
+        //check previous sem
+        var previousSem = previousAcadSem.substring(10);
+        var frontYear = parseInt(previousAcadSem.substring(0,4));
+        var backYear = parseInt(previousAcadSem.substring(5,9));
+        var nextAcadSem = "";
+        var nextSem = 0;
+        if(previousSem == 1){
+            nextSem = 2;
+            nextAcadSem = frontYear + "/" + backYear + "-" + nextSem;
+        } else{
+            nextSem = 1;
+            nextAcadSem = backYear + "/" + (backYear + 1) + "-" + nextSem;
+        }
+        currentTotalSem.push(nextAcadSem);
+        sessionStorage.setItem("userSem", JSON.stringify(currentTotalSem));   
+       
+        $scope.unlockSem[currentTotalSemCount] = true;
+        
+        
+        
+        
+        //console.log($scope.showYear2Sem1);
+    }
+    
+    //refreshed page
+    $window.onload = function() {
+        //console.log("page refreshed");
+        $scope.capResult = "0.00";
+        sessionStorage.setItem("totalGradedPoint", 0);
+        sessionStorage.setItem("totalGradedMC", 0);
+    }
+    
+    $scope.$on('$stateChangeSuccess', function () {
+    // do something
+        //console.log("page loaded");
+        $scope.capResult = "0.00";
+        //console.log(sessionStorage.getItem("totalGradedPoint"));
+        //console.log(sessionStorage.getItem("totalGradedMC"));
+        if(isNaN(parseInt(sessionStorage.getItem("totalGradedMC"))) || isNaN(parseInt(sessionStorage.getItem("totalGradedPoint")))){
+            totalGradedMC = 0;
+            totalGradePoint = 0;
+        }else {
+            totalGradedMC = parseInt(sessionStorage.getItem("totalGradedMC"));   
+            totalGradePoint = parseInt(sessionStorage.getItem("totalGradedPoint"));
+            $scope.capResult = (totalGradePoint / totalGradedMC).toFixed(2);
+        }
+    });
+    
+
     //$scope.capResult = 0;
     //$scope.showSem1 = false;
     
     $scope.changeValue = function(currentMod , oldModValue){
+        
+        
         
         if(currentMod.selectedModSuStatus === "Exempted" || currentMod.selectedModSuStatus === "Waived" || currentMod.selectedModSuStatus === "Yes"){
             //console.log(currentMod.ModuleGrade);
@@ -85,8 +145,10 @@ function CapCalCtrl($scope, $cookieStore, $http, $location) {
         
             //console.log(currentMod);
             //console.log(oldModValue);
-            //console.log("Total graded Mc : " + totalGradedMC);
-            //console.log("Total Graded point : " + totalGradePoint);
+            console.log("Total graded Mc : " + totalGradedMC);
+            console.log("Total Graded point : " + totalGradePoint);
+            sessionStorage.setItem("totalGradedMC",totalGradedMC);
+            sessionStorage.setItem("totalGradedPoint",totalGradePoint);
         });
         
         

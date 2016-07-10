@@ -128,6 +128,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
     
 	$scope.getProfile = function(){
         
+        //history.replaceState({} , null, "index.html");	 
+        
         function getAllAcadYear(matricYear){
             var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
             var resultArr = [];
@@ -194,6 +196,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                 sessionStorage.setItem("matricYear", responseProfile.data.Results[0].MatriculationYear);
                 
                 $scope.plannerSize = [];
+                $scope.unlockSem = [];
             
                 //start of ruiwen code
                 //default candidature: 3 years
@@ -251,6 +254,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                         angular.forEach(userSem, function(result,index){
                             $scope.takenMods = [];
                             var currentSemMod = [];
+                            $scope.unlockSem.push(true);
                             //console.log("current index " + index);
                             angular.forEach(userModsTaken, function(value,key){
                                 //console.log("key : " + userModsTaken[key].ModuleCode);
@@ -367,7 +371,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                             });*/
                             
                         });
-                        
+                        //console.log($scope.unlockSem);
 //                        angular.forEach($scope.takenMods, function(value,key){
 //                            $scope.modules = {
 //                                selectedModSuStatus : $scope.takenMods[key].ModuleSuStatus[0],
@@ -414,6 +418,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 			// success function
 			//console.log("test : " + response.data);
 			//console.log(response.data.Success);
+            
+              
+            
 			$result = response.data.Success;
 				//if token is invalid
 				if($result == false){
@@ -425,10 +432,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
 				//update php session --> Token
 				} else{
 					var isValidToken = $result;
-                    
+                    //history.replaceState({} , null, "index.html");	 
 					$scope.$applyAsync(function(){
     					$scope.showMenu = true;
-                        
+                        //window.history.replaceState({} , null, "index.html");
 					});
                     
 					sessionStorage.setItem("isValidToken",isValidToken);
