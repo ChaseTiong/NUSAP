@@ -95,23 +95,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
         });            
     }
     
-    /*function allowDrop(ev) {
-        ev.preventDefault();
-    }
 
-    function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-    }
 
-    function drop(ev) {
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-    }*/
     $scope.modList = [];
-       
-    //not working 
-    
+
     getModList().then(
         function (responseModList) {
             sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));

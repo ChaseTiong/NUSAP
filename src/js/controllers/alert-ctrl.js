@@ -54,7 +54,7 @@ function AlertsCtrl($scope, $http) {
 			}, function (response) {
 			}
     	);
-    	$scope.type = 'success';
+    	$scope.type = 'info';
     };  
     
     $scope.closeMsg = function() {

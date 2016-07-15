@@ -20,7 +20,7 @@
 						<thead>
                            <tr>
                                 <th class="text-center" ng-repeat="year in plannerSize track by $index">{{year.candidatureYear}}</th>
-                                <th class="text-center" width="5%"><input type="button" value="Add" data-ng-click="addYear()"></th>
+                                <th class="text-center" width="5%"><button class="btn btn-primary" data-ng-click="addYear()">+</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,9 +36,10 @@
                             </tr>
                             
                             <tr data-ng-repeat="modules in takenMods | orderBy:'ModuleCode' track by $index">
-                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" data-ng-init="formButton">{{modules.ModuleCode}} {{modules.ModuleTitle}}</td>
-                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                    <button data-ng-mousedown="preRequisite()" data-ng-dblclick="nusmodsWeb()" type="submit" class="btn btn-info" draggable="true" ondragstart="dragStart(event)" id="dragtarget" data-ng-init="modValidation()">{{modules.ModuleCode}} {{modules.ModuleTitle}}</button></td>
+                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="dragStart(event)"></td>
+                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="dragStart(event)"></td>
                             </tr>
                         </tbody>
 					</table>
@@ -52,10 +53,13 @@
 	<div class="col-lg-4 col-sm-6 col-xs-12">
         <rd-widget>
 			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
+                <tr ng-repeat="modules in takenMods">     
+                    <td><progressbar animate="false" value="modules.progress" type="{{modules.type}}" data-ng-class="{ 'progress-bar-success' : modules.type == 'success' , 'progress-bar-info': modules.type == 'info', 'progress-bar-warning' : modules.type == 'warning' , 'progress-bar-danger': modules.type == 'danger'}">  
+                    <b>{{modules.progress}}% </b></progressbar>
                 <div data-ng-controller="BarCtrl" data-ng-init="getBarChart()">
                     <canvas class="col-lg-4 col-sm-6 col-xs-12 pull-right" id="canvas" height="220"></canvas>
                 </div>
-        </rd-widget>
+        </td></tr></rd-widget>
     </div>
             
 	<!-- End of Graduation Progress
@@ -123,19 +127,13 @@
 					
                     <table class="table">
 						<thead>
-                            <tr><th class="text-center" data-ng-click="orderBy('ModuleCode')">Module Code</th><th class="text-center" data-ng-click="orderBy('ModuleTitle')">Module Name</th><th class="text-center" data-ng-click="orderBy('Semesters')">Semester</th></tr>
+                            <tr><th class="text-center" width="25%" data-ng-click="orderBy('ModuleCode')">Module Code and Name</th><th class="text-center" width="25%" data-ng-click="orderBy('Semesters')">Semester</th></tr>
                         </thead>
                         <tbody>
-                            <!-- not working
-                            <tr  data-ng-repeat = "mods in modList | orderBy:'ModuleCode' track by $index">
-                                <td class="text-center">{{mods.ModuleCode}}</td>
-                                <td class="text-center">{{mods.ModuleTitle}}</td>
-                                <td class="text-center">{{mods.Semesters}}</td>
-                            </tr> !-->
-                            
-                                <tr data-ng-repeat="modules in modList | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
-                                <td class="text-center">{{modules.ModuleCode}}</td>
-                                <td class="text-center">{{modules.ModuleTitle}}</td>
+                            <tr data-ng-repeat="modules in modList | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <td class="text-center">
+                                    <button data-ng-mousedown="preRequisite()" data-ng-dblclick="nusmodsWeb()" type="submit" class="btn btn-info" draggable="true" ondragstart="dragStart(event)" id="dragtarget" data-ng-init="modValidation()">{{modules.ModuleCode}} {{modules.ModuleTitle}}</button> 
+                                </td>
                                 <td class="text-center">{{modules.Semesters}}</td>
                             </tr>
                         </tbody>
