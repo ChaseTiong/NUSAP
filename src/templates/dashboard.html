@@ -113,19 +113,34 @@
 </div>
 -->
 
-	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right">
+	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right" data-ng-controller="MasterCtrl">
 		<rd-widget>
 			<rd-widget-header icon="fa-search" title="Module Search">
-				<input type="text" placeholder="Search" class="form-control input-md" />
+			    
+				<input type="text" ng-model = "searchBox" placeholder="Search" class="form-control input-md" ng-keypress="test($event)"/>
+                <p>{{searchBox}}</p>
 			</rd-widget-header>
 			<rd-widget-body classes="medium no-padding">
 				<div class="table-responsive">
 					
-                    <table class="table">
+                    <table class="table fixed-header">
 						<thead>
-                            <tr><th class="text-center" data-ng-click="orderBy('ModuleCode')">Module Code</th><th  class="text-center" data-ng-click="orderBy('ModuleTitle')">Module Name</th><th class="text-center" data-ng-click="orderBy('Semesters')">Semester</th></tr>
+                            <tr>
+                                <th class="text-center" data-ng-click="orderBy('ModuleCode')">Module Code</th>
+                                <th class="text-center"  data-ng-click="orderBy('ModuleTitle')">Module Name</th>
+                                <th class="text-center" data-ng-click="orderBy('Semesters')">Semester</th>
+                            </tr>
                         </thead>
+                        
                         <tbody>
+                           <tr data-ng-repeat="modules in modList | filter: { ModuleCode: searchBox }">
+                               <td class="text-center">{{modules.ModuleCode}}</td>
+                                <td class="text-center">{{modules.ModuleTitle}}</td>
+                                <td class="text-center">{{modules.Semesters}}</td>
+                               
+                           </tr>
+                           
+                           
                             <!-- not working
                             <tr  data-ng-repeat = "mods in modList | orderBy:'ModuleCode' track by $index">
                                 <td class="text-center">{{mods.ModuleCode}}</td>
@@ -133,11 +148,16 @@
                                 <td class="text-center">{{mods.Semesters}}</td>
                             </tr> !-->
                             
-                                <tr  data-ng-repeat = "modules in modList | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
+                            <!-- not working for dragging   
+                               <tr  data-ng-repeat = "modules in modifiedModuleList | filter: searchBox" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)">
+                               
+                                <!-- <tr  data-ng-repeat = "modules in modList | orderBy:heading track by $index" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"> 
                                 <td class="text-center">{{modules.ModuleCode}}</td>
                                 <td class="text-center">{{modules.ModuleTitle}}</td>
                                 <td class="text-center">{{modules.Semesters}}</td>
                             </tr>
+                            
+                            !-->
                         </tbody>
 					</table> 
         		</div>

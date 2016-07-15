@@ -9,51 +9,40 @@
         </rd-widget-header>
         <rd-widget-body classes="no-padding">
         <div class="table-responsive">
-            <table class="table fixed">
-                <thead>
-                    
-                    <!--   
-                    <tr>
-                        <th class="text-left"> Year 1 Semester 1</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th class="text-center" width = "10%">Module Code</th>
-                        <th class="text-center" width = "25%">Module Title</th>
-                        <th class="text-center" width = "10%">MCs</th>
-                        <th class="text-center" width = "10%">S/U Status</th>
-                        <th class="text-center" width = "10%">Module Grade</th>
-
-
-                    </tr>
-                    !-->
-                </thead>
-
-               <tbody ng-show="modsPerSem[0].length > 0">
-                   <tr>
-                        <th width="15%" class="text-center"> Year 1 Semester 1 
-                            <a href="" data-ng-click="showYear1Sem1 = !showYear1Sem1"> <i ng-show="!showYear1Sem1" class="fa fa-caret-up"></i> <i ng-show="showYear1Sem1" class="fa fa-caret-down"></i> </a>
+            <table class="table fixed table-striped">
+                
+                <!-- Start of Year 1 Semester 1 !-->
+                <tbody ng-show="(modsPerSem[0].length > 0 || unlockSem[0])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear1Sem1 = !showYear1Sem1">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 1 Semester 1 
+                               <i ng-show="!showYear1Sem1" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear1Sem1" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
                         </th> 
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th width="25%" role="button" data-ng-click="showYear1Sem1 = !showYear1Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear1Sem1 = !showYear1Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear1Sem1 = !showYear1Sem1"></th>
+                        <th class="text-center" width="10%">
+                            <button style="height:22px" class="btn btn-primary" ng-show="!showYear1Sem1 && unlockSem[0] == true" ng-click="addModule()">
+                                Add Module
+                            </button>
+                        </th>
                     </tr>
-               </tbody>
-               
-                <tbody ng-show="(!showYear1Sem1 && modsPerSem[0].length > 0) || unlockSem[0] == true">
-                   
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a year 2 sem 1 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[0].length > 0 && unlockSem[0] == false) && !showYear1Sem1">
                     <tr>
                         <th class="text-center" width="15%">Module Code</th>
                         <th class="text-center" width="25%">Module Title</th>
                         <th class="text-center" width="10%">MCs</th>
                         <th class="text-center" width="10%">S/U Status</th>
-                        <th class="text-center" width="5%">Module Grade</th>
-
-
+                        <th class="text-center" width="10%">Module Grade</th>
                     </tr>
                     
                     <tr data-ng-repeat="modules in modsPerSem[0] | orderBy:'ModuleCode' track by $index">
@@ -63,6 +52,41 @@
                         <td class="text-center">
                             <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
                                 <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                    
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[0].length > 0 && unlockSem[0] == true) && !showYear1Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[0]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
                                 <!-- <option value="">-- Select Status --</option> !-->
                             </select>
                         </td>
@@ -72,41 +96,43 @@
                                 <!-- <option value="">-- Select Status --</option> !-->
                             </select>                  
                         </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 1 Semester 1 !-->
 
-                        <!-- <td class = "text-center">{{modules | json }}</td> !-->
-
-                        <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
-                        <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
-                        <!-- <td>Selected : {{selectedModStatus}}</td> !-->
-                        <!-- <td>{{modules | json}}</td> !-->
-                    </tr>
-                </tbody>
-
-                <!-- Year 1 Semester 2 !--> 
-                <tbody ng-show="modsPerSem[1].length > 0">
-                    <tr>
-                        <th width="15%" class="text-center"> Year 1 Semester 2 
-                            <a href="" data-ng-click="showYear1Sem2 = !showYear1Sem2"> <i ng-show="!showYear1Sem2" class="fa fa-caret-up"></i> <i ng-show="showYear1Sem2" class="fa fa-caret-down"></i> </a>
+                <!-- Start of Year 1 Semester 2 !-->
+                <tbody ng-show="(modsPerSem[1].length > 0 || unlockSem[1])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear1Sem2 = !showYear1Sem2">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 1 Semester 2 
+                               <i ng-show="!showYear1Sem2" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear1Sem2" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
                         </th> 
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th width="25%" role="button" data-ng-click="showYear1Sem2 = !showYear1Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear1Sem2 = !showYear1Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear1Sem2 = !showYear1Sem2"></th>
+                        <th class="text-center" width="10%">
+                            <button style="height:22px" class="btn btn-primary" ng-show="!showYear1Sem2 && unlockSem[1] == true" ng-click="addModule1()">
+                                Add Module
+                            </button>
+                        </th>
                     </tr>
                     
                 </tbody>
-                                            
-                <tbody ng-show="(!showYear1Sem2 && modsPerSem[1].length > 0) || unlockSem[1] == true">
-                   
-                    
+                
+                <!-- Populate the modules if the students is a Year 1 Sem 2 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[1].length > 0 && unlockSem[1] == false) && !showYear1Sem2">
                     <tr>
                         <th class="text-center" width="15%">Module Code</th>
                         <th class="text-center" width="25%">Module Title</th>
                         <th class="text-center" width="10%">MCs</th>
                         <th class="text-center" width="10%">S/U Status</th>
-                        <th class="text-center" width="5%">Module Grade</th>
-
-
+                        <th class="text-center" width="10%">Module Grade</th>
                     </tr>
                     
                     <tr data-ng-repeat="modules in modsPerSem[1] | orderBy:'ModuleCode' track by $index">
@@ -116,6 +142,41 @@
                         <td class="text-center">
                             <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
                                 <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                    
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[1].length > 0 && unlockSem[1] == true) && !showYear1Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[1]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
                                 <!-- <option value="">-- Select Status --</option> !-->
                             </select>
                         </td>
@@ -125,42 +186,39 @@
                                 <!-- <option value="">-- Select Status --</option> !-->
                             </select>                  
                         </td>
-
-                        <!-- <td class = "text-center">{{modules | json }}</td> !-->
-
-                        <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
-                        <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
-                        <!-- <td>Selected : {{selectedModStatus}}</td> !-->
-                        <!-- <td>{{modules | json}}</td> !-->
-                    </tr>
-                </tbody> 
-                <!-- End of Year 1 Semester 2 !-->
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 1 Semester 2 !-->   
                                            
                 <!-- Start of Year 2 Semester 1 !-->
-                <tbody ng-show="(modsPerSem[2].length > 0 && !showYear2Sem1) || unlockSem[2] == true">
-                    <tr>
-                        <th width="15%" class="text-center"> Year 2 Semester 1 
-                            <a href="" data-ng-click="showYear2Sem1 = !showYear2Sem1"> <i ng-show="!showYear2Sem1" class="fa fa-caret-up"></i> <i ng-show="showYear2Sem1" class="fa fa-caret-down"></i> </a>
+                <tbody ng-show="(modsPerSem[2].length > 0 || unlockSem[2])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear2Sem1 = !showYear2Sem1">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 2 Semester 1
+                               <i ng-show="!showYear2Sem1" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear2Sem1" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
                         </th> 
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th width="25%" role="button" data-ng-click="showYear2Sem1 = !showYear2Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear2Sem1 = !showYear2Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear2Sem1 = !showYear2Sem1"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear2Sem1 && unlockSem[2] == true" ng-click="addModule2()">Add Module</button></th>
                     </tr>
                     
                 </tbody>
-                                            
-                <tbody ng-show="modsPerSem[2].length > 0 ">
-                   
-                    
+                
+                <!-- Populate the modules if the students is a year 2 sem 1 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[2].length > 0 && unlockSem[2] == false) && !showYear2Sem1">
                     <tr>
                         <th class="text-center" width="15%">Module Code</th>
                         <th class="text-center" width="25%">Module Title</th>
                         <th class="text-center" width="10%">MCs</th>
                         <th class="text-center" width="10%">S/U Status</th>
-                        <th class="text-center" width="5%">Module Grade</th>
-
-
+                        <th class="text-center" width="10%">Module Grade</th>
                     </tr>
                     
                     <tr data-ng-repeat="modules in modsPerSem[2] | orderBy:'ModuleCode' track by $index">
@@ -170,59 +228,37 @@
                         <td class="text-center">
                             <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
                                 <option value="" ng-if="false"></option>
-                                <!-- <option value="">-- Select Status --</option> !-->
                             </select>
                         </td>
                         <td class="text-center">
                             <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
                                 <option value="" ng-if="false"></option>
-                                <!-- <option value="">-- Select Status --</option> !-->
                             </select>                  
                         </td>
-
-                        <!-- <td class = "text-center">{{modules | json }}</td> !-->
-
-                        <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
-                        <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
-                        <!-- <td>Selected : {{selectedModStatus}}</td> !-->
-                        <!-- <td>{{modules | json}}</td> !-->
                     </tr>
-                </tbody>                                                       
-                
-                <!-- End of Year 2 Semester 1 !-->                           
-                                            
-
-                <!-- Start of Year 2 Semester 2 !-->
-                <tbody ng-show="(modsPerSem[3].length > 0 && !showYear2Sem2) || unlockSem[3] == true">
-                    <tr>
-                        <th width="15%" class="text-center"> Year 2 Semester 2 
-                            <a href="" data-ng-click="showYear2Sem2 = !showYear2Sem2"> <i ng-show="!showYear2Sem2" class="fa fa-caret-up"></i> <i ng-show="showYear2Sem2" class="fa fa-caret-down"></i> </a>
-                        </th> 
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    
                 </tbody>
-                                            
-                <tbody ng-show="modsPerSem[3].length > 0 ">
-                   
-                    
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[2].length > 0 && unlockSem[2] == true) && !showYear2Sem1">
                     <tr>
                         <th class="text-center" width="15%">Module Code</th>
                         <th class="text-center" width="25%">Module Title</th>
                         <th class="text-center" width="10%">MCs</th>
                         <th class="text-center" width="10%">S/U Status</th>
-                        <th class="text-center" width="5%">Module Grade</th>
-
-
-                    </tr>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
                     
-                    <tr data-ng-repeat="modules in modsPerSem[3] | orderBy:'ModuleCode' track by $index">
-                        <td class="text-center">{{modules.ModuleCode}}</td>
-                        <td class="text-center">{{modules.ModuleTitle}}</td>
-                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                    <tr data-ng-repeat="modules in modsPerSem[2]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
                         <td class="text-center">
                             <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
                                 <option value="" ng-if="false"></option>
@@ -235,17 +271,777 @@
                                 <!-- <option value="">-- Select Status --</option> !-->
                             </select>                  
                         </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 2 Semester 1 !-->                           
+                                            
 
-                        <!-- <td class = "text-center">{{modules | json }}</td> !-->
-
-                        <!-- <td data-ng-if = "modules.ModuleSuStatus === 'Yes'" class="text-center"> {{modules.ModuleSuStatus}} </td> !-->
-                        <!-- <td class="text-center">Test : {{selectedModStatus}} {{selectedModGrade}}</td> !-->
-                        <!-- <td>Selected : {{selectedModStatus}}</td> !-->
-                        <!-- <td>{{modules | json}}</td> !-->
+                <!-- Start of Year 2 Semester 2 !-->
+                <tbody ng-show="(modsPerSem[3].length > 0 || unlockSem[3])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear2Sem2 = !showYear2Sem2">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 2 Semester 2
+                               <i ng-show="!showYear2Sem2" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear2Sem2" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear2Sem2 = !showYear2Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear2Sem2 = !showYear2Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear2Sem2 = !showYear2Sem2"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear2Sem2 && unlockSem[3] == true" ng-click="addModule3()">Add Module</button></th>
                     </tr>
-                </tbody>                                                       
+                    
+                </tbody>
                 
-                <!-- End of Year 2 Semester 2 !-->                                                                                                     
+                <!-- Populate the modules if the students is a Year 2 Sem 2 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[3].length > 0 && unlockSem[3] == false) && !showYear2Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[3] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[3].length > 0 && unlockSem[3] == true) && !showYear2Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[3]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 2 Semester 2 !-->
+                                                                                                                     
+                <!-- Start of Year 3 Semester 1 !-->
+                <tbody ng-show="(modsPerSem[4].length > 0 || unlockSem[4])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear3Sem1 = !showYear3Sem1">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 3 Semester 1
+                               <i ng-show="!showYear3Sem1" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear3Sem1" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear3Sem1 = !showYear3Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear3Sem1 = !showYear3Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear3Sem1 = !showYear3Sem1"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear3Sem1 && unlockSem[4] == true" ng-click="addModule4()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 3 Sem 1 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[4].length > 0 && unlockSem[4] == false) && !showYear3Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[4] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[4].length > 0 && unlockSem[4] == true) && !showYear3Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[4]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 3 Semester 1 !--> 
+                
+                <!-- Start of Year 3 Semester 2 !-->
+                <tbody ng-show="(modsPerSem[5].length > 0 || unlockSem[5])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear3Sem2 = !showYear3Sem2">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 3 Semester 2
+                               <i ng-show="!showYear3Sem2" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear3Sem2" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear3Sem2 = !showYear3Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear3Sem2 = !showYear3Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear3Sem2 = !showYear3Sem2"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear3Sem2 && unlockSem[5] == true" ng-click="addModule5()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 3 Sem 2 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[5].length > 0 && unlockSem[5] == false) && !showYear3Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[5] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[5].length > 0 && unlockSem[5] == true) && !showYear3Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[5]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 3 Semester 2 !-->                 
+                
+                <!-- Start of Year 4 Semester 1 !-->
+                <tbody ng-show="(modsPerSem[6].length > 0 || unlockSem[6])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear4Sem1 = !showYear4Sem1">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 4 Semester 1
+                               <i ng-show="!showYear4Sem1" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear4Sem1" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear4Sem1 = !showYear4Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear4Sem1 = !showYear4Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear4Sem1 = !showYear4Sem1"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear4Sem1 && unlockSem[6] == true" ng-click="addModule6()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 4 Sem 1 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[6].length > 0 && unlockSem[6] == false) && !showYear4Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[6] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[6].length > 0 && unlockSem[6] == true) && !showYear4Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[6]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 4 Semester 1 !-->   
+                
+                
+                <!-- Start of Year 4 Semester 2 !-->
+                <tbody ng-show="(modsPerSem[7].length > 0 || unlockSem[7])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear4Sem2 = !showYear4Sem2">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 4 Semester 2
+                               <i ng-show="!showYear4Sem2" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear4Sem2" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear4Sem2 = !showYear4Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear4Sem2 = !showYear4Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear4Sem2 = !showYear4Sem2"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear4Sem2 && unlockSem[7] == true" ng-click="addModule7()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 4 Sem 2 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[7].length > 0 && unlockSem[7] == false) && !showYear4Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[7] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[7].length > 0 && unlockSem[7] == true) && !showYear4Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[7]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 4 Semester 2 !-->  
+                
+                <!-- Start of Year 5 Semester 1 !-->
+                <tbody ng-show="(modsPerSem[8].length > 0 || unlockSem[8])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear5Sem1 = !showYear5Sem1">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 5 Semester 1
+                               <i ng-show="!showYear5Sem1" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear5Sem1" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear5Sem1 = !showYear5Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear5Sem1 = !showYear5Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear5Sem1 = !showYear5Sem1"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear5Sem1 && unlockSem[8] == true" ng-click="addModule8()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 5 Sem 1 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[8].length > 0 && unlockSem[8] == false) && !showYear5Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[8] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[8].length > 0 && unlockSem[8] == true) && !showYear5Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[8]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 5 Semester 1 !-->  
+                
+                <!-- Start of Year 5 Semester 2 !-->
+                <tbody ng-show="(modsPerSem[9].length > 0 || unlockSem[9])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear5Sem2 = !showYear5Sem2">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 5 Semester 2
+                               <i ng-show="!showYear5Sem2" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear5Sem2" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear5Sem2 = !showYear5Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear5Sem2 = !showYear5Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear5Sem2 = !showYear5Sem2"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear5Sem2 && unlockSem[9] == true" ng-click="addModule9()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 5 Sem 2 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[9].length > 0 && unlockSem[9] == false) && !showYear5Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[9] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[9].length > 0 && unlockSem[9] == true) && !showYear5Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[9]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 5 Semester 2 !-->
+                
+                <!-- Start of Year 6 Semester 1 !-->
+                <tbody ng-show="(modsPerSem[10].length > 0 || unlockSem[10])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear6Sem1 = !showYear6Sem1">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 6 Semester 1
+                               <i ng-show="!showYear6Sem1" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear6Sem1" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear6Sem1 = !showYear6Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear6Sem1 = !showYear6Sem1"></th>
+                        <th width="10%" role="button" data-ng-click="showYear6Sem1 = !showYear6Sem1"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear6Sem1 && unlockSem[10] == true" ng-click="addModule10()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 6 Sem 1 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[10].length > 0 && unlockSem[10] == false) && !showYear6Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[10] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[10].length > 0 && unlockSem[10] == true) && !showYear6Sem1">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[10]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 6 Semester 1 !-->
+                                            
+                <!-- Start of Year 6 Semester 2 !-->
+                <tbody ng-show="(modsPerSem[11].length > 0 || unlockSem[11])">
+                    <tr> 
+                        <th align="center" width="15%" class="text-center" role="button" data-ng-click="showYear6Sem2 = !showYear6Sem2">
+                           <!-- <button class="btn btn-primary" data-ng-click = "showYear2Sem1 = !showYear2Sem1"> !-->
+                               Year 6 Semester 2
+                               <i ng-show="!showYear6Sem2" class="fa fa-caret-up"></i> 
+                               <i ng-show="showYear6Sem2" class="fa fa-caret-down"></i>
+                           <!-- </button>  !-->
+                           
+                            
+                        </th> 
+                        <th width="25%" role="button" data-ng-click="showYear6Sem2 = !showYear6Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear6Sem2 = !showYear6Sem2"></th>
+                        <th width="10%" role="button" data-ng-click="showYear6Sem2 = !showYear6Sem2"></th>
+                        <th class="text-center" width="10%"><button style="height:22px;vertical-align:center" class="btn btn-primary" ng-show="!showYear6Sem2 && unlockSem[11] == true" ng-click="addModule11()">Add Module</button></th>
+                    </tr>
+                    
+                </tbody>
+                
+                <!-- Populate the modules if the students is a Year 6 Sem 1 Student !-->                                                        
+                <tbody ng-show="(modsPerSem[11].length > 0 && unlockSem[11] == false) && !showYear6Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr>
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[11] | orderBy:'ModuleCode' track by $index">
+                        <td class="text-center">{{modules.ModuleCode}}</td>
+                        <td class="text-center">{{modules.ModuleTitle}}</td>
+                        <td class="text-center">{{modules.ModuleCredit}}</td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                            </select>                  
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- End of population of modules !-->
+                
+                <!-- Start of textbox for user to enter module code !--> 
+                <tbody ng-show="(modsPerSem[11].length > 0 && unlockSem[11] == true) && !showYear6Sem2">
+                    <tr>
+                        <th class="text-center" width="15%">Module Code</th>
+                        <th class="text-center" width="25%">Module Title</th>
+                        <th class="text-center" width="10%">MCs</th>
+                        <th class="text-center" width="10%">S/U Status</th>
+                        <th class="text-center" width="10%">Module Grade</th>
+                    </tr> 
+                    
+                    <tr data-ng-repeat="modules in modsPerSem[11]">
+                        <td class="text-center" align="center">
+                            <input type="text" style="height:22px" placeholder="Enter Module Code" class="form-control text-center" data-ng-model="modules.ModuleCode" required data-ng-change="searchMod(modules, {{modules}})">
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleTitle}}
+                        </td>
+                        <td class="text-center">
+                            {{modules.ModuleCredit}}
+                        </td>
+                        <td class="text-center">
+                            <select data-ng-model="modules.selectedModSuStatus" required data-ng-options="val for val in modules.ModuleSuStatus" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <select required data-ng-options="val for val in modules.ModuleGrade" data-ng-model="modules.selectedModGrade" data-ng-change="changeValue(modules , {{modules}})">
+                                <option value="" ng-if="false"></option>
+                                <!-- <option value="">-- Select Status --</option> !-->
+                            </select>                  
+                        </td>
+                    </tr>    
+                </tbody>  
+                <!-- End of textbox for user to stop searching for module code !-->                                                                                               
+                <!-- End of Year 6 Semester 2 !-->                                                                                           
                 <!-- Testing/Debug Functions To be deleted 
                 <tbody data-ng-init = "testMcs()">
                     <tr><td>{{testResults}}</td></tr>
@@ -256,6 +1052,7 @@
         </div>      
         </rd-widget-body>
         <rd-widget-footer>
+                
             <!-- <form name ="addSem" ng-submit =""> !-->
                 <div align="left"> 
                     <button data-ng-click="addSemester()" type="submit" class="btn btn-primary">Add another Semester! </button> 

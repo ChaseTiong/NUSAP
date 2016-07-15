@@ -24,9 +24,9 @@ var userName;
 var studentId;
 
 angular.module('NUSAP')
-    .controller('MasterCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', '$q', MasterCtrl]);
+    .controller('MasterCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', '$q', '$log', MasterCtrl]);
 
-function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
+function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
     /**
      * Sidebar Toggle & Cookie Control
      */
@@ -43,6 +43,37 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
         return deferred.promise;
     }
     
+//    $scope.test = function(event){
+//        $log.info($scope.searchBox);
+//        $log.info(event);
+//        //console.log($scope.searchBox);
+//    }
+//   
+    
+//    $scope.filterMod = function(module){
+//        if(!$scope.searchBox || module.ModuleCode.toLowerCase().indexOf($scope.searchBox) != -1){
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }; 
+    
+//    $scope.testList = [];
+//    for (var i = 1; i <= 10; i++) {
+//        $scope.testList.push({
+//          "ModuleCode": "Code " + Math.floor(Math.random() * 100) + 1,
+//          "ModuleTitle": "Title " + Math.floor(Math.random() * 100) + 1,
+//          "Semesters": "Semester " + Math.floor(Math.random() * 100) + 1
+//        });
+//    }
+        
+//        if(!$scope.searchBox || (module.ModuleCode.toLowerCase().indexOf($scope.searchBox) != -1) || (module.ModuleTitle.toLowerCase.indexOf($scope.searchBox.toLowerCase()) != - 1)){
+//            return true;
+//        } else{
+//            return false;
+//        }
+    
+
     
     var mobileView = 992;
 	$scope.username = "";
@@ -108,27 +139,28 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
     }*/
-    $scope.modList = [];
-       
-    //not working 
-    
-    getModList().then(
-        function (responseModList) {
-            sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));
-            var moduleList = JSON.parse(sessionStorage.getItem("modsList"));
-            angular.forEach(moduleList, function(value,key){
-                $scope.modList.push({
-                    ModuleCode      : moduleList[key].ModuleCode,
-                    ModuleTitle     : moduleList[key].ModuleTitle,
-                    Semesters       : moduleList[key].Semesters
-                });
-        });
-    });  
+
     
     
 	$scope.getProfile = function(){
         
-        //history.replaceState({} , null, "index.html");	 
+        //history.replaceState({} , null, "index.html");
+        $scope.modList = [];
+    
+        getModList().then(
+            function (responseModList) {
+                sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));
+                var moduleList = JSON.parse(sessionStorage.getItem("modsList"));
+                angular.forEach(moduleList, function(value,key){
+                    $scope.modList.push({
+                        ModuleCode      : moduleList[key].ModuleCode,
+                        ModuleTitle     : moduleList[key].ModuleTitle,
+                        Semesters       : moduleList[key].Semesters
+                    });
+                });
+            }
+        );  
+        
         
         function getAllAcadYear(matricYear){
             var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
@@ -223,7 +255,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                 
                 
                 getModTaken(responseProfile.data.Results[0].UserID).then(
-                    function (responseModTaken) {
+                    function (responseModTaken) {   
                         $scope.modsCount = responseModTaken.data.Results.length;
                         sessionStorage.setItem("modsTaken", JSON.stringify(responseModTaken.data.Results));
                         //Debugging
@@ -256,7 +288,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q) {
                         angular.forEach(userSem, function(result,index){
                             $scope.takenMods = [];
                             var currentSemMod = [];
-                            $scope.unlockSem.push(true);
+                            $scope.unlockSem.push(false);
                             //console.log("current index " + index);
                             angular.forEach(userModsTaken, function(value,key){
                                 //console.log("key : " + userModsTaken[key].ModuleCode);
