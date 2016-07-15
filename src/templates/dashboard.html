@@ -119,25 +119,27 @@
 </div>
 -->
 
-	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right">
+	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right" data-ng-controller="MasterCtrl">
 		<rd-widget>
 			<rd-widget-header icon="fa-search" title="Module Search">
-				<input type="text" placeholder="Search" class="form-control input-md" />
+			    
+				<input type="text" ng-model = "searchBox" placeholder="Search" class="form-control input-md" ng-keypress="test($event)"/>
+                <p>{{searchBox}}</p>
 			</rd-widget-header>
 			<rd-widget-body classes="medium no-padding">
 				<div class="table-responsive">
 					
-                    <table class="table">
+                    <table class="table fixed-header">
 						<thead>
                             <tr><th class="text-center" width = "25%" data-ng-click="orderBy('ModuleCode')">Module Code and Name</th><th class="text-center" width = "25%" data-ng-click="orderBy('Semesters')">Semester</th></tr>
                         </thead>
+                        
                         <tbody>
-                            <tr  data-ng-repeat = "modules in modList | orderBy:heading track by $index " ondrop="drop(event)" ondragover="allowDrop(event)"  >
+                            <tr data-ng-repeat="modules in modList | filter: { ModuleCode: searchBox }" ondrop="drop(event)" ondragover="allowDrop(event)" >
                                 <td class="text-center">
                                     <button data-ng-mousedown="preRequisite()" data-ng-dblclick="nusmodsWeb()" type="submit" class="btn btn-info" draggable="true" ondragstart="dragStart(event)" id="dragtarget" data-ng-init="modValidation()">{{modules.ModuleCode}} {{modules.ModuleTitle}}</button> 
                                 </td>
-                                <td class="text-center">{{modules.Semesters}}</td>
-                            </tr>
+                           </tr>
                         </tbody>
 					</table> 
         		</div>
