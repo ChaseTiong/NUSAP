@@ -317,13 +317,17 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
         
         getModInfo((selectedModule.ModuleCode).toUpperCase(), selectedModule.Semester).then(
             function(responseModInfo){
+                
                 //if found modules from nusmod api
                 if(responseModInfo.data !== ""){
-                   
+                    
                     selectedModule.ModuleTitle = responseModInfo.data.ModuleTitle;
                     selectedModule.ModuleCredit = responseModInfo.data.ModuleCredit;
                     selectedModule.ModuleSuStatus = ["No","Yes","Exempted","Waived"];
                     selectedModule.ModuleGrade = ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"];
+                    selectedModule.modFound = true;
+                    selectedModule.selectedModGrade = "-";
+                    selectedModule.selectedModSuStatus = "-";
                     // debug print out found modules
                     console.log(responseModInfo);
                 
@@ -338,12 +342,29 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                         selectedModule.ModuleTitle = "Module Not Available";
                     }else{
                         if(selectedOldModule.ModuleCredit !== "" && (selectedOldModule.selectedModGrade !== null && selectedOldModule.selectedModGrade !== "-")){
-                            totalGradedMC = totalGradedMC - parseInt(selectedOldModule.ModuleCredit);
-                            totalGradePoint = totalGradePoint - (convertGradeLetter(selectedOldModule.selectedModGrade) * selectedOldModule.ModuleCredit);
+                            
+                            if(selectedOldModule.modFound === true && selectedOldModule.selectedModSuStatus === "No"){
+                                console.log("do calculation");
+                                totalGradedMC = totalGradedMC - parseInt(selectedOldModule.ModuleCredit);
+                                totalGradePoint = totalGradePoint - (convertGradeLetter(selectedOldModule.selectedModGrade) * selectedOldModule.ModuleCredit);
+                                selectedModule.modFound = false;
+                                
+                                $scope.capResult = (totalGradePoint / totalGradedMC).toFixed(2);
+                                if(isNaN($scope.capResult)){
+                                    $scope.capResult = "0.00";
+                                }    
+
+                                if(isNaN(totalGradedMC) || isNaN(totalGradePoint)){
+                                    totalGradedMC = 0;
+                                    totalGradePoint = 0;
+                                }
+                            }
                         }
                         selectedModule.ModuleTitle = "";
                     }
                     selectedModule.ModuleCredit = "";
+                    selectedModule.selectedModGrade = "-";
+                    selectedModule.selectedModSuStatus = "-";
                 }
             }
         );
@@ -382,16 +403,18 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
         
         $scope.$applyAsync(function(){
             //deduct the old calculated grade point and grade mc when value changed
+
             if(oldModValue.selectedModSuStatus === "No" && (oldModValue.selectedModGrade !== null && oldModValue.selectedModGrade !== "-")){
-                totalGradedMC = totalGradedMC - parseInt(oldModValue.ModuleCredit);
-                totalGradePoint = totalGradePoint - (convertGradeLetter(oldModValue.selectedModGrade) * oldModValue.ModuleCredit);
+
+                if(oldModValue.selectedModGrade !== undefined){
+                    totalGradedMC = totalGradedMC - parseInt(oldModValue.ModuleCredit);
+                    totalGradePoint = totalGradePoint - (convertGradeLetter(oldModValue.selectedModGrade) * oldModValue.ModuleCredit);
+                }
             }
             
             
-            if(currentMod.selectedModSuStatus === "No" && (currentMod.selectedModGrade !== null && currentMod.selectedModGrade !== "-")){
-                //console.log("Testing Adding");
-                //console.log(totalGradedMC);
-                //console.log(parseInt(currentMod.ModuleCredit));
+            if(currentMod.selectedModSuStatus === "No" && (currentMod.selectedModGrade !== null && currentMod.selectedModGrade !== "-") && convertGradeLetter(currentMod.selectedModGrade) !== 0){
+
                 totalGradedMC = totalGradedMC + parseInt(currentMod.ModuleCredit);
                 totalGradePoint = totalGradePoint + (convertGradeLetter(currentMod.selectedModGrade) * currentMod.ModuleCredit);
             }
@@ -406,8 +429,6 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                 totalGradePoint = 0;
             }
         
-            //console.log(currentMod);
-            //console.log(oldModValue);
             console.log("Total graded Mc : " + totalGradedMC);
             console.log("Total Graded point : " + totalGradePoint);
             sessionStorage.setItem("totalGradedMC",totalGradedMC);
