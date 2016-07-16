@@ -112,11 +112,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
 //        url    : 'index.php?id=checkMod&modCode=' + currentMod + '&sem=' + semester
 //    }
     
-    function getModInfo(modCode, modSem){
+    function getModInfo(modCode, modSem, modAcadYear){
         return $http({
             method : 'GET',
-            url    : 'index.php?id=checkMod&modCode=' + modCode + '&sem=' + modSem            
-        });            
+            url    : 'index.php?id=checkMod&modCode=' + modCode + '&sem=' + modSem + '&acadYear=' + modAcadYear            
+        });             
     }
     
     function getModList(){
@@ -294,7 +294,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
                                 //console.log("key : " + userModsTaken[key].ModuleCode);
                                 //console.log(userSem[index].substring(10,11));
                                 if(userModsTaken[key].Semester == userSem[index].substring(10,11) && userModsTaken[key].AcadYear == userSem[index].substring(0,9)){ 
-                                    getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester). then(
+                                    getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear). then(
                                         function(responseModInfo) {
                                             if(responseModInfo.data === ""){
                                                 //console.log("Failed : " + userModsTaken[key].ModuleCode);
@@ -436,7 +436,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
     		$scope.showMenu = false;
 		});
         //for Server implementation
-		//window.location = "http://188.166.249.181/nusap/dist";
+		//window.location = "http://nusap.me/nusap/dist";
         
         //for localhost implementation
         window.location = "http://localhost:8888/dist"

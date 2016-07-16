@@ -21,6 +21,8 @@
     } else if (strcmp($id, "checkMod") == 0){
         $modCode = $_GET['modCode'];
         $semester = $_GET['sem'];
+        $acadYear = $_GET['acadYear'];
+        //$url = "http://api.nusmods.com/".substr($acadYear,0,4)."-".substr($acadYear,5)."/".$semester."/modules/".$modCode.".json";
         $url = "http://api.nusmods.com/2015-2016/".$semester."/modules/".$modCode.".json";
         $json = file_get_contents("$url");
         echo $json;     

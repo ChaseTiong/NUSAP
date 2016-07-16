@@ -76,10 +76,10 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                     ModuleCredit    : "",
                     ModuleStatus    : "Normal",
                     ModuleSuStatus  : ["-"],
-                    selectedModSuStatus : null,
-                    selectedModGrade: null,
+                    selectedModSuStatus : "-",
+                    selectedModGrade: "-",
                     ModuleGrade     : ["-"],
-                    AcadYear        : "",
+                    AcadYear        : nextAcadSem.substring(0,9),
                     Semester        : nextSem
                 }
             );
@@ -99,7 +99,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[0]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -114,7 +114,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[1]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -131,7 +131,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[2]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -147,7 +147,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[3]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -163,7 +163,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[4]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -179,7 +179,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[5]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -195,7 +195,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[6]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -211,7 +211,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[7]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -227,7 +227,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[8]).substring(0,9),
             Semester        : 1 
         });
     }
@@ -242,7 +242,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[9]).substring(0,9),
             Semester        : 1 
         });
     }    
@@ -257,7 +257,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[10]).substring(0,9),
             Semester        : 1 
         });
     }  
@@ -272,7 +272,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
             selectedModSuStatus : null,
             selectedModGrade: null,
             ModuleGrade     : ["-"],
-            AcadYear        : "",
+            AcadYear        : (JSON.parse(sessionStorage.getItem("userSem"))[11]).substring(0,9),
             Semester        : 1 
         });
     }    
@@ -334,7 +334,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                     if(selectedModule.ModuleCode.length >= 6){
                         selectedModule.ModuleTitle = "Module Not Available";
                     }else{
-                        if(selectedOldModule.ModuleCredit !== "" && selectedOldModule.selectedModGrade !== null){
+                        if(selectedOldModule.ModuleCredit !== "" && (selectedOldModule.selectedModGrade !== null && selectedOldModule.selectedModGrade !== "-")){
                             totalGradedMC = totalGradedMC - parseInt(selectedOldModule.ModuleCredit);
                             totalGradePoint = totalGradePoint - (convertGradeLetter(selectedOldModule.selectedModGrade) * selectedOldModule.ModuleCredit);
                         }
