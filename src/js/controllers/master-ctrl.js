@@ -125,41 +125,25 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
             url    : 'index.php?id=modSearch'           
         });            
     }
-    
-    /*function allowDrop(ev) {
-        ev.preventDefault();
-    }
+ 
+    $scope.modList = [];
 
-    function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-    }
-
-    function drop(ev) {
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-    }*/
-
-    
+    getModList().then(
+        function (responseModList) {
+            sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));
+            var moduleList = JSON.parse(sessionStorage.getItem("modsList"));
+            angular.forEach(moduleList, function(value,key){
+                $scope.modList.push({
+                    ModuleCode      : moduleList[key].ModuleCode,
+                    ModuleTitle     : moduleList[key].ModuleTitle,
+                    Semesters       : moduleList[key].Semesters
+                });
+        });
+    });  
     
 	$scope.getProfile = function(){
         
         //history.replaceState({} , null, "index.html");
-        $scope.modList = [];
-    
-        getModList().then(
-            function (responseModList) {
-                sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));
-                var moduleList = JSON.parse(sessionStorage.getItem("modsList"));
-                angular.forEach(moduleList, function(value,key){
-                    $scope.modList.push({
-                        ModuleCode      : moduleList[key].ModuleCode,
-                        ModuleTitle     : moduleList[key].ModuleTitle,
-                        Semesters       : moduleList[key].Semesters
-                    });
-                });
-            }
-        );  
         
         
         function getAllAcadYear(matricYear){
