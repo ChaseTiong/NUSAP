@@ -121,7 +121,7 @@
 		<rd-widget>
 			<rd-widget-header icon="fa-search" title="Module Search">
 			    
-				<input type="text" ng-model="searchBox" placeholder="Search" class="form-control input-md" ng-keypress="test($event)">
+				<input type="text" data-ng-model="searchBox" placeholder="Search" class="form-control input-md" ng-keypress="test($event)" data-ng-change="updateModList(searchBox)">
                 <p>{{searchBox}}</p>
 			</rd-widget-header>
 			<rd-widget-body classes="medium no-padding">

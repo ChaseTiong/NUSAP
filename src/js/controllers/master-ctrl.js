@@ -142,7 +142,37 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
                     Semesters       : moduleList[key].Semesters
                 });
         });
-    });  
+        $scope.tempModList = $scope.modList;    
+    });
+    //$scope.tempModList = $scope.modList;
+    
+    $scope.updateModList = function(currentText){
+        //$scope.tempModList = $scope.modList;
+        //console.log($scope.updateModList);
+        currentText = currentText.toUpperCase();
+        console.log("current Text : " + currentText);
+        //console.log("previous Text : " + previousText);
+        $scope.modList = [];
+        //angular.forEach($scope.tempModList, function(value,key){
+        if(currentText.length < 1){
+            $scope.modList = $scope.tempModList;
+        } else{
+            for(var key = 0 ; key < $scope.tempModList.length; key ++){    
+                console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
+                if($scope.tempModList[key].ModuleCode.startsWith(currentText)){
+                    $scope.modList.push({
+                        ModuleCode      : $scope.tempModList[key].ModuleCode,
+                        ModuleTitle     : $scope.tempModList[key].ModuleTitle,
+                        Semesters       : $scope.tempModList[key].Semesters
+                    });   
+                }
+            }
+        }
+            //console.log($scope.tempModList);
+            //console.log($scope.modList);
+        //});
+        
+    }
     
 	$scope.getProfile = function(){
         
