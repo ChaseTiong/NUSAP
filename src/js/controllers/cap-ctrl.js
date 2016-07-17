@@ -34,14 +34,16 @@ angular.module('NUSAP')
 function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
     var totalGradedMC = 0;
     var totalGradePoint = 0;
-    
+    $scope.preclusionList = [];
     //function to generate preclusion list
     function generatePreclusionList(moduleCode, moduleSemester, moduleAcadYear){
+        
         getModInfo(moduleCode, moduleSemester, moduleAcadYear).then(
             function(response){
                 //console.log(response.data.Preclusion);
                 if(response.data !== ""){
                     var precludedMods = [];
+                    //var precludedList = [];
                     if(response.data.Preclusion !== undefined){
                         $scope.preclusionList.push(moduleCode);
                         precludedMods = response.data.Preclusion.split(",");
@@ -51,6 +53,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                             if(precludedMods[index].trim().indexOf("or") == -1 && precludedMods[index].trim().indexOf("OR") == -1 && precludedMods[index].trim().indexOf("and") == -1 && precludedMods[index].trim().indexOf("/") == -1){
                                 if(precludedMods[index].trim().length < 9){
                                     $scope.preclusionList.push(precludedMods[index].trim());
+                                    //precludedList.push(precludedMods[index].trim());
                                 }
                             //    console.log($scope.preclusionList);
                             } else if(precludedMods[index].trim().indexOf(" or ") != -1){
@@ -61,6 +64,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                    if(tempArray[i].indexOf(" OR ") == -1){
                                        if(tempArray[i].trim().length < 9){
                                            $scope.preclusionList.push(tempArray[i].trim()); 
+                                           //precludedList.push(tempArray[i].trim());
                                        }
                                    }else{
                                        var tempArray2 = [];
@@ -68,6 +72,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                        angular.forEach(tempArray2, function(selected2, i2){
                                            if(tempArray2[i2].trim().length < 9){
                                                $scope.preclusionList.push(tempArray2[i2].trim());
+                                               //precludedList.push(tempArray2[i2].trim());
                                            }
                                        });
                                    }
@@ -80,7 +85,8 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                 angular.forEach(tempArray, function(furtherSelected, i){
                                    //if(tempArray[i].indexOf(" OR ") == -1){
                                     if(tempArray[i].trim().length < 9){
-                                       $scope.preclusionList.push(tempArray[i].trim()); 
+                                       $scope.preclusionList.push(tempArray[i].trim());
+                                        //precludedList.push(tempArray[i].trim());
                                     }
                                    
                                 });
@@ -91,6 +97,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                    //if(tempArray[i].indexOf(" OR ") == -1){
                                     if(tempArray[i].trim().length < 9){
                                        $scope.preclusionList.push(tempArray[i].trim()); 
+                                        //precludedList.push(tempArray[i].trim());
                                     }
                                    
                                 });
@@ -100,7 +107,8 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                 angular.forEach(tempArray, function(furtherSelected, i){
                                    //if(tempArray[i].indexOf(" OR ") == -1){
                                     if(tempArray[i].trim().length < 9){
-                                       $scope.preclusionList.push(tempArray[i].trim()); 
+                                       $scope.preclusionList.push(tempArray[i].trim());
+                                        //precludedList.push(tempArray[i].trim());
                                     }
                                    
                                 });
@@ -113,8 +121,109 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                 sessionStorage.setItem("preclusionList",JSON.stringify($scope.preclusionList)); 
             }
             
-        );        
+           
+        );  
+        // console.log(precludedList);
+        //return JSON.stringify(precludedList);
     }
+    
+    function removePrecludedMods(moduleCode, moduleSemester, moduleAcadYear){
+        
+        getModInfo(moduleCode, moduleSemester, moduleAcadYear).then(
+            function(response){
+                //console.log(response.data.Preclusion);
+                if(response.data !== ""){
+                    var precludedMods = [];
+                    //var precludedList = [];
+                    if(response.data.Preclusion !== undefined){
+                        $scope.preclusionList.splice($scope.preclusionList.indexOf(moduleCode),1);
+                        
+                        precludedMods = response.data.Preclusion.split(",");
+                        angular.forEach(precludedMods, function(selected,index){
+                            //$scope.preclusionList.push(precludedMods[index].trim());
+                            //console.log($scope.preclusionList);
+                            if(precludedMods[index].trim().indexOf("or") == -1 && precludedMods[index].trim().indexOf("OR") == -1 && precludedMods[index].trim().indexOf("and") == -1 && precludedMods[index].trim().indexOf("/") == -1){
+                                if(precludedMods[index].trim().length < 9){
+                                    $scope.preclusionList.splice($scope.preclusionList.indexOf(precludedMods[index].trim()),1);
+                                    //$scope.preclusionList.push(precludedMods[index].trim());
+                                    //precludedList.push(precludedMods[index].trim());
+                                }
+                            //    console.log($scope.preclusionList);
+                            } else if(precludedMods[index].trim().indexOf(" or ") != -1){
+                                //further split the result
+                                var tempArray = [];
+                                tempArray = precludedMods[index].trim().split(" or ");
+                                angular.forEach(tempArray, function(furtherSelected, i){
+                                   if(tempArray[i].indexOf(" OR ") == -1){
+                                       if(tempArray[i].trim().length < 9){
+                                           $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
+                                           //$scope.preclusionList.push(tempArray[i].trim()); 
+                                           //precludedList.push(tempArray[i].trim());
+                                       }
+                                   }else{
+                                       var tempArray2 = [];
+                                       tempArray2 = tempArray[i].trim().split(" OR ");
+                                       angular.forEach(tempArray2, function(selected2, i2){
+                                           if(tempArray2[i2].trim().length < 9){
+                                               $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray2[i2].trim()),1);
+                                               //$scope.preclusionList.push(tempArray2[i2].trim());
+                                               //precludedList.push(tempArray2[i2].trim());
+                                           }
+                                       });
+                                   }
+                                   
+                                });
+                            } else if(precludedMods[index].trim().indexOf(" OR ") != -1){
+                                //further split the result
+                                var tempArray = [];
+                                tempArray = precludedMods[index].trim().split(" OR ");
+                                angular.forEach(tempArray, function(furtherSelected, i){
+                                   //if(tempArray[i].indexOf(" OR ") == -1){
+                                    if(tempArray[i].trim().length < 9){
+                                        $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
+                                       //$scope.preclusionList.push(tempArray[i].trim());
+                                        //precludedList.push(tempArray[i].trim());
+                                    }
+                                   
+                                });
+                            } else if(precludedMods[index].trim().indexOf(" and ") != -1){
+                                var tempArray = [];
+                                tempArray = precludedMods[index].trim().split(" and ");
+                                angular.forEach(tempArray, function(furtherSelected, i){
+                                   //if(tempArray[i].indexOf(" OR ") == -1){
+                                    if(tempArray[i].trim().length < 9){
+                                        $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
+                                       //$scope.preclusionList.push(tempArray[i].trim()); 
+                                        //precludedList.push(tempArray[i].trim());
+                                    }
+                                   
+                                });
+                            } else if(precludedMods[index].trim().indexOf("/") != -1){
+                                var tempArray = [];
+                                tempArray = precludedMods[index].trim().split("/");
+                                angular.forEach(tempArray, function(furtherSelected, i){
+                                   //if(tempArray[i].indexOf(" OR ") == -1){
+                                    if(tempArray[i].trim().length < 9){
+                                        $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
+                                       //$scope.preclusionList.push(tempArray[i].trim());
+                                        //precludedList.push(tempArray[i].trim());
+                                    }
+                                   
+                                });
+                            }
+                            
+                        });
+                    }                    
+                }
+                //console.log($scope.preclusionList);
+                sessionStorage.setItem("preclusionList",JSON.stringify($scope.preclusionList)); 
+            }
+            
+           
+        );  
+        // console.log(precludedList);
+        //return JSON.stringify(precludedList);
+    }    
     
     //console.log($scope.showYear1Sem1);
     //console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
@@ -500,8 +609,9 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                     });
                     
                     if(isPrecluded == false){
-                        $scope.preclusionList.push(responseModInfo.data.ModuleCode);
+                        //$scope.preclusionList.push(responseModInfo.data.ModuleCode);
                         generatePreclusionList((selectedModule.ModuleCode).toUpperCase(), selectedModule.Semester, selectedModule.AcadYear);
+                        //console.log(JSON.stringify(x));
                         sessionStorage.setItem("preclusionList",JSON.stringify($scope.preclusionList));
                         
                         selectedModule.ModuleTitle = responseModInfo.data.ModuleTitle;
@@ -554,6 +664,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                             }
                             
                             //to remove modules from preclusion list
+                            removePrecludedMods(selectedOldModule.ModuleCode, selectedOldModule.Semester, selectedOldModule.AcadYear);
                             
                         }
                         selectedModule.ModuleTitle = "";
