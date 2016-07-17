@@ -511,6 +511,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
                     
 					sessionStorage.setItem("isValidToken",isValidToken);
 					sessionStorage.setItem("token",token);
+                    
 				}			
 			//$scope.username = response.data;
 			}, function (response) {

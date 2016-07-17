@@ -44,8 +44,9 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                 if(response.data !== ""){
                     var precludedMods = [];
                     //var precludedList = [];
+                    $scope.preclusionList.push(moduleCode);
                     if(response.data.Preclusion !== undefined){
-                        $scope.preclusionList.push(moduleCode);
+                        
                         precludedMods = response.data.Preclusion.split(",");
                         angular.forEach(precludedMods, function(selected,index){
                             //$scope.preclusionList.push(precludedMods[index].trim());
@@ -135,8 +136,9 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                 if(response.data !== ""){
                     var precludedMods = [];
                     //var precludedList = [];
+                    $scope.preclusionList.splice($scope.preclusionList.indexOf(moduleCode),1);
                     if(response.data.Preclusion !== undefined){
-                        $scope.preclusionList.splice($scope.preclusionList.indexOf(moduleCode),1);
+                        
                         
                         precludedMods = response.data.Preclusion.split(",");
                         angular.forEach(precludedMods, function(selected,index){
