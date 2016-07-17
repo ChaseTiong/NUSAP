@@ -9,6 +9,9 @@ if(sessionStorage.getItem("token") == null){
 } else{
 	token = sessionStorage.getItem("token");
 	sessionStorage.setItem("isValidToken",true);
+    
+    history.replaceState({} , null, "index.html");
+    //window.load
 }
 
 function getUrlVars() {
@@ -145,7 +148,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
         
         //history.replaceState({} , null, "index.html");
         
-        
+       
         function getAllAcadYear(matricYear){
             var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
             var resultArr = [];
@@ -454,6 +457,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
 					$scope.$applyAsync(function(){
     					$scope.showMenu = true;
                         //window.history.replaceState({} , null, "index.html");
+                        
 					});
                     
 					sessionStorage.setItem("isValidToken",isValidToken);

@@ -1,6 +1,13 @@
 <?php 
 	$APIKey = "woOdsGZSg4y0WTLAhboQw";
 	$token = $_SESSION["token"];
+    $currentYear = intval(date('Y'));
+    $currentMonth = intval(date('m')); 
+    
+    if($currentMonth < 7){
+        $currentYear = $currentYear - 1;
+    }
+    //echo $currentMonth;
 	if($token == ""){
 		$token = $_GET['token'];
 	}	
@@ -22,8 +29,15 @@
         $modCode = $_GET['modCode'];
         $semester = $_GET['sem'];
         $acadYear = $_GET['acadYear'];
-        //$url = "http://api.nusmods.com/".substr($acadYear,0,4)."-".substr($acadYear,5)."/".$semester."/modules/".$modCode.".json";
-        $url = "http://api.nusmods.com/2015-2016/".$semester."/modules/".$modCode.".json";
+        $frontYear = substr($acadYear,0,4);
+        $backYear = substr($acadYear,5);
+        
+        if($acadYear != "" && intval($backYear) <= $currentYear){
+            $url = "http://api.nusmods.com/".$frontYear."-".$backYear."/".$semester."/modules/".$modCode.".json";
+        }
+        else{
+            $url = "http://api.nusmods.com/".$currentYear."-".($currentYear + 1)."/".$semester."/modules/".$modCode.".json";
+        }
         $json = file_get_contents("$url");
         echo $json;     
     }else if (strcmp($id, "modSearch") == 0){
