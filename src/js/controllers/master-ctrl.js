@@ -146,25 +146,44 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log) {
     });
     //$scope.tempModList = $scope.modList;
     
+    $scope.isUpdated = false;
     $scope.updateModList = function(currentText){
         //$scope.tempModList = $scope.modList;
         //console.log($scope.updateModList);
         currentText = currentText.toUpperCase();
         console.log("current Text : " + currentText);
         //console.log("previous Text : " + previousText);
-        $scope.modList = [];
+        //$scope.modList = [];
         //angular.forEach($scope.tempModList, function(value,key){
         if(currentText.length < 1){
             $scope.modList = $scope.tempModList;
+            $scope.isUpdated = true;
         } else{
-            for(var key = 0 ; key < $scope.tempModList.length; key ++){    
-                console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
-                if($scope.tempModList[key].ModuleCode.startsWith(currentText)){
-                    $scope.modList.push({
-                        ModuleCode      : $scope.tempModList[key].ModuleCode,
-                        ModuleTitle     : $scope.tempModList[key].ModuleTitle,
-                        Semesters       : $scope.tempModList[key].Semesters
-                    });   
+            if($scope.isUpdate == false){
+                $scope.modList = [];
+                for(var key = 0 ; key < $scope.tempModList.length; key ++){    
+                    //console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
+                    if($scope.tempModList[key].ModuleCode.startsWith(currentText)){
+                        $scope.modList.push({
+                            ModuleCode      : $scope.tempModList[key].ModuleCode,
+                            ModuleTitle     : $scope.tempModList[key].ModuleTitle,
+                            Semesters       : $scope.tempModList[key].Semesters
+                        });   
+                    }
+                }
+            }
+            else{
+                var tempArry = $scope.modList;
+                $scope.modList = [];
+                for(var key = 0 ; key < tempArry.length; key ++){    
+                    //console.log($scope.modList[key].ModuleCode.startsWith(currentText));
+                    if(tempArry[key].ModuleCode.startsWith(currentText)){
+                        $scope.modList.push({
+                            ModuleCode      : tempArry[key].ModuleCode,
+                            ModuleTitle     : tempArry[key].ModuleTitle,
+                            Semesters       : tempArry[key].Semesters
+                        });   
+                    }
                 }
             }
         }
