@@ -145,7 +145,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                             //$scope.preclusionList.push(precludedMods[index].trim());
                             //console.log($scope.preclusionList);
                             if(precludedMods[index].trim().indexOf("or") == -1 && precludedMods[index].trim().indexOf("OR") == -1 && precludedMods[index].trim().indexOf("and") == -1 && precludedMods[index].trim().indexOf("/") == -1){
-                                if(precludedMods[index].trim().length < 9){
+                                if(precludedMods[index].trim().length <= 9){
                                     $scope.preclusionList.splice($scope.preclusionList.indexOf(precludedMods[index].trim()),1);
                                     //$scope.preclusionList.push(precludedMods[index].trim());
                                     //precludedList.push(precludedMods[index].trim());
@@ -157,7 +157,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                 tempArray = precludedMods[index].trim().split(" or ");
                                 angular.forEach(tempArray, function(furtherSelected, i){
                                    if(tempArray[i].indexOf(" OR ") == -1){
-                                       if(tempArray[i].trim().length < 9){
+                                       if(tempArray[i].trim().length <= 9){
                                            $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
                                            //$scope.preclusionList.push(tempArray[i].trim()); 
                                            //precludedList.push(tempArray[i].trim());
@@ -166,7 +166,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                        var tempArray2 = [];
                                        tempArray2 = tempArray[i].trim().split(" OR ");
                                        angular.forEach(tempArray2, function(selected2, i2){
-                                           if(tempArray2[i2].trim().length < 9){
+                                           if(tempArray2[i2].trim().length <= 9){
                                                $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray2[i2].trim()),1);
                                                //$scope.preclusionList.push(tempArray2[i2].trim());
                                                //precludedList.push(tempArray2[i2].trim());
@@ -181,7 +181,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                 tempArray = precludedMods[index].trim().split(" OR ");
                                 angular.forEach(tempArray, function(furtherSelected, i){
                                    //if(tempArray[i].indexOf(" OR ") == -1){
-                                    if(tempArray[i].trim().length < 9){
+                                    if(tempArray[i].trim().length <= 9){
                                         $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
                                        //$scope.preclusionList.push(tempArray[i].trim());
                                         //precludedList.push(tempArray[i].trim());
@@ -191,9 +191,11 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                             } else if(precludedMods[index].trim().indexOf(" and ") != -1){
                                 var tempArray = [];
                                 tempArray = precludedMods[index].trim().split(" and ");
+                                //console.log("debug");
+                                //console.log(tempArray);
                                 angular.forEach(tempArray, function(furtherSelected, i){
                                    //if(tempArray[i].indexOf(" OR ") == -1){
-                                    if(tempArray[i].trim().length < 9){
+                                    if(tempArray[i].trim().length <= 9){
                                         $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
                                        //$scope.preclusionList.push(tempArray[i].trim()); 
                                         //precludedList.push(tempArray[i].trim());
@@ -205,7 +207,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                                 tempArray = precludedMods[index].trim().split("/");
                                 angular.forEach(tempArray, function(furtherSelected, i){
                                    //if(tempArray[i].indexOf(" OR ") == -1){
-                                    if(tempArray[i].trim().length < 9){
+                                    if(tempArray[i].trim().length <= 9){
                                         $scope.preclusionList.splice($scope.preclusionList.indexOf(tempArray[i].trim()),1);
                                        //$scope.preclusionList.push(tempArray[i].trim());
                                         //precludedList.push(tempArray[i].trim());
@@ -595,6 +597,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
      
     
     $scope.searchMod = function(selectedModule, selectedOldModule){
+        selectedModule.ModuleCode = selectedModule.ModuleCode.toUpperCase();
         var updatedList = JSON.parse(sessionStorage.getItem("preclusionList"));
         getModInfo((selectedModule.ModuleCode).toUpperCase(), selectedModule.Semester, selectedModule.AcadYear).then(
             function(responseModInfo){
@@ -622,7 +625,7 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                         selectedModule.ModuleGrade = ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"];
                         selectedModule.modFound = true;
                         selectedModule.selectedModGrade = "-";
-                        selectedModule.selectedModSuStatus = "-";
+                        selectedModule.selectedModSuStatus = "No";
                     } else{
                         selectedModule.ModuleTitle = "Modules Taken/Precluded";
                         selectedModule.ModuleCredit = "-";
@@ -640,16 +643,17 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                     
                     selectedModule.ModuleSuStatus = ["-"];
                     selectedModule.ModuleGrade = ["-"];
-                    selectedModule.selectedModGrade = null;
-                    selectedModule.selectedModSuStatus = null;
-                    if(selectedModule.ModuleCode.length >= 6){
+                    selectedModule.selectedModGrade = "-";
+                    selectedModule.selectedModSuStatus = "-";
+                    if(selectedModule.ModuleCode.length >= 7){
                         selectedModule.ModuleTitle = "Module Not Available";
                     }else{
                         if(selectedOldModule.ModuleCredit !== "" && (selectedOldModule.selectedModGrade !== null && selectedOldModule.selectedModGrade !== "-")){
                             
                             //module was deleted 
-                            if(selectedOldModule.modFound === true && selectedOldModule.selectedModSuStatus === "No"){
-                                //console.log("do calculation");
+                            if(selectedOldModule.modFound === true && selectedOldModule.selectedModSuStatus === "No" && (selectedOldModule.selectedModGrade !== undefined)){
+                                console.log(selectedOldModule.selectedModGrade);
+                                console.log("do calculation");
                                 totalGradedMC = totalGradedMC - parseInt(selectedOldModule.ModuleCredit);
                                 totalGradePoint = totalGradePoint - (convertGradeLetter(selectedOldModule.selectedModGrade) * selectedOldModule.ModuleCredit);
                                 selectedModule.modFound = false;
@@ -666,7 +670,9 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
                             }
                             
                             //to remove modules from preclusion list
+                            //console.log("remove");
                             removePrecludedMods(selectedOldModule.ModuleCode, selectedOldModule.Semester, selectedOldModule.AcadYear);
+                            isPrecluded = false;
                             
                         }
                         selectedModule.ModuleTitle = "";
