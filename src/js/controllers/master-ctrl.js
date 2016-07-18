@@ -231,6 +231,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     
     $scope.isUpdated = false;
     $scope.updateModList = function(currentText){
+        //$scope.searchBox = $scope.searchBox.toUpperCase();
+        //console.log($scope.searchBox);
+        var oldText = sessionStorage.getItem("oldText");
+        if(oldText == null){
+            oldText = "";
+        }
         $scope.searchLoading = false;    
         $timeout(function () {
             $scope.searchLoading = true;
@@ -245,7 +251,19 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         if(currentText.length < 1){
             $scope.modList = $scope.tempModList;
             $scope.isUpdated = true;
-        } else{
+        } else if(oldText.length < currentText.length){
+            $scope.modList = [];
+            for(var key = 0 ; key < $scope.tempModList.length; key ++){    
+                //console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
+                if($scope.tempModList[key].ModuleCode.startsWith(currentText)){
+                    $scope.modList.push({
+                        ModuleCode      : $scope.tempModList[key].ModuleCode,
+                        ModuleTitle     : $scope.tempModList[key].ModuleTitle,
+                        Semesters       : $scope.tempModList[key].Semesters
+                    });   
+                }
+            }            
+        }else{
             if($scope.isUpdate == false){
                 $scope.modList = [];
                 for(var key = 0 ; key < $scope.tempModList.length; key ++){    
@@ -273,6 +291,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     }
                 }
             }
+            sessionStorage.setItem("oldText",currentText);
         }
             //console.log($scope.tempModList);
             //console.log($scope.modList);
