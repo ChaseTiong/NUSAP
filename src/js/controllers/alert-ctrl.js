@@ -22,10 +22,14 @@ function getUrlVars() {
 
 angular
     .module('NUSAP')
-    .controller('AlertsCtrl', ['$scope', '$http', AlertsCtrl]);
+    .controller('AlertsCtrl', ['$scope', '$http' ,'$timeout' , AlertsCtrl]);
 
-function AlertsCtrl($scope, $http) {
+function AlertsCtrl($scope, $http, $timeout) {
  
+    $timeout(function () {
+        $scope.closeAlert(0);
+    }, 7000);
+    
     $scope.alerts = [{
     /*    type: 'success',
         msg: 'Thanks for visiting! Feel free to create pull requests to improve the dashboard!'

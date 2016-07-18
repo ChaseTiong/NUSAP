@@ -27,13 +27,18 @@ var userName;
 var studentId;
 
 angular.module('NUSAP')
-    .controller('CapCalCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', CapCalCtrl]);
+    .controller('CapCalCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', '$timeout', CapCalCtrl]);
 
 
 
-function CapCalCtrl($scope, $cookieStore, $http, $location, $window) {
+function CapCalCtrl($scope, $cookieStore, $http, $location, $window, $timeout) {
     var totalGradedMC = 0;
     var totalGradePoint = 0;
+    $scope.showLoading = false;
+    $timeout(function () {
+      $scope.showLoading = true;
+      sessionStorage.showLoading = true;    
+    }, 3500);
     $scope.preclusionList = [];
     //function to generate preclusion list
     function generatePreclusionList(moduleCode, moduleSemester, moduleAcadYear){
