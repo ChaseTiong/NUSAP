@@ -7,12 +7,12 @@
 </div>
 
 <div ng-show="dashboardLoading == false" class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
 
 <div ng-show="dashboardLoading == true">
      <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
@@ -126,14 +126,24 @@
 -->
 
 	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right" data-ng-controller="MasterCtrl">
+		
+		
 		<rd-widget>
 			<rd-widget-header icon="fa-search" title="Module Search">
 			    
-				<input type="text" data-ng-model="searchBox" placeholder="Search" class="form-control input-md" ng-keypress="test($event)" data-ng-change="updateModList(searchBox)">
-                <p>{{searchBox}}</p>
+				<input type="text" data-ng-model="searchBox" placeholder="Search" class="form-control input-sm" ng-keypress="test($event)" data-ng-change="updateModList(searchBox)">
+                <!-- Debug !-->
+                <!-- <p>{{searchBox}}</p> !-->
 			</rd-widget-header>
 			<rd-widget-body classes="medium no-padding">
-				<div class="table-responsive">
+			    <div ng-show="searchLoading == false" class="spinner">
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                  <div class="rect5"></div>
+                </div>
+				<div ng-show="searchLoading == true" class="table-responsive">
 					
                     <table class="table fixed-header">
 						<thead>

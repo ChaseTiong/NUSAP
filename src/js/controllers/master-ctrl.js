@@ -33,6 +33,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
      * Sidebar Toggle & Cookie Control
      */
     $scope.dashboardLoading = false;
+    $scope.searchLoading = true;
     //if(sessionStorage.dashboardLoading != true){
     $timeout(function () {
       $scope.dashboardLoading = true;
@@ -230,6 +231,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     
     $scope.isUpdated = false;
     $scope.updateModList = function(currentText){
+        $scope.searchLoading = false;    
+        $timeout(function () {
+            $scope.searchLoading = true;
+        }, 2000);
         //$scope.tempModList = $scope.modList;
         //console.log($scope.updateModList);
         currentText = currentText.toUpperCase();
