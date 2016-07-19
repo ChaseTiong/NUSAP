@@ -78,7 +78,6 @@
   height: 0px;
 }
 
-<<<<<<< HEAD
 /**
  * For the correct positioning of the placeholder element, the dnd-list and
  * it's children must have position: relative
@@ -181,7 +180,7 @@
 .typesDemo .name {
   margin-left: 20px;
 }
-=======
+
 .spinner {
   margin: 100px auto;
   width: 50px;
@@ -234,4 +233,3 @@
     -webkit-transform: scaleY(1.0);
   }
 }
->>>>>>> bc6bf59eb840d0db8d8b701451009b3dcfd6885e
