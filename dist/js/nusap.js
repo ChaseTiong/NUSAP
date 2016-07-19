@@ -21,3 +21,4 @@ function drop(event) {
     event.target.appendChild(document.getElementById(data));
     //document.getElementById("demo").innerHTML = "The p element was dropped";
 }
+
