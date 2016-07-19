@@ -6,13 +6,25 @@
   </div>
 </div>
 
-<div>
+<div ng-show = "dashboardLoading == false" class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+
+<div ng-show = "dashboardLoading == true">
      <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
 	<div class="col-lg-8" >
 		<rd-widget>
 
             <rd-widget-header icon="fa-tasks" title="Academic Planner">
+<<<<<<< HEAD
 				<a href="https://nusmods.com">NUSmods</a><button class="btn btn-primary" data-ng-click="addYear()">+</button>
+=======
+				<a target="_blank" href="https://nusmods.com">NUSmods</a>
+>>>>>>> bc6bf59eb840d0db8d8b701451009b3dcfd6885e
       		</rd-widget-header>
       		<rd-widget-body classes="medium no-padding">
                 <div class="table-responsive typesDemo row">
@@ -96,7 +108,7 @@
                 <tr ng-repeat="modules in takenMods">     
                     <td><progressbar animate="false" value="modules.progress" type="{{modules.type}}" 
                     data-ng-class="{ 'progress-bar-success' : modules.type == 'success' , 'progress-bar-info': modules.type == 'info', 'progress-bar-warning' : modules.type == 'warning' , 'progress-bar-danger': modules.type == 'danger'}"   >  
-                    <b>{{modules.progress}}% </b></progressbar></t
+                    <b>{{modules.progress}} </b></progressbar></t
                 </tr>
                 <div data-ng-controller="BarCtrl" data-ng-init="getBarChart()">
                     <canvas class="col-lg-4 col-sm-6 col-xs-12 pull-right" id="canvas" height="220"></canvas>
@@ -160,14 +172,24 @@
 -->
 
 	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right" data-ng-controller="MasterCtrl">
+		
+		
 		<rd-widget>
 			<rd-widget-header icon="fa-search" title="Module Search">
 			    
-				<input type="text" data-ng-model = "searchBox" placeholder="Search" class="form-control input-md" ng-keypress="test($event)" data-ng-change = "updateModList(searchBox)"/>
-                <p>{{searchBox}}</p>
+				<input type="text" data-ng-model = "searchBox" placeholder="Search" class="form-control input-sm" ng-keypress="test($event)" data-ng-change = "updateModList(searchBox)"/>
+                <!-- Debug !-->
+                <!-- <p>{{searchBox}}</p> !-->
 			</rd-widget-header>
 			<rd-widget-body classes="medium no-padding">
-				<div class="table-responsive">
+			    <div ng-show = "searchLoading == false" class="spinner">
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                  <div class="rect5"></div>
+                </div>
+				<div ng-show ="searchLoading == true" class="table-responsive">
 					
                     <table class="table fixed-header">
 						<thead>
