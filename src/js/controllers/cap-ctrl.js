@@ -56,12 +56,28 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window, $timeout) {
                         angular.forEach(precludedMods, function(selected,index){
                             //$scope.preclusionList.push(precludedMods[index].trim());
                             //console.log($scope.preclusionList);
-                            if(precludedMods[index].trim().indexOf("or") == -1 && precludedMods[index].trim().indexOf("OR") == -1 && precludedMods[index].trim().indexOf("and") == -1 && precludedMods[index].trim().indexOf("/") == -1){
+                            console.log(precludedMods[index].trim());
+                            //console.log(precludedMods[index].trim().indexOf("."));
+                            if(precludedMods[index].trim().indexOf("or") == -1 && precludedMods[index].trim().indexOf("OR") == -1 && precludedMods[index].trim().indexOf("and") == -1 && precludedMods[index].trim().indexOf("/") == -1 && precludedMods[index].trim().indexOf(".") == -1){
+                                //console.log("Debug2");
                                 if(precludedMods[index].trim().length < 9){
                                     $scope.preclusionList.push(precludedMods[index].trim());
                                     //precludedList.push(precludedMods[index].trim());
                                 }
                             //    console.log($scope.preclusionList);
+                            } else if(precludedMods[index].trim().indexOf(".") != -1){
+                                var tempArray = [];
+                                tempArray = precludedMods[index].trim().split(".");
+                                //console.log("debug");
+                                //console.log(tempArray);
+                                angular.forEach(tempArray, function(furtherSelected, i){
+                                   //if(tempArray[i].indexOf(" OR ") == -1){
+                                    if(tempArray[i].trim().length < 9){
+                                       $scope.preclusionList.push(tempArray[i].trim());
+                                        //precludedList.push(tempArray[i].trim());
+                                    }
+                                   
+                                });
                             } else if(precludedMods[index].trim().indexOf(" or ") != -1){
                                 //further split the result
                                 var tempArray = [];
@@ -610,10 +626,14 @@ function CapCalCtrl($scope, $cookieStore, $http, $location, $window, $timeout) {
                 //if found modules from nusmod api
                 if(responseModInfo.data !== ""){
                     var isPrecluded = false;
+                    //console.log(responseModInfo.data.ModuleCode);
                     angular.forEach(updatedList,function(value,key){
+                        //console.log(selectedModule.ModuleCode);
+                        //console.log("preclusion : ");
+                        //console.log($scope.preclusionList[key]);
                        if(selectedModule.ModuleCode === $scope.preclusionList[key]){
                            isPrecluded = true;
-                           //console.log("found");
+                           console.log("found");
                            return "";   
                        }
                     });
