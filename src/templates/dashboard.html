@@ -98,7 +98,7 @@
 	</div>
 	
     
-    <!-- Graduation Progress -->
+    <!-- Graduation Progress using stacked bar controller
 	<div class="col-lg-4 col-sm-6 col-xs-12">
         <rd-widget>
 			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
@@ -113,12 +113,86 @@
         </rd-widget>
     </div>
             
-	<!-- End of Graduation Progress
     <div data-ng-controller="stackedBarCtrl" id="stackedBar" data-ng-init="getBarChart()">
         <canvas class="col-lg-4 pull-right" id="canvas" height="50"></canvas>
         Placeholder for chart
     
-    </div> 
+    </div>         
+	<!-- End of Graduation Progress -->
+   
+   <!-- Graduation Progress using progress bar !-->
+   
+   <div class="col-lg-4 col-sm-6 col-xs-12" data-ng-controller="BarCtrl">
+        <rd-widget>
+			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
+              <rd-widget-body>
+                  <span class="progress-title"><b>OVERALL&nbsp;:&nbsp;</b></span>
+                  <div class ="progress">
+                     <div data-ng-controller ="MasterCtrl" class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{overallProgress}}">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-striped progress-bar-warning active" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <!-- <div class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar" style="width:20%">                      
+                     </div> !-->
+                  </div>
+                 
+                  <span class="progress-title"><b>CORE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;</b></span>
+                  <div class ="progress">
+                     <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{currentCore}}">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
+                      
+                     </div>
+                  </div>
+                  
+                  <span class="progress-title"><b>ULR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;</b></span>
+                  <div class ="progress">
+                     <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:40%">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
+                      
+                     </div>
+                  </div>
+
+                  <span class="progress-title"><b>UE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;</b></span>
+                  <div class ="progress">
+                     <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:40%">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
+                      
+                     </div>
+                  </div>                  
+             
+             </rd-widget-body>
+       </rd-widget>      
+   </div>
+            
+   <!-- End of Graduation Progess !-->
+   
+   
+    
     
    <!-- 
 	<div class="col-lg-3 col-md-6 col-xs-12">

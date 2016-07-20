@@ -368,4 +368,9 @@ fieldset[disabled] .btn-class.focus {
   background-color: #fff;
 }
 
+.progress-title{
+  float: left;
+
+}
+
 

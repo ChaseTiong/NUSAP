@@ -24,7 +24,7 @@ function getUrlVars() {
 
 var userName;
 var studentId;
-
+sessionStorage.setItem("totalCreditTaken" , 0);
 angular.module('NUSAP')
     .controller('MasterCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', '$q', '$log', '$timeout', MasterCtrl]);
 
@@ -32,12 +32,13 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     /**
      * Sidebar Toggle & Cookie Control
      */
+    //$scope.overallProgress = "20%";
     $scope.dashboardLoading = false;
     $scope.searchLoading = true;
     //if(sessionStorage.dashboardLoading != true){
     $timeout(function () {
-      $scope.dashboardLoading = true;
-          
+        $scope.dashboardLoading = true;
+        //console.log(parseInt(sessionStorage.getItem("totalCreditTaken")));
     }, 3500);
 
     //}
@@ -76,10 +77,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     
     getMajReq().then(
         function(response){
-            console.log("testing json file");
-            console.log(response.data.matric2015.Core);
+            //console.log("testing json file");
+            //console.log(response.data.matric2015.Core);
             console.log(response.data.matric2015.ULR);
-             //console.log(response.data.matric2015.UE);
+            //console.log(response.data.matric2015.UE);
         }
     );
     
@@ -433,7 +434,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         }
         
 		getUserProfile().then(
+            
 			function (responseProfile) {
+                
                 //console.log(responseProfile.data);
                 $scope.username = responseProfile.data.Results[0].Name;
                 sessionStorage.setItem("userName", $scope.username);
@@ -475,6 +478,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     function (responseModTaken) {   
                         $scope.modsCount = responseModTaken.data.Results.length;
                         sessionStorage.setItem("modsTaken", JSON.stringify(responseModTaken.data.Results));
+
+                        //console.log($scope.overallProgress);                        
                         //Debugging
                         //This is how you retreive the array
                         //console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
@@ -482,7 +487,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         
                         $scope.specialMods = [];
                         $scope.modsPerSem = [];
-
+                        
                     //$scope.takenMods = response.data.Results;
                         var count = 0;
                         //var deferredCount = $q.defer();
@@ -506,14 +511,33 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             $scope.takenMods = [];
                             var currentSemMod = [];
                             $scope.unlockSem.push(false);
+                            //var totalCreditTaken = parseInt(sessionStorage.getItem("totalCreditTaken"));
+                            //console.log("current total " + totalCreditTaken);
+                            
                             //console.log("current index " + index);
                             angular.forEach(userModsTaken, function(value,key){
+                                
                                 //console.log("key : " + userModsTaken[key].ModuleCode);
                                 //console.log(userSem[index].substring(10,11));
                                 if(userModsTaken[key].Semester == userSem[index].substring(10,11) && userModsTaken[key].AcadYear == userSem[index].substring(0,9)){ 
                                     getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear). then(
                                         function(responseModInfo) {
+                                            var totalCreditTaken = parseInt(sessionStorage.getItem("totalCreditTaken"));
+                                            //display the overall bar chart
+                                            //console.log(totalCreditTaken);
+                                            $scope.$applyAsync(function(){
+                                                $scope.overallProgress = (totalCreditTaken / 160 * 100) + "%";
+                                                
+                                            });
+                                            
+                                            //console.log(totalCreditTaken);
                                             if(responseModInfo.data === ""){
+                                                totalCreditTaken = totalCreditTaken + 4;
+                                                sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
+                                                //totalCreditTaken = totalCreditTaken + 4;
+                                                //console.log("debug");
+                                                //console.log(totalCreditTaken);
+                                                //sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
                                                 //console.log("Failed : " + userModsTaken[key].ModuleCode);
                                                 currentSemMod.unshift({
                                                     ModuleCode      : userModsTaken[key].ModuleCode,
@@ -558,7 +582,15 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                         Semester        : userModsTaken[key].Semester
                                                     }
                                                 ));
+                                                
                                             } else{
+                                                totalCreditTaken = totalCreditTaken + parseInt(responseModInfo.data.ModuleCredit);
+                                                sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
+                                                //totalCreditTaken = totalCreditTaken + parseInt(responseModInfo.data.ModuleCredit);
+                                                //console.log(totalCreditTaken);
+                                                //console.log("debug");
+                                                //console.log(totalCreditTaken);
+                                                //sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
                                                 generatePreclusionList(responseModInfo.data.ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear);
                                                 //console.log("Success : " + responseModInfo.data.ModuleCode);
                                                 currentSemMod.push({
@@ -602,15 +634,22 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                         Semester        : userModsTaken[key].Semester
                                                     }
                                                 ));
+                                               
 
                                             }
-                                        }
+                                            
+                                        }  
                                     );
                                 }
-
+                                
                             });
                             
                             $scope.modsPerSem.push(currentSemMod);
+                            //console.log(sessionStorage.getItem("totalCreditTaken"));
+                            //$scope.overallProgress = parseInt(sessionStorage.getItem("totalCreditTaken")) / 160 * 100;
+                            //console.log("debug total");
+                            //console.log($scope.overallProgress);
+                            //$scope.overallProgress = $scope.overallProgress + "%";
                             //count = 0;
                             //console.log($scope.takenMods);
                             /*$scope.$applyAsync(function(){
@@ -622,7 +661,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                 
                             });*/
                             
+                            
                         });
+                        //$scope.$applyAsync(function(){
+                        //console.log(sessionStorage.getItem("totalCreditTaken"));
+                        //});
                         //console.log($scope.unlockSem);
 //                        angular.forEach($scope.takenMods, function(value,key){
 //                            $scope.modules = {
@@ -630,13 +673,13 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 //                                selectedModGrade    : $scope.takenMods[key].ModuleGrade[0]
 //                            };
 //                        });
-                        
+                   
                     }, function (responseModTaken) {
                         console.log("error no mods found");
                         // Failure Function
-                        
                     }
-                );        
+                    //console.log(sessionStorage.getItem("totalCreditTaken"));
+                );    
                 
             }, function (responseProfile) {
 			// Failure Function
