@@ -78,6 +78,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         function(response){
             console.log("testing json file");
             console.log(response.data.matric2015.Core);
+            console.log(response.data.matric2015.ULR);
+             //console.log(response.data.matric2015.UE);
         }
     );
     
@@ -339,65 +341,100 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         
        
         function getAllAcadYear(matricYear){
-            var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
+            matricYear = parseInt(matricYear);
+            var modYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(0,4));
             var resultArr = [];
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = parseInt(date.getMonth()) + 1;
+            //console.log(month);
+            for(var i = matricYear; i <= modYear; i++){
+                var nextYear = i + 1;
+                if(i < modYear){
+                    var result = i + "/" + nextYear + "-1";
+                    resultArr.push(result);
+                    result = i + "/" + nextYear + "-2";
+                    resultArr.push(result);
+                } else{
+                    if(month < 7){
+                        var result = i + "/" + nextYear + "-1";
+                        resultArr.push(result);
+                        result = i + "/" + nextYear + "-2";
+                        resultArr.push(result);
+                    } else{
+                        var result = i + "/" + nextYear + "-1";
+                        resultArr.push(result);
+                    }
+                }
+            }
+            //console.log(resultArr);
+            return resultArr;
             
+            //var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
+            //var resultArr = [];
             
+            //console.log(JSON.parse(sessionStorage.getItem("modsTaken"))[4].ModuleCode);
+            //console.log(parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[4].AcadYear.substring(0,4)));
             //Debug purpose to be deleted
             //var lastYear = 2017;
             //End of debug
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth();
-            matricYear = parseInt(matricYear);
-            var semCount = 1;
-            for(var i = matricYear; i <= lastYear; i ++){
-                var appendYear = i + 1;
-                var nextYear = appendYear;
-
-                if(appendYear == lastYear){
-                    if(month < 9){
-                        appendYear = i + "/" + appendYear + "-" + semCount;
-                        resultArr.push(appendYear);
-                    
-                        appendYear = i + 1;
-                        
-                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-                        resultArr.push(appendYear);
-  
-                    }else{
-                        appendYear = i + "/" + appendYear + "-" + semCount;
-                        resultArr.push(appendYear);
-                    
-                        appendYear = i + 1;
-                        
-                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-                        resultArr.push(appendYear);
-                        
-                        appendYear = i + 2;
-                        
-                        appendYear = (i + 1) + "/" + appendYear + "-" + semCount;
-                        resultArr.push(appendYear);
-                        
-                    }
-                //if the appendYear is lower than the current Year , add in sem 2
-                } else if(appendYear < lastYear){
-                    appendYear = i + "/" + appendYear + "-" + semCount;
-                    resultArr.push(appendYear);
-                    
-                    appendYear = i + 1;
-                    appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-                    resultArr.push(appendYear);
-                } 
-                
-            }
-            return resultArr;
+//            var date = new Date();
+//            var year = date.getFullYear();
+//            var month = date.getMonth();
+//            
+//            var semCount = 1;
+//            console.log(lastYear);
+//            for(var i = matricYear; i <= lastYear; i ++){
+//                var appendYear = i + 1;
+//                var nextYear = appendYear;
+//                console.log(appendYear);
+//                console.log("debug");
+//                console.log(nextYear);
+//                if(appendYear == lastYear){
+//                    //add semester 1 and 2 for the year
+//                    if(month < 7){
+//                        
+//                        appendYear = i + "/" + appendYear + "-" + semCount;
+//                        resultArr.push(appendYear);
+//                    
+//                        appendYear = i + 1;
+//                        
+//                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+//                        resultArr.push(appendYear);
+//                    //add semester 1
+//                    }else{
+//                        appendYear = i + "/" + appendYear + "-" + semCount;
+//                        resultArr.push(appendYear);
+//                    
+//                        appendYear = i + 1;
+//                        
+////                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+////                        resultArr.push(appendYear);
+////                        
+////                        appendYear = i + 2;
+////                        
+////                        appendYear = (i + 1) + "/" + appendYear + "-" + semCount;
+////                        resultArr.push(appendYear);
+//                        
+//                    }
+//                //if the appendYear is lower than the current Year , add in sem 2
+//                } else if(appendYear < lastYear){
+//                    appendYear = i + "/" + appendYear + "-" + semCount;
+//                    resultArr.push(appendYear);
+//                    
+//                    appendYear = i + 1;
+//                    appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+//                    resultArr.push(appendYear);
+//                } 
+//                
+//            }
+//            return resultArr;
 
         }
         
 		getUserProfile().then(
 			function (responseProfile) {
-                console.log(responseProfile.data);
+                //console.log(responseProfile.data);
                 $scope.username = responseProfile.data.Results[0].Name;
                 sessionStorage.setItem("userName", $scope.username);
                 sessionStorage.setItem("netid", responseProfile.data.Results[0].UserID);
@@ -459,7 +496,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         
                         //getting all the academic year of the users
                         sessionStorage.setItem("userSem", JSON.stringify(getAllAcadYear(JSON.parse(sessionStorage.getItem("matricYear")))));   
-                        console.log("test result : " + getAllAcadYear(JSON.parse(sessionStorage.getItem("matricYear")))); 
+                        //console.log("test result : " + JSON.parse(sessionStorage.getItem("userSem"))); 
                         var userSem = JSON.parse(sessionStorage.getItem("userSem"));
                         var currentSem = 1;
                         //console.log(userSem[2]);

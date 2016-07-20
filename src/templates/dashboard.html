@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<div ng-show = "dashboardLoading == false" class="spinner">
+<div ng-show = "dashboardLoading == false" class="spinner" data-ng-controller="MasterCtrl">
   <div class="rect1"></div>
   <div class="rect2"></div>
   <div class="rect3"></div>
@@ -14,7 +14,7 @@
   <div class="rect5"></div>
 </div>
 
-<div ng-show = "dashboardLoading == true">
+<div ng-show = "dashboardLoading == true" data-ng-controller="MasterCtrl">
      <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
 	<div class="col-lg-8" >
 		<rd-widget>
