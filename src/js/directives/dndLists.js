@@ -6,7 +6,7 @@
  * https://github.com/marceljuenemann/angular-drag-and-drop-lists
  *
  * License: MIT
- */
+ */ 
 angular
     .module('NUSAP')
   /**

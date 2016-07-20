@@ -92,7 +92,7 @@
  * otherwise you can't drop to it once it's empty
  */
 .typesDemo ul[dnd-list] {
-  min-height: 42px;
+  min-height: 102px;
   padding-left: 0px;
 }
 
@@ -146,7 +146,10 @@
   display: block;
   padding: 10px 15px;
 }
-
+.typesDemo ul[dnd-list] li {
+  background-color: #CAE0FC;
+    padding: 3px;
+}
 /**
  * Gender-specifc background
  */
@@ -232,4 +235,9 @@
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
+}
+
+button.btn .btn-info {
+    width: 11em;
+    word-wrap: break-word;
 }

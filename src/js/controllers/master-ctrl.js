@@ -213,7 +213,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     }    
  
     $scope.modList = [];
-    
+    $scope.plannedMods = {
+        selected: null,
+        years: {"2015/2016": [], "2016/2017": []}
+    };
+    //need to push takenMods into plannedMods into a nested array similar to the $scope.lists below
     $scope.lists = [
         {
             label: "Men",
@@ -413,16 +417,17 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 //start of ruiwen code
                 //default candidature: 3 years
 
-                var year = 3;
+                var year = 4;
                 var matricYear = responseProfile.data.Results[0].MatriculationYear;
 
                 for(var i=0;i<year;i++) {
-                    $scope.plannerSize.push({ candidatureYear: (parseInt(matricYear)+i) + "/" + (parseInt(matricYear)+i+1), modsPerSem: 5 });
+                    $scope.plannerSize.push({ candidatureYear: (parseInt(matricYear)+i) + "/" + (parseInt(matricYear)+i+1)});
                 }
                 //add year
                 $scope.addYear = function() {
                     year = year + 1;
-                    var newYear = { candidatureYear: (parseInt(matricYear)+year-1) + "/" + (parseInt(matricYear)+year), modsPerSem: 5 }
+                    if(year>6){return}
+                    var newYear = { candidatureYear: (parseInt(matricYear)+year-1) + "/" + (parseInt(matricYear)+year)}
                     $scope.plannerSize.push(newYear);
                 }
                 
@@ -503,8 +508,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester
                                                 });
-
-                                                //console.log($scope.takenMods[count]);
+                                                
+                                                //console.log($scope.takenMods.[count]);
                                                 currentSemMod[0].selectedModGrade = currentSemMod[0].ModuleGrade[0];
                                                 currentSemMod[0].selectedModSuStatus = currentSemMod[0].ModuleSuStatus[0];
                                                 //count ++;
@@ -574,6 +579,15 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             });
                             
                             $scope.modsPerSem.push(currentSemMod);
+                            
+                            //$scope.plannedMods.{{$scope.takenMods}}.push({$scope.takenMods});
+                            
+                            /*if($scope.takenMods.AcadYear == "2015/2016")
+                                $scope.plannedMods.1.push({$scope.takenMods});
+                            else
+                                $scope.plannedMods.2.push({$scope.takenMods});
+                            
+                            
                             //count = 0;
                             //console.log($scope.takenMods);
                             /*$scope.$applyAsync(function(){
@@ -608,7 +622,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 			}
 		);
 	}
-    
     
 	
 	$scope.logout = function(){
