@@ -24,7 +24,7 @@ function getUrlVars() {
 
 var userName;
 var studentId;
-sessionStorage.setItem("totalCreditTaken" , 0);
+
 angular.module('NUSAP')
     .controller('MasterCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', '$q', '$log', '$timeout', MasterCtrl]);
 
@@ -32,13 +32,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     /**
      * Sidebar Toggle & Cookie Control
      */
-    //$scope.overallProgress = "20%";
     $scope.dashboardLoading = false;
     $scope.searchLoading = true;
     //if(sessionStorage.dashboardLoading != true){
     $timeout(function () {
-        $scope.dashboardLoading = true;
-        //console.log(parseInt(sessionStorage.getItem("totalCreditTaken")));
+      $scope.dashboardLoading = true;
+          
     }, 3500);
 
     //}
@@ -77,10 +76,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     
     getMajReq().then(
         function(response){
-            //console.log("testing json file");
-            //console.log(response.data.matric2015.Core);
-            console.log(response.data.matric2015.ULR);
-            //console.log(response.data.matric2015.UE);
+            console.log("testing json file");
+            console.log(response.data.matric2015.Core);
         }
     );
     
@@ -346,102 +343,65 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         
        
         function getAllAcadYear(matricYear){
-            matricYear = parseInt(matricYear);
-            var modYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(0,4));
+            var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
             var resultArr = [];
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = parseInt(date.getMonth()) + 1;
-            //console.log(month);
-            for(var i = matricYear; i <= modYear; i++){
-                var nextYear = i + 1;
-                if(i < modYear){
-                    var result = i + "/" + nextYear + "-1";
-                    resultArr.push(result);
-                    result = i + "/" + nextYear + "-2";
-                    resultArr.push(result);
-                } else{
-                    if(month < 7){
-                        var result = i + "/" + nextYear + "-1";
-                        resultArr.push(result);
-                        result = i + "/" + nextYear + "-2";
-                        resultArr.push(result);
-                    } else{
-                        var result = i + "/" + nextYear + "-1";
-                        resultArr.push(result);
-                    }
-                }
-            }
-            //console.log(resultArr);
-            return resultArr;
             
-            //var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
-            //var resultArr = [];
             
-            //console.log(JSON.parse(sessionStorage.getItem("modsTaken"))[4].ModuleCode);
-            //console.log(parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[4].AcadYear.substring(0,4)));
             //Debug purpose to be deleted
             //var lastYear = 2017;
             //End of debug
-//            var date = new Date();
-//            var year = date.getFullYear();
-//            var month = date.getMonth();
-//            
-//            var semCount = 1;
-//            console.log(lastYear);
-//            for(var i = matricYear; i <= lastYear; i ++){
-//                var appendYear = i + 1;
-//                var nextYear = appendYear;
-//                console.log(appendYear);
-//                console.log("debug");
-//                console.log(nextYear);
-//                if(appendYear == lastYear){
-//                    //add semester 1 and 2 for the year
-//                    if(month < 7){
-//                        
-//                        appendYear = i + "/" + appendYear + "-" + semCount;
-//                        resultArr.push(appendYear);
-//                    
-//                        appendYear = i + 1;
-//                        
-//                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-//                        resultArr.push(appendYear);
-//                    //add semester 1
-//                    }else{
-//                        appendYear = i + "/" + appendYear + "-" + semCount;
-//                        resultArr.push(appendYear);
-//                    
-//                        appendYear = i + 1;
-//                        
-////                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-////                        resultArr.push(appendYear);
-////                        
-////                        appendYear = i + 2;
-////                        
-////                        appendYear = (i + 1) + "/" + appendYear + "-" + semCount;
-////                        resultArr.push(appendYear);
-//                        
-//                    }
-//                //if the appendYear is lower than the current Year , add in sem 2
-//                } else if(appendYear < lastYear){
-//                    appendYear = i + "/" + appendYear + "-" + semCount;
-//                    resultArr.push(appendYear);
-//                    
-//                    appendYear = i + 1;
-//                    appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-//                    resultArr.push(appendYear);
-//                } 
-//                
-//            }
-//            return resultArr;
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            matricYear = parseInt(matricYear);
+            var semCount = 1;
+            for(var i = matricYear; i <= lastYear; i ++){
+                var appendYear = i + 1;
+                var nextYear = appendYear;
+
+                if(appendYear == lastYear){
+                    if(month < 9){
+                        appendYear = i + "/" + appendYear + "-" + semCount;
+                        resultArr.push(appendYear);
+                    
+                        appendYear = i + 1;
+                        
+                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+                        resultArr.push(appendYear);
+  
+                    }else{
+                        appendYear = i + "/" + appendYear + "-" + semCount;
+                        resultArr.push(appendYear);
+                    
+                        appendYear = i + 1;
+                        
+                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+                        resultArr.push(appendYear);
+                        
+                        appendYear = i + 2;
+                        
+                        appendYear = (i + 1) + "/" + appendYear + "-" + semCount;
+                        resultArr.push(appendYear);
+                        
+                    }
+                //if the appendYear is lower than the current Year , add in sem 2
+                } else if(appendYear < lastYear){
+                    appendYear = i + "/" + appendYear + "-" + semCount;
+                    resultArr.push(appendYear);
+                    
+                    appendYear = i + 1;
+                    appendYear = i + "/" + appendYear + "-" + (semCount + 1);
+                    resultArr.push(appendYear);
+                } 
+                
+            }
+            return resultArr;
 
         }
         
 		getUserProfile().then(
-            
 			function (responseProfile) {
-                
-                //console.log(responseProfile.data);
+                console.log(responseProfile.data);
                 $scope.username = responseProfile.data.Results[0].Name;
                 sessionStorage.setItem("userName", $scope.username);
                 sessionStorage.setItem("netid", responseProfile.data.Results[0].UserID);
@@ -483,8 +443,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     function (responseModTaken) {   
                         $scope.modsCount = responseModTaken.data.Results.length;
                         sessionStorage.setItem("modsTaken", JSON.stringify(responseModTaken.data.Results));
-
-                        //console.log($scope.overallProgress);                        
                         //Debugging
                         //This is how you retreive the array
                         //console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
@@ -492,7 +450,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         
                         $scope.specialMods = [];
                         $scope.modsPerSem = [];
-                        
+
                     //$scope.takenMods = response.data.Results;
                         var count = 0;
                         //var deferredCount = $q.defer();
@@ -506,7 +464,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         
                         //getting all the academic year of the users
                         sessionStorage.setItem("userSem", JSON.stringify(getAllAcadYear(JSON.parse(sessionStorage.getItem("matricYear")))));   
-                        //console.log("test result : " + JSON.parse(sessionStorage.getItem("userSem"))); 
+                        console.log("test result : " + getAllAcadYear(JSON.parse(sessionStorage.getItem("matricYear")))); 
                         var userSem = JSON.parse(sessionStorage.getItem("userSem"));
                         var currentSem = 1;
                         //console.log(userSem[2]);
@@ -516,33 +474,14 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             $scope.takenMods = [];
                             var currentSemMod = [];
                             $scope.unlockSem.push(false);
-                            //var totalCreditTaken = parseInt(sessionStorage.getItem("totalCreditTaken"));
-                            //console.log("current total " + totalCreditTaken);
-                            
                             //console.log("current index " + index);
                             angular.forEach(userModsTaken, function(value,key){
-                                
                                 //console.log("key : " + userModsTaken[key].ModuleCode);
                                 //console.log(userSem[index].substring(10,11));
                                 if(userModsTaken[key].Semester == userSem[index].substring(10,11) && userModsTaken[key].AcadYear == userSem[index].substring(0,9)){ 
                                     getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear). then(
                                         function(responseModInfo) {
-                                            var totalCreditTaken = parseInt(sessionStorage.getItem("totalCreditTaken"));
-                                            //display the overall bar chart
-                                            //console.log(totalCreditTaken);
-                                            $scope.$applyAsync(function(){
-                                                $scope.overallProgress = (totalCreditTaken / 160 * 100) + "%";
-                                                
-                                            });
-                                            
-                                            //console.log(totalCreditTaken);
                                             if(responseModInfo.data === ""){
-                                                totalCreditTaken = totalCreditTaken + 4;
-                                                sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
-                                                //totalCreditTaken = totalCreditTaken + 4;
-                                                //console.log("debug");
-                                                //console.log(totalCreditTaken);
-                                                //sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
                                                 //console.log("Failed : " + userModsTaken[key].ModuleCode);
                                                 currentSemMod.unshift({
                                                     ModuleCode      : userModsTaken[key].ModuleCode,
@@ -587,15 +526,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                         Semester        : userModsTaken[key].Semester
                                                     }
                                                 ));
-                                                
                                             } else{
-                                                totalCreditTaken = totalCreditTaken + parseInt(responseModInfo.data.ModuleCredit);
-                                                sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
-                                                //totalCreditTaken = totalCreditTaken + parseInt(responseModInfo.data.ModuleCredit);
-                                                //console.log(totalCreditTaken);
-                                                //console.log("debug");
-                                                //console.log(totalCreditTaken);
-                                                //sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
                                                 generatePreclusionList(responseModInfo.data.ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear);
                                                 //console.log("Success : " + responseModInfo.data.ModuleCode);
                                                 currentSemMod.push({
@@ -639,14 +570,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                         Semester        : userModsTaken[key].Semester
                                                     }
                                                 ));
-                                               
 
                                             }
-                                            
-                                        }  
+                                        }
                                     );
                                 }
-                                
+
                             });
                             
                             $scope.modsPerSem.push(currentSemMod);
@@ -657,13 +586,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                 $scope.plannedMods.1.push({$scope.takenMods});
                             else
                                 $scope.plannedMods.2.push({$scope.takenMods});
-
-
-                            //console.log(sessionStorage.getItem("totalCreditTaken"));
-                            //$scope.overallProgress = parseInt(sessionStorage.getItem("totalCreditTaken")) / 160 * 100;
-                            //console.log("debug total");
-                            //console.log($scope.overallProgress);
-                            //$scope.overallProgress = $scope.overallProgress + "%";
+                            
+                            
                             //count = 0;
                             //console.log($scope.takenMods);
                             /*$scope.$applyAsync(function(){
@@ -675,11 +599,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                 
                             });*/
                             
-                            
                         });
-                        //$scope.$applyAsync(function(){
-                        //console.log(sessionStorage.getItem("totalCreditTaken"));
-                        //});
                         //console.log($scope.unlockSem);
 //                        angular.forEach($scope.takenMods, function(value,key){
 //                            $scope.modules = {
@@ -687,13 +607,13 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 //                                selectedModGrade    : $scope.takenMods[key].ModuleGrade[0]
 //                            };
 //                        });
-                   
+                        
                     }, function (responseModTaken) {
                         console.log("error no mods found");
                         // Failure Function
+                        
                     }
-                    //console.log(sessionStorage.getItem("totalCreditTaken"));
-                );    
+                );        
                 
             }, function (responseProfile) {
 			// Failure Function
