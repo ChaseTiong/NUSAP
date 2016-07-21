@@ -25,6 +25,7 @@ function getUrlVars() {
 
 var userName;
 var studentId;
+sessionStorage.setItem("totalCreditTaken" , 0);
 
 angular.module('NUSAP')
     .controller('MasterCtrl', ['$scope', '$cookieStore', '$http', '$location', '$window', '$q', '$log', '$timeout', MasterCtrl]);
@@ -340,64 +341,35 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     
 	$scope.getProfile = function(){
         
-        //history.replaceState({} , null, "index.html");
-        
-       
         function getAllAcadYear(matricYear){
-            var lastYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(5));
+            matricYear = parseInt(matricYear);
+            var modYear = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(0,4));
             var resultArr = [];
-            
-            
-            //Debug purpose to be deleted
-            //var lastYear = 2017;
-            //End of debug
             var date = new Date();
             var year = date.getFullYear();
-            var month = date.getMonth();
-            matricYear = parseInt(matricYear);
-            var semCount = 1;
-            for(var i = matricYear; i <= lastYear; i ++){
-                var appendYear = i + 1;
-                var nextYear = appendYear;
-
-                if(appendYear == lastYear){
-                    if(month < 9){
-                        appendYear = i + "/" + appendYear + "-" + semCount;
-                        resultArr.push(appendYear);
-                    
-                        appendYear = i + 1;
-                        
-                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-                        resultArr.push(appendYear);
-  
-                    }else{
-                        appendYear = i + "/" + appendYear + "-" + semCount;
-                        resultArr.push(appendYear);
-                    
-                        appendYear = i + 1;
-                        
-                        appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-                        resultArr.push(appendYear);
-                        
-                        appendYear = i + 2;
-                        
-                        appendYear = (i + 1) + "/" + appendYear + "-" + semCount;
-                        resultArr.push(appendYear);
-                        
+            var month = parseInt(date.getMonth()) + 1;
+            //console.log(month);
+            for(var i = matricYear; i <= modYear; i++){
+                var nextYear = i + 1;
+                if(i < modYear){
+                    var result = i + "/" + nextYear + "-1";
+                    resultArr.push(result);
+                    result = i + "/" + nextYear + "-2";
+                    resultArr.push(result);
+                } else{
+                    if(month < 7){
+                        var result = i + "/" + nextYear + "-1";
+                        resultArr.push(result);
+                        result = i + "/" + nextYear + "-2";
+                        resultArr.push(result);
+                    } else{
+                        var result = i + "/" + nextYear + "-1";
+                        resultArr.push(result);
                     }
-                //if the appendYear is lower than the current Year , add in sem 2
-                } else if(appendYear < lastYear){
-                    appendYear = i + "/" + appendYear + "-" + semCount;
-                    resultArr.push(appendYear);
-                    
-                    appendYear = i + 1;
-                    appendYear = i + "/" + appendYear + "-" + (semCount + 1);
-                    resultArr.push(appendYear);
-                } 
-                
+                }
             }
+            //console.log(resultArr);
             return resultArr;
-
         }
         
 		getUserProfile().then(
@@ -482,7 +454,16 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                 if(userModsTaken[key].Semester == userSem[index].substring(10,11) && userModsTaken[key].AcadYear == userSem[index].substring(0,9)){ 
                                     getModInfo(userModsTaken[key].ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear). then(
                                         function(responseModInfo) {
+                                            
+                                            //Initialising overall progress bar
+                                            var totalCreditTaken = parseInt(sessionStorage.getItem("totalCreditTaken"));
+                                            $scope.$applyAsync(function(){
+                                                $scope.overallProgress = (totalCreditTaken / 160 * 100) + "%";
+                                            });
+                                            
                                             if(responseModInfo.data === ""){
+                                                totalCreditTaken = totalCreditTaken + 4;
+                                                sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
                                                 //console.log("Failed : " + userModsTaken[key].ModuleCode);
                                                 currentSemMod.unshift({
                                                     ModuleCode      : userModsTaken[key].ModuleCode,
@@ -528,6 +509,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     }
                                                 ));
                                             } else{
+                                                totalCreditTaken = totalCreditTaken + parseInt(responseModInfo.data.ModuleCredit);
+                                                sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
                                                 generatePreclusionList(responseModInfo.data.ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear);
                                                 //console.log("Success : " + responseModInfo.data.ModuleCode);
                                                 currentSemMod.push({
