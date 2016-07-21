@@ -19,7 +19,7 @@
 	<div class="col-lg-8">
 		<rd-widget>
 
-            <rd-widget-header class="no-padding" icon="fa-tasks" title="Academic Planner">
+            <rd-widget-header icon="fa-tasks" title="Academic Planner">
 				<a target="_blank" href="https://nusmods.com">NUSmods</a><button class="btn btn-primary" data-ng-click="addYear()">+</button>
 				
       		</rd-widget-header>
@@ -33,11 +33,16 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th colspan="100%" class="text-center">Semester 1</th>
+                                <th colspan="100%" class="text-center" >Semester 1</th>
                             </tr>
                             <td ng-repeat="year in plannerSize" class="col-md-(12/{{year.length}}) row-sm-height">
                                 <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear">
-                                    <li class="text-center" ng-repeat="mod in takenMods" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="takenMods.splice($index, 1)" dnd-effect-allowed="move">{{mod.ModuleCode}} {{mod.ModuleTitle}}
+                                    <li class="text-center" ng-repeat="mod in takenMods"
+                                        dnd-draggable="mod"
+                                        dnd-type="mod.AcadYear"
+                                        dnd-moved="takenMods.splice($index, 1)"
+                                        dnd-effect-allowed="move"
+                                    >{{mod.ModuleCode}} {{mod.ModuleTitle}}
                                     </li>
                                     <li class="dndPlaceholder">
                                         Drop a <strong>module</strong> here
@@ -45,7 +50,8 @@
                                 </ul>
                             </td>
                         </tbody>
-                    </table></div>
+                    </table>
+                </div>
 				<!--<div class="table-responsive typesDemo row">
 					<table class="table">
 						<thead>
@@ -76,13 +82,20 @@
                 <div class="table-responsive typesDemo row">
 					<table class="table">
                         <tr>
-                            <th colspan="100%" class="text-center">Semester 2</th>
+                            <th colspan="100%" class="text-center" >Semester 2</th>
                         </tr>
                         <td ng-repeat="year in plannerSize" class="col-md-(12/{{year.length}})">
                         <div class="panel panel-info">
                             <div class="panel-body">
                                 <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" dnd-disable-if="modules.Semester != '1'">
-                                    <li ng-repeat="person in list.people" dnd-draggable="person" dnd-type="person.type" dnd-disable-if="person.type == 'unknown'" dnd-moved="list.people.splice($index, 1)" dnd-effect-allowed="move" class="background-{{person.type}}">
+                                    <li ng-repeat="person in list.people"
+                                        dnd-draggable="person"
+                                        dnd-type="person.type"
+                                        dnd-disable-if="person.type == 'unknown'"
+                                        dnd-moved="list.people.splice($index, 1)"
+                                        dnd-effect-allowed="move"
+                                        class="background-{{person.type}}"
+                                        >
                                         <dnd-nodrag>
                                           <div dnd-handle class="handle">:::</div>
                                           <div class="name">
@@ -98,7 +111,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </td></table>
+                    </table>
                 </div>
             </rd-widget-body>
 		</rd-widget>
@@ -110,7 +123,8 @@
         <rd-widget>
 			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
                 <tr ng-repeat="modules in takenMods">     
-                    <td><progressbar animate="false" value="modules.progress" type="{{modules.type}}" data-ng-class="{ 'progress-bar-success' : modules.type == 'success' , 'progress-bar-info': modules.type == 'info', 'progress-bar-warning' : modules.type == 'warning' , 'progress-bar-danger': modules.type == 'danger'}">  
+                    <td><progressbar animate="false" value="modules.progress" type="{{modules.type}}" 
+                    data-ng-class="{ 'progress-bar-success' : modules.type == 'success' , 'progress-bar-info': modules.type == 'info', 'progress-bar-warning' : modules.type == 'warning' , 'progress-bar-danger': modules.type == 'danger'}"   >  
                         <b>{{modules.progress}} </b></progressbar></td>
                 </tr>
                 <div data-ng-controller="BarCtrl" data-ng-init="getBarChart()">
@@ -192,17 +206,23 @@
                   <div class="rect4"></div>
                   <div class="rect5"></div>
                 </div>
-				<div ng-show="searchLoading == true" class="table-responsive row">
+				<div ng-show="searchLoading == true" class="table-responsive">
 					
                     <table class="table fixed-header">
 						<thead>
                             <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--></tr>
                         </thead>
+                        
                         <tbody>
                             <td>
                                 <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" style="list-style-type:none">
-                                    <li class="text-center" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move">{{module.ModuleCode}} {{module.ModuleTitle}} {{module.Semesters}} 
-                                    </li><li class="dndPlaceholder">
+                                    <li class="text-center" ng-repeat="module in modList | filter: { ModuleCode: searchBox }"
+                                        dnd-draggable="module"
+                                        dnd-type="module.AcadYear"
+                                        dnd-moved="modList.splice($index, 1)"
+                                        dnd-effect-allowed="move"
+                                    >{{module.ModuleCode}} {{module.ModuleTitle}} {{module.Semesters}} 
+                                    <li class="dndPlaceholder">
                                         Drop a <strong>module</strong> here
                                     </li>
                                 </ul>
@@ -213,6 +233,8 @@
                                     <button data-ng-mousedown="preRequisite()" data-ng-dblclick="nusmodsWeb()" type="submit" class="btn btn-info" draggable="true" ondragstart="dragStart(event)" id="dragtarget" data-ng-init="modValidation()">{{modules.Semesters}}</button> 
                                 </td>
                            </tr>-->
+
+
                         </tbody>
 					</table> 
         		</div>
@@ -220,26 +242,27 @@
 		<rd-widget>
 	</rd-widget></rd-widget></div>
 </div>
-
 <div class="typesDemo row" data-ng-controller="MasterCtrl">
 
     <div ng-repeat="list in lists" class="col-md-4">
         <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">List of {{list.label}} (max. {{list.max}})</h3>
+            </div>
             <div class="panel-body">
                 <ul dnd-list="list.people" dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.people.length >= list.max">
 
                     <li ng-repeat="person in list.people" dnd-draggable="person" dnd-type="person.type" dnd-disable-if="person.type == 'unknown'" dnd-moved="list.people.splice($index, 1)" dnd-effect-allowed="move" class="background-{{person.type}}">
-                        {{person.name}}
-                        <!--<dnd-nodrag>
+                        <dnd-nodrag>
                           <div dnd-handle class="handle">:::</div>
                           <div class="name">
                               <input type="text" ng-model="person.name" class="background-{{person.type}} form-control input-sm">
                           </div>
-                        </dnd-nodrag>-->
+                        </dnd-nodrag>
                     </li>
 
                     <li class="dndPlaceholder">
-                        Drop an <strong></strong> here
+                        Drop an <strong>{{list.allowedTypes.join(' or ')}}</strong> here
                     </li>
 
                 </ul>
@@ -248,7 +271,8 @@
     </div>
 
 </div>
-        
+
+
 <!--
 <div class="row">
 	<div class="col-lg-6">

@@ -92,7 +92,7 @@
  * otherwise you can't drop to it once it's empty
  */
 .typesDemo ul[dnd-list] {
-  min-height: 102px;
+  min-height: 42px;
   padding-left: 0px;
 }
 
@@ -146,10 +146,7 @@
   display: block;
   padding: 10px 15px;
 }
-.typesDemo ul[dnd-list] li {
-  background-color: #CAE0FC;
-    padding: 3px;
-}
+
 /**
  * Gender-specifc background
  */
@@ -237,7 +234,109 @@
   }
 }
 
-button.btn .btn-info {
-    width: 11em;
-    word-wrap: break-word;
+.btn-nusap {
+  display: inline-block;
+  padding: 0px 7px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
 }
+
+.btn-class {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+
+/*
+.btn-class{
+ display: inline-block;
+ border:1px solid #2E6DA4;
+ color: #FFFFFF;
+ border-radius: 3px 3px 3px 3px;
+ -webkit-border-radius: 3px 3px 3px 3px;
+ -moz-border-radius: 3px 3px 3px 3px;
+ font-family: Verdana;
+ width: auto;
+ height: auto;
+ font-size: 12px;
+ padding: 0px 7px;
+ box-shadow: 0 1px 0 0 #2E6DA4,inset 0 -1px 0 0 #2E6DA4,inset 0 0 0 1px #2E6DA4,0 2px 4px 0 #D4D4D4;
+ -moz-box-shadow: 0 1px 0 0 #2E6DA4,inset 0 -1px 0 0 #2E6DA4,inset 0 0 0 1px #2E6DA4,0 2px 4px 0 #D4D4D4;
+ -webkit-box-shadow: 0 1px 0 0 #2E6DA4,inset 0 -1px 0 0 #2E6DA4,inset 0 0 0 1px #2E6DA4,0 2px 4px 0 #D4D4D4;
+ background-image: linear-gradient(to top, #337AB7, #2E6DA4);
+ background-color: #337AB7;
+}*/
+
+.btn-class:focus,
+.btn-class.focus {
+  color: #fff;
+  background-color: #286090;
+  border-color: #122b40;
+}
+.btn-class:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+.btn-class:active,
+.btn-class.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+.btn-class:active:hover,
+.btn-class.active:hover,
+.open > .dropdown-toggle.btn-class:hover,
+.btn-class:active:focus,
+.btn-class.active:focus,
+.open > .dropdown-toggle.btn-class:focus,
+.btn-class:active.focus,
+.btn-class.active.focus,
+.open > .dropdown-toggle.btn-class.focus {
+  color: #fff;
+  background-color: #204d74;
+  border-color: #122b40;
+}
+.btn-class:active,
+.btn-class.active,
+.open > .dropdown-toggle.btn-class {
+  background-image: none;
+}
+.btn-class.disabled:hover,
+.btn-class[disabled]:hover,
+fieldset[disabled] .btn-class:hover,
+.btn-class.disabled:focus,
+.btn-class[disabled]:focus,
+fieldset[disabled] .btn-class:focus,
+.btn-class.disabled.focus,
+.btn-class[disabled].focus,
+fieldset[disabled] .btn-class.focus {
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.btn-class .badge {
+  color: #337ab7;
+  background-color: #fff;
+}
+
+.progress-title{
+  float: left;
+
+}
+

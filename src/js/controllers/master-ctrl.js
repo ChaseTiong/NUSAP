@@ -19,6 +19,7 @@ function getUrlVars() {
 	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
 	vars[key] = value;
 	});
+    //history.replaceState({} , null, "index.html");
 	return vars;
 }  
 
@@ -508,8 +509,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester
                                                 });
-                                                
-                                                //console.log($scope.takenMods.[count]);
+
+                                                //console.log($scope.takenMods[count]);
                                                 currentSemMod[0].selectedModGrade = currentSemMod[0].ModuleGrade[0];
                                                 currentSemMod[0].selectedModSuStatus = currentSemMod[0].ModuleSuStatus[0];
                                                 //count ++;
@@ -579,6 +580,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             });
                             
                             $scope.modsPerSem.push(currentSemMod);
+
                             
                             //$scope.plannedMods.{{$scope.takenMods}}.push({$scope.takenMods});
                             
@@ -587,7 +589,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             else
                                 $scope.plannedMods.2.push({$scope.takenMods});
                             
-                            
+       
+                            //console.log(sessionStorage.getItem("totalCreditTaken"));
+                            //$scope.overallProgress = parseInt(sessionStorage.getItem("totalCreditTaken")) / 160 * 100;
+                            //console.log("debug total");
+                            //console.log($scope.overallProgress);
+                            //$scope.overallProgress = $scope.overallProgress + "%";
                             //count = 0;
                             //console.log($scope.takenMods);
                             /*$scope.$applyAsync(function(){
@@ -622,6 +629,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 			}
 		);
 	}
+    
     
 	
 	$scope.logout = function(){

@@ -50,7 +50,8 @@
                                 </ul>
                             </td>
                         </tbody>
-                    </div>
+                    </table>
+                </div>
 				<!--<div class="table-responsive typesDemo row">
 					<table class="table">
 						<thead>
@@ -211,6 +212,7 @@
 						<thead>
                             <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--></tr>
                         </thead>
+                        
                         <tbody>
                             <td>
                                 <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" style="list-style-type:none">
@@ -231,6 +233,8 @@
                                     <button data-ng-mousedown="preRequisite()" data-ng-dblclick="nusmodsWeb()" type="submit" class="btn btn-info" draggable="true" ondragstart="dragStart(event)" id="dragtarget" data-ng-init="modValidation()">{{modules.Semesters}}</button> 
                                 </td>
                            </tr>-->
+
+
                         </tbody>
 					</table> 
         		</div>
@@ -238,11 +242,13 @@
 		<rd-widget>
 	</div>
 </div>
-
 <div class="typesDemo row" data-ng-controller="MasterCtrl">
 
     <div ng-repeat="list in lists" class="col-md-4">
         <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">List of {{list.label}} (max. {{list.max}})</h3>
+            </div>
             <div class="panel-body">
                 <ul dnd-list="list.people" dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.people.length >= list.max">
 
@@ -254,17 +260,16 @@
                         dnd-effect-allowed="move"
                         class="background-{{person.type}}"
                         >
-                        {{person.name}}
-                        <!--<dnd-nodrag>
+                        <dnd-nodrag>
                           <div dnd-handle class="handle">:::</div>
                           <div class="name">
                               <input type="text" ng-model="person.name" class="background-{{person.type}} form-control input-sm">
                           </div>
-                        </dnd-nodrag>-->
+                        </dnd-nodrag>
                     </li>
 
                     <li class="dndPlaceholder">
-                        Drop an <strong></strong> here
+                        Drop an <strong>{{list.allowedTypes.join(' or ')}}</strong> here
                     </li>
 
                 </ul>
