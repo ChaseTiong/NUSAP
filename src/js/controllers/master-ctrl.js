@@ -40,7 +40,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     $timeout(function () {
       $scope.dashboardLoading = true;
           
-    }, 3500);
+    }, 6000);
 
     //}
     function get(url) {
@@ -79,7 +79,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     getMajReq().then(
         function(response){
             console.log("testing json file");
-            console.log(response.data.matric2015.Core);
+            console.log(response.data.matric2015.ULR);
         }
     );
     
@@ -254,6 +254,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             ]
         }
     ];
+    
+    //Populate search bar modules
     getModList().then(
         function (responseModList) {
             sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));
@@ -338,6 +340,25 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         //});
         
     }
+    
+   //start to populate barchart with modules Taken
+//    $scope.barChartModTaken = JSON.parse(sessionStorage.getItem("modsTaken"));
+//    getMajReq().then(
+//        function(majReq){
+//            //getting matric year to access json data
+//            var mYear = "matric" + matricYear;
+//            var result = (majReq.data[mYear]);
+//            //debug
+//            //console.log(result.Internship.length);
+//            //end debug
+//
+//            //checking core requirement
+//            //check against preclusion list
+//            console.log(JSON.parse(sessionStorage.getItem("preclusionList")));
+//
+//        }
+//    );    
+    
     
 	$scope.getProfile = function(){
         

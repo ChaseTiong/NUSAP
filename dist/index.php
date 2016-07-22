@@ -47,7 +47,7 @@
     } else if(strcmp($id, "majorReq") == 0){
         $maj = $_GET['maj'];
         //for local host implementation
-        $url = "http://localhost:8888/dist/json/".$maj;
+        $url = "http://localhost:8888/dist/json/".$maj.".json";
         $json = file_get_contents("$url");
         echo $json;
     }
