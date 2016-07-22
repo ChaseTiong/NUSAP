@@ -28,16 +28,17 @@
 					<table class="table">
                         <thead>
                            <tr>
-                                <th class="text-center" ng-repeat="year in plannerSize track by $index">{{year.candidatureYear}} MC:{{year.mcCount}}</th>
+                                <th class="text-center" ng-repeat="year in plannerSize track by $index">{{year.candidatureYear}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <th colspan="100%" class="text-center">Semester 1</th>
                             </tr>
-                            <td ng-repeat="year in plannerSize" class="col-md-(12/{{year.length}}) row-sm-height">
-                                <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear">
-                                    <li class="text-center" ng-repeat="mod in takenMods" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="takenMods.splice($index, 1)" dnd-effect-allowed="move">{{mod.ModuleCode}} {{mod.ModuleTitle}}
+                            <!--dnd-disable-if="$index%2 == 0" ng-repeat="year in plannerSize" -->
+                            <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 == 0" class="col-md-(12/{{year.length}}) row-sm-height">
+                                <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
+                                    <li class="text-center" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move">{{mod.ModuleCode}}
                                     </li>
                                     <li class="dndPlaceholder">
                                         Drop a <strong>module</strong> here
@@ -76,30 +77,22 @@
             <rd-widget-body classes="large no-padding">
                 <div class="table-responsive typesDemo row">
 					<table class="table">
+                        <thead>
+                            <th class="text-center" ng-repeat="year in plannerSize track by $index">{{year.candidatureYear}}</th>
+                        </thead>
                         <tr>
                             <th colspan="100%" class="text-center">Semester 2</th>
                         </tr>
-                        <td ng-repeat="year in plannerSize" class="col-md-(12/{{year.length}})">
-                        <div class="panel panel-info">
-                            <div class="panel-body">
-                                <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" dnd-disable-if="modules.Semester != '1'">
-                                    <li ng-repeat="person in list.people" dnd-draggable="person" dnd-type="person.type" dnd-disable-if="person.type == 'unknown'" dnd-moved="list.people.splice($index, 1)" dnd-effect-allowed="move" class="background-{{person.type}}">
-                                        <dnd-nodrag>
-                                          <div dnd-handle class="handle">:::</div>
-                                          <div class="name">
-                                              <input type="text" ng-model="person.name" class="background-{{person.type}} form-control input-sm">
-                                          </div>
-                                        </dnd-nodrag>
+                        <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 != 0" class="col-md-(12/{{year.length}}) row-sm-height">
+                                <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
+                                    <li class="text-center" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move">{{mod.ModuleCode}} 
                                     </li>
-
                                     <li class="dndPlaceholder">
-                                        Drop an <strong>{{list.allowedTypes.join(' or ')}}</strong> here
+                                        Drop a <strong>module</strong> here
                                     </li>
-
                                 </ul>
-                            </div>
-                        </div>
-                    </td></table>
+                            </td>
+                    </table>
                 </div>
             </rd-widget-body>
 		</rd-widget>
@@ -264,7 +257,7 @@
                   <div class="rect4"></div>
                   <div class="rect5"></div>
                 </div>
-				<div ng-show="searchLoading == true" class="table-responsive row">
+				<div ng-show="searchLoading == true" class="table-responsive typesDemo row">
 					
                     <table class="table fixed-header">
 						<thead>
@@ -295,7 +288,7 @@
 		<rd-widget>
 	</rd-widget></rd-widget></div>
 </div>
-<div class="typesDemo row" data-ng-controller="MasterCtrl">
+<!--<div class="typesDemo row" data-ng-controller="MasterCtrl">
 
     <div ng-repeat="list in lists" class="col-md-4">
         <div class="panel panel-info">
@@ -305,7 +298,14 @@
             <div class="panel-body">
                 <ul dnd-list="list.people" dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.people.length >= list.max">
 
-                    <li ng-repeat="person in list.people" dnd-draggable="person" dnd-type="person.type" dnd-disable-if="person.type == 'unknown'" dnd-moved="list.people.splice($index, 1)" dnd-effect-allowed="move" class="background-{{person.type}}">
+                    <li ng-repeat="person in list.people"
+                        dnd-draggable="person"
+                        dnd-type="person.type"
+                        dnd-disable-if="person.type == 'unknown'"
+                        dnd-moved="list.people.splice($index, 1)"
+                        dnd-effect-allowed="move"
+                        class="background-{{person.type}}"
+                        >
                         <dnd-nodrag>
                           <div dnd-handle class="handle">:::</div>
                           <div class="name">
