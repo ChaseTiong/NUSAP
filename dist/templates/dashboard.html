@@ -19,7 +19,7 @@
 	<div class="col-lg-8">
 		<rd-widget>
 
-            <rd-widget-header icon="fa-tasks" title="Academic Planner">
+            <rd-widget-header class="no-padding" icon="fa-tasks" title="Academic Planner">
 				<a target="_blank" href="https://nusmods.com">NUSmods</a><button class="btn btn-primary" data-ng-click="addYear()">+</button>
 				
       		</rd-widget-header>
@@ -33,16 +33,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th colspan="100%" class="text-center" >Semester 1</th>
+                                <th colspan="100%" class="text-center">Semester 1</th>
                             </tr>
                             <td ng-repeat="year in plannerSize" class="col-md-(12/{{year.length}}) row-sm-height">
                                 <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear">
-                                    <li class="text-center" ng-repeat="mod in takenMods"
-                                        dnd-draggable="mod"
-                                        dnd-type="mod.AcadYear"
-                                        dnd-moved="takenMods.splice($index, 1)"
-                                        dnd-effect-allowed="move"
-                                    >{{mod.ModuleCode}} {{mod.ModuleTitle}}
+                                    <li class="text-center" ng-repeat="mod in takenMods" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="takenMods.splice($index, 1)" dnd-effect-allowed="move">{{mod.ModuleCode}} {{mod.ModuleTitle}}
                                     </li>
                                     <li class="dndPlaceholder">
                                         Drop a <strong>module</strong> here
@@ -82,20 +77,13 @@
                 <div class="table-responsive typesDemo row">
 					<table class="table">
                         <tr>
-                            <th colspan="100%" class="text-center" >Semester 2</th>
+                            <th colspan="100%" class="text-center">Semester 2</th>
                         </tr>
                         <td ng-repeat="year in plannerSize" class="col-md-(12/{{year.length}})">
                         <div class="panel panel-info">
                             <div class="panel-body">
                                 <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" dnd-disable-if="modules.Semester != '1'">
-                                    <li ng-repeat="person in list.people"
-                                        dnd-draggable="person"
-                                        dnd-type="person.type"
-                                        dnd-disable-if="person.type == 'unknown'"
-                                        dnd-moved="list.people.splice($index, 1)"
-                                        dnd-effect-allowed="move"
-                                        class="background-{{person.type}}"
-                                        >
+                                    <li ng-repeat="person in list.people" dnd-draggable="person" dnd-type="person.type" dnd-disable-if="person.type == 'unknown'" dnd-moved="list.people.splice($index, 1)" dnd-effect-allowed="move" class="background-{{person.type}}">
                                         <dnd-nodrag>
                                           <div dnd-handle class="handle">:::</div>
                                           <div class="name">
@@ -111,14 +99,84 @@
                                 </ul>
                             </div>
                         </div>
-                    </table>
+                    </td></table>
                 </div>
             </rd-widget-body>
 		</rd-widget>
 	</div>
-	
+
+<!-- Graduation Progress using progress bar !-->
+   
+   <div class="col-lg-4 col-sm-6 col-xs-12" data-ng-controller="BarCtrl">
+        <rd-widget>
+			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
+              <rd-widget-body>
+                  <span class="progress-title"><b>OVERALL&nbsp;:&nbsp;</b></span>
+                  <div class="progress">
+                     <div data-ng-controller="MasterCtrl" class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{overallProgress}}">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-striped progress-bar-warning active" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <!-- <div class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar" style="width:20%">                      
+                     </div> !-->
+                  </div>
+                 
+                  <span class="progress-title"><b>CORE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;</b></span>
+                  <div class="progress">
+                     <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{currentCore}}">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
+                      
+                     </div>
+                  </div>
+                  
+                  <span class="progress-title"><b>ULR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;</b></span>
+                  <div class="progress">
+                     <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:40%">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
+                      
+                     </div>
+                  </div>
+
+                  <span class="progress-title"><b>UE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;</b></span>
+                  <div class="progress">
+                     <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:40%">
+                      
+                      </div>
+                   
+                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
+                      
+                     </div>
+                   
+                     <div class="progress-bar progress-bar-danger" role="progressbar" style="width:20%">
+                      
+                     </div>
+                  </div>                  
+             
+             </rd-widget-body>
+       </rd-widget>      
+   </div>
+            
+   <!-- End of Graduation Progess !-->   	
     
-    <!-- Graduation Progress -->
+    <!-- Graduation Progress
 	<div class="col-lg-4 col-sm-6 col-xs-12">
         <rd-widget>
 			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
@@ -131,7 +189,7 @@
                     <canvas class="col-lg-4 col-sm-6 col-xs-12 pull-right" id="canvas" height="220"></canvas>
                 </div>
         </rd-widget>
-    </div>
+    </div> -->
             
 	<!-- End of Graduation Progress
     <div data-ng-controller="stackedBarCtrl" id="stackedBar" data-ng-init="getBarChart()">
@@ -206,7 +264,7 @@
                   <div class="rect4"></div>
                   <div class="rect5"></div>
                 </div>
-				<div ng-show="searchLoading == true" class="table-responsive">
+				<div ng-show="searchLoading == true" class="table-responsive row">
 					
                     <table class="table fixed-header">
 						<thead>
@@ -216,13 +274,8 @@
                         <tbody>
                             <td>
                                 <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" style="list-style-type:none">
-                                    <li class="text-center" ng-repeat="module in modList | filter: { ModuleCode: searchBox }"
-                                        dnd-draggable="module"
-                                        dnd-type="module.AcadYear"
-                                        dnd-moved="modList.splice($index, 1)"
-                                        dnd-effect-allowed="move"
-                                    >{{module.ModuleCode}} {{module.ModuleTitle}} {{module.Semesters}} 
-                                    <li class="dndPlaceholder">
+                                    <li class="text-center" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move">{{module.ModuleCode}} {{module.ModuleTitle}} {{module.Semesters}} 
+                                    </li><li class="dndPlaceholder">
                                         Drop a <strong>module</strong> here
                                     </li>
                                 </ul>
@@ -271,8 +324,7 @@
     </div>
 
 </div>
-
-
+        
 <!--
 <div class="row">
 	<div class="col-lg-6">
