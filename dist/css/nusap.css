@@ -126,12 +126,14 @@
  * browsers we can use event.offsetY for this.
  */
 .typesDemo ul[dnd-list] li {
-  background-color: #fff;
+  background-color: #CAE0FC;
   border: 1px solid #ddd;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   display: block;
   margin-bottom: -1px;
+  padding: 5px;
+    
 
   /* Disable text selection if item is not draggable */
   -webkit-touch-callout: none;
