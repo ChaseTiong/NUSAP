@@ -142,7 +142,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                     $scope.preclusionList.push(precludedMods[index].trim());
                                     //precludedList.push(precludedMods[index].trim());
                                 }
-                            //    console.log($scope.preclusionList);
+                            //console.log($scope.preclusionList);
                             } else if(precludedMods[index].trim().indexOf(" or ") != -1){
                                 //further split the result
                                 var tempArray = [];
@@ -219,7 +219,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         selected: null,
         years: {"2015/2016": [], "2016/2017": []}
     };
-    //need to push takenMods into plannedMods into a nested array similar to the $scope.lists below
+    $scope.notPrecluded = true;
+    $scope.prerequisiteNotFulfill = true;
+    /*need to push takenMods into plannedMods into a nested array similar to the $scope.lists below
     $scope.lists = [
         {
             label: "Men",
@@ -253,7 +255,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 {name: "Wendy", type: "woman"}
             ]
         }
-    ];
+    ];*/
     
     //Populate search bar modules
     getModList().then(
@@ -297,7 +299,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             $scope.modList = [];
             for(var key = 0 ; key < $scope.tempModList.length; key ++){    
                 //console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
-                if($scope.tempModList[key].ModuleCode.startsWith(currentText)){
+                if($scope.tempModList[key].ModuleCode.includes(currentText)){
                     $scope.modList.push({
                         ModuleCode      : $scope.tempModList[key].ModuleCode,
                         ModuleTitle     : $scope.tempModList[key].ModuleTitle,
@@ -310,7 +312,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 $scope.modList = [];
                 for(var key = 0 ; key < $scope.tempModList.length; key ++){    
                     //console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
-                    if($scope.tempModList[key].ModuleCode.startsWith(currentText)){
+                    if($scope.tempModList[key].ModuleCode.includes(currentText)){
                         $scope.modList.push({
                             ModuleCode      : $scope.tempModList[key].ModuleCode,
                             ModuleTitle     : $scope.tempModList[key].ModuleTitle,
@@ -324,7 +326,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 $scope.modList = [];
                 for(var key = 0 ; key < tempArry.length; key ++){    
                     //console.log($scope.modList[key].ModuleCode.startsWith(currentText));
-                    if(tempArry[key].ModuleCode.startsWith(currentText)){
+                    if(tempArry[key].ModuleCode.includes(currentText)){
                         $scope.modList.push({
                             ModuleCode      : tempArry[key].ModuleCode,
                             ModuleTitle     : tempArry[key].ModuleTitle,
@@ -584,7 +586,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             });
                             
                             $scope.modsPerSem.push(currentSemMod);
-
+                            
+                            /*for(var i = 0; i <12; i ++){
+                                if($scope.preclusionList.includes($scope.modsPerSem[i].ModuleCode)){
+                                $scope.notPrecluded == false;
+                                }
+                            }*/
                             
                             //$scope.plannedMods.{{$scope.takenMods}}.push({$scope.takenMods});
                             
@@ -788,8 +795,37 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         return window.innerWidth;
     };
     
+    //mouseover and mouseout, popup module details such as module type and module title
+    $(".popup").mouseover(function() {
+        $(this).children(".moduleDetails").show();
+    }).mouseout(function() {
+        $(this).children(".moduleDetails").hide();
+    });
+    
+    //generate shorter URL
+    $(document).ready(function(){
+        var url;
+        new Clipboard('.invite-link');
 
+        $.ajax({
+          url: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBsoXP_gCh3umRVKqP5MOHfEHs1fxK84g0",
+          type: "POST",
+          data: JSON.stringify({ longUrl: window.location.href }),  
+          contentType: "application/json",
+          dataType: "json",
+          success: function(data){
+            url = data['id'];
+            $('.invite-link').attr('data-clipboard-text', url);
+          }
+        });
 
+        $('.invite-link').click(function() {
+            var textbox = $("#invite-link");
+            textbox.attr('value', url);
+        });
+    });
+
+    
     $scope.$watch($scope.getWidth, function(newValue, oldValue) {
         if (newValue >= mobileView) {
             if (angular.isDefined($cookieStore.get('toggle'))) {
