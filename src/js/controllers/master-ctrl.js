@@ -76,12 +76,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         });
     }
     
-    getMajReq().then(
-        function(response){
-            console.log("testing json file");
-            console.log(response.data.matric2015.ULR);
-        }
-    );
+//    getMajReq().then(
+//        function(response){
+//            console.log("testing json file");
+//            console.log(response.data.matric2015.ULR);
+//        }
+//    );
     
     function getUserProfile(){
         return $http( {
@@ -120,6 +120,122 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             url    : 'index.php?id=modSearch'           
         });            
     }
+
+   //Functions to start getting JSON data of Degree Requirements
+    function getCoreModules(){
+        var coreModules = [];
+        getMajReq().then(
+            function(majReq){
+                var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                //console.log(matricYear);
+                //getting matric year to access json data type : core
+                var mYear = "matric" + matricYear;
+                var result = (majReq.data[mYear]);
+                coreModules = result[0].totalModules[0].mods;
+                var requiredMc = result[0].requiredMc;
+                //console.log("test");
+                sessionStorage.setItem("coreRequiredMc",requiredMc);
+                sessionStorage.setItem("coreModules",JSON.stringify(coreModules));
+                //console.log(coreModules);
+            } 
+        );
+    }
+    
+    function getProject8thMcModules(){
+        var project8thMcModules = [];
+        getMajReq().then(
+            function(majReq){
+                var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                //console.log(matricYear);
+                //getting matric year to access json data type : 8thMC
+                var mYear = "matric" + matricYear;
+                var result = (majReq.data[mYear]);
+                var totalModsLength = result[1].totalModules.length;
+                for(var i = 0; i < totalModsLength; i ++){
+                    project8thMcModules.push(result[1].totalModules[i].mods);
+                }
+                var requiredMc = result[1].requiredMc;
+                //console.log("test");
+                sessionStorage.setItem("projectRequiredMc",requiredMc);
+                sessionStorage.setItem("project8thMcModules",JSON.stringify(project8thMcModules));
+                //console.log(coreModules);
+            }  
+        );
+    }
+    
+    function getInternshipModules(){
+        var internshipModules = [];
+        getMajReq().then(
+            function(majReq){
+                var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                //console.log(matricYear);
+                //getting matric year to access json data type : 8thMC
+                var mYear = "matric" + matricYear;
+                var result = (majReq.data[mYear]);
+                var totalModsLength = result[2].totalModules.length;
+                for(var i = 0; i < totalModsLength; i ++){
+                    internshipModules.push(result[2].totalModules[i].mods);
+                }
+                var requiredMc = result[2].requiredMc;
+                //console.log("test");
+                sessionStorage.setItem("internshipRequiredMc",requiredMc);
+                sessionStorage.setItem("internshipModules",JSON.stringify(internshipModules));
+                //console.log(coreModules);
+            }  
+        );
+    }
+    
+    function getMathSciModules(){
+        var mathSciModules = [];
+        getMajReq().then(
+            function(majReq){
+                var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                //console.log(matricYear);
+                //getting matric year to access json data type : core
+                var mYear = "matric" + matricYear;
+                var result = (majReq.data[mYear]);
+                mathSciModules = result[3].totalModules[0].mods;
+                var requiredMc = result[3].requiredMc;
+                sessionStorage.setItem("mathSciRequiredMc",requiredMc);
+                sessionStorage.setItem("mathSciModules",JSON.stringify(mathSciModules));
+            } 
+        );
+    }   
+    
+    function getBreathDepthModules(){
+        var breathDepthModules = [];
+        getMajReq().then(
+            function(majReq){
+                var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                //console.log(matricYear);
+                //getting matric year to access json data type : core
+                var mYear = "matric" + matricYear;
+                var result = (majReq.data[mYear]);
+                breathDepthModules = result[4].totalModules[0].mods;
+                var requiredMc = result[4].requiredMc;
+                sessionStorage.setItem("breathDepthRequiredMc",requiredMc);
+                sessionStorage.setItem("breathDepthModules",JSON.stringify(breathDepthModules));
+            } 
+        );        
+    }
+    
+    function getULRModules(){
+        var ULRModules = [];
+        getMajReq().then(
+            function(majReq){
+                var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                //console.log(matricYear);
+                //getting matric year to access json data type : core
+                var mYear = "matric" + matricYear;
+                var result = (majReq.data[mYear]);
+                ULRModules = result[5].totalModules[0].mods;
+                var requiredMc = result[5].requiredMc;
+                sessionStorage.setItem("ULRRequiredMc",requiredMc);
+                sessionStorage.setItem("ULRModules",JSON.stringify(ULRModules));
+            } 
+        );        
+    }    
+    //End of functions of getting Degree Requirements    
     
     $scope.preclusionList = [];
     function generatePreclusionList(moduleCode, moduleSemester, moduleAcadYear){
@@ -206,6 +322,176 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 }
                 //console.log($scope.preclusionList);
                 sessionStorage.setItem("preclusionList",JSON.stringify($scope.preclusionList)); 
+                
+               //Start to populate barchart informations
+                var coreModules = JSON.parse(sessionStorage.getItem("coreModules"));
+                var coreRequireMc = parseInt(sessionStorage.getItem("coreRequiredMc"));
+                angular.forEach($scope.preclusionList, function(module,moduleIndex){
+                   //var selectedModule = $scope.preclusionList[moduleIndex];
+                   if(coreModules.indexOf(module) != -1){
+                       coreModules.splice(coreModules.indexOf(module), 1);
+                       sessionStorage.setItem("coreModules",JSON.stringify(coreModules));
+                       coreRequireMc = coreRequireMc - 4;
+                       if(coreRequireMc <= 0){
+                           coreRequireMc = 0;
+                       }
+                       sessionStorage.setItem("coreRequiredMc", coreRequireMc);
+                   }
+                   
+                });
+                
+                var project8thMcModules = JSON.parse(sessionStorage.getItem("project8thMcModules"));
+                var projectRequiredMc = parseInt(sessionStorage.getItem("projectRequiredMc"));
+                angular.forEach($scope.preclusionList, function(module,moduleIndex){
+                   //var selectedModule = $scope.preclusionList[moduleIndex];
+                   angular.forEach(project8thMcModules, function(arrayModule, arrayIndex){
+                      var selected8thMcCombination = arrayModule;
+                      if(arrayModule.indexOf(module) != -1){
+                          arrayModule.splice(arrayModule.indexOf(module),1);
+                          sessionStorage.setItem("project8thMcModules", JSON.stringify(project8thMcModules));
+                          projectRequiredMc = projectRequiredMc - 4;
+                          if(projectRequiredMc <= 0){
+                              projectRequiredMc = 0;
+                          }
+                          sessionStorage.setItem("projectRequiredMc", projectRequiredMc);
+                      } 
+                   });
+                });
+                
+                var internshipModules = JSON.parse(sessionStorage.getItem("internshipModules"));
+                var internshipRequiredMc = parseInt(sessionStorage.getItem("internshipRequiredMc"));
+                angular.forEach($scope.preclusionList, function(module,moduleIndex){
+                    //var selectedModule = $scope.preclusionList[moduleIndex];
+                    
+                    //found 12MC Internship option
+                    if(internshipModules[0].indexOf(module) != -1){
+                        internshipModules[0].splice(internshipModules[0].indexOf(module),1);
+                        sessionStorage.setItem("internshipModules",JSON.stringify(internshipModules));
+                        internshipRequiredMc = internshipRequiredMc - 12;
+                    }
+                    //found 6MC Internship options
+                    else if(internshipModules[1].indexOf(module) != -1){
+                        internshipModules[1].splice(internshipModules[1].indexOf(module),1);
+                        sessionStorage.setItem("internshipModules",JSON.stringify(internshipModules));
+                        internshipRequiredMc = internshipRequiredMc - 6;
+                    }
+                    sessionStorage.setItem("internshipRequiredMc", internshipRequiredMc);
+                });
+                
+                var mathSciModules = JSON.parse(sessionStorage.getItem("mathSciModules"));
+                var mathSciRequiredMc = parseInt(sessionStorage.getItem("mathSciRequiredMc"));
+                var mathTakenMod = JSON.parse(sessionStorage.getItem("modsTaken"));
+                angular.forEach($scope.preclusionList, function(module,moduleIndex){
+                   //var selectedModule = $scope.preclusionList[];
+                    if(mathSciModules.indexOf(module) != -1){
+                        mathSciModules.splice(mathSciModules.indexOf(module), 1);
+                        sessionStorage.setItem("mathSciModules",JSON.stringify(mathSciModules));
+                        angular.forEach(mathTakenMod,function(mathMod,mathModIndex){
+                           if(mathMod.ModuleCode === module){
+                               mathSciRequiredMc = mathSciRequiredMc - 4;
+                           } 
+                        });
+                        sessionStorage.setItem("mathSciRequiredMc", mathSciRequiredMc);
+                   }
+                }); 
+        
+                //H2 Maths requirement
+                if((mathSciModules.indexOf("MA1521") == -1) && (mathSciModules.indexOf("MA1301") != -1)){
+                    mathSciModules.splice(mathSciModules.indexOf("MA1301"), 1);
+                    sessionStorage.setItem("mathSciModules",JSON.stringify(mathSciModules));
+                    mathSciRequiredMc = mathSciRequiredMc - 4;
+                    sessionStorage.setItem("mathSciRequiredMc", mathSciRequiredMc);                    
+                }
+//                    if(mathSciRequiredMc <= 0){
+//                        mathSciRequiredMc = 0;
+//                        sessionStorage.setItem("mathSciRequiredMc", mathSciRequiredMc);
+//                    }
+                
+                var breathDepthModules = JSON.parse(sessionStorage.getItem("breathDepthModules"));
+                var breathDepthRequiredMc = parseInt(sessionStorage.getItem("breathDepthRequiredMc"));
+                //var mathTakenMod = JSON.parse(sessionStorage.getItem("modsTaken"));
+                angular.forEach($scope.preclusionList, function(module,moduleIndex){
+                   //var selectedModule = $scope.preclusionList[];
+                    if(breathDepthModules.indexOf(module) != -1){
+                        breathDepthModules.splice(breathDepthModules.indexOf(module), 1);
+                        sessionStorage.setItem("breathDepthModules",JSON.stringify(breathDepthModules));
+//                        angular.forEach(mathTakenMod,function(mathMod,mathModIndex){
+//                           if(mathMod.ModuleCode === module){
+//                               mathSciRequiredMc = mathSciRequiredMc - 4;
+//                           } 
+//                        });
+                        breathDepthRequiredMc = breathDepthRequiredMc - 4;
+                        sessionStorage.setItem("breathDepthRequiredMc", breathDepthRequiredMc);
+                   }
+                }); 
+                
+                var ULRModules = JSON.parse(sessionStorage.getItem("ULRModules"));
+                var ULRRequiredMc = parseInt(sessionStorage.getItem("ULRRequiredMc"));
+                var ULRTakenMod = JSON.parse(sessionStorage.getItem("modsTaken"));
+                angular.forEach($scope.preclusionList, function(module,moduleIndex){
+                   //var selectedModule = $scope.preclusionList[];
+                    if(ULRModules.indexOf(module) != -1){
+                        ULRModules.splice(ULRModules.indexOf(module), 1);
+                        sessionStorage.setItem("ULRModules",JSON.stringify(ULRModules));
+                        angular.forEach(ULRTakenMod,function(ULRMod,ULRModIndex){
+                           if(ULRMod.ModuleCode === module){
+                               ULRRequiredMc = ULRRequiredMc - 4;
+                           } 
+                        });
+                        sessionStorage.setItem("ULRRequiredMc", ULRRequiredMc);
+                   }
+                }); 
+                    
+                //console.log(ULRModules);
+                //console.log(ULRRequiredMc); 
+                
+
+                
+                //calculating core progress barchart
+                $scope.$applyAsync(function(){
+                    $scope.currentULR = ((20 - (ULRRequiredMc)) / 20 * 100).toFixed(0) + "%";
+                    $scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0) + "%";
+                });
+                
+                //debuging type:core
+                //console.log("result :");
+                //console.log(coreModules);
+                    
+                
+                //console.log(coreModules);
+                //console.log(coreRequireMc);
+                //console.log(JSON.parse(sessionStorage.getItem("coreModules")));
+                //var matricYear = sessionStorage.getItem("matricYear");
+                //start to populate barchart with modules Taken & preclusion list
+                //$scope.barChartModTaken = JSON.parse(sessionStorage.getItem("modsTaken"));
+                //console.log("barChartModules");
+                //console.log($scope.barChartModTaken);
+//                getMajReq().then(
+//                    function(majReq){
+//                        //getting matric year to access json data
+//                        var mYear = "matric" + matricYear;
+//                        var result = (majReq.data[mYear]);
+//                        var preclusionList = JSON.parse(sessionStorage.getItem("preclusionList"));
+//                        //debug
+//                        //console.log(result.length);
+//                        //console.log(result[0].totalModules.length);
+//                        //end debug
+//                        var coreModules = result[0].totalModules[0].mods;
+//                        //console.log(coreModules);
+//                        console.log($scope.preclusionList);
+//                        console.log($scope.preclusionList.length);
+//                        for(var i = 0; i < $scope.preclusionList.length; i ++){
+//                            //console.log("current Module : ");
+//                            //console.log(preclusionList[i]);
+//                            if(coreModules.indexOf(preclusionList[i]) != -1){
+//                                coreModules.splice(coreModules.indexOf(preclusionList[i],1));
+//                                console.log(coreModules);
+//                            }
+//                        }
+
+//                    }
+//                );
+                //end of populate barchart                         
             }
             
            
@@ -399,6 +685,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 			function (responseProfile) {
                 console.log(responseProfile.data);
                 $scope.username = responseProfile.data.Results[0].Name;
+                getCoreModules();
+                getProject8thMcModules();
+                getInternshipModules();
+                getMathSciModules();
+                getBreathDepthModules();
+                getULRModules();
                 sessionStorage.setItem("userName", $scope.username);
                 sessionStorage.setItem("netid", responseProfile.data.Results[0].UserID);
                 sessionStorage.setItem("firstMajor", responseProfile.data.Results[0].FirstMajor);
@@ -481,7 +773,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                             //Initialising overall progress bar
                                             var totalCreditTaken = parseInt(sessionStorage.getItem("totalCreditTaken"));
                                             $scope.$applyAsync(function(){
-                                                $scope.overallProgress = (totalCreditTaken / 160 * 100) + "%";
+                                                $scope.overallProgress = (totalCreditTaken / 160 * 100).toFixed(0) + "%";
                                             });
                                             
                                             if(responseModInfo.data === ""){
