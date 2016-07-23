@@ -48,7 +48,7 @@
                             </tr>
                             <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 == 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
                                 <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
-                                    <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" data-ng-mouseover=""><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
+                                    <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
                                         <span>{{mod.ModuleTitle}} and type</span>
                                     </li>
                                     <li class="dndPlaceholder">

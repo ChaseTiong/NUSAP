@@ -199,7 +199,6 @@
 }
 li.info span{
     display: none;
-    font-size: 5px;
 }
 
 li.info:hover span{ /*the span will display just on :hover state*/
@@ -211,7 +210,7 @@ li.info:hover span{ /*the span will display just on :hover state*/
     background-color:#FFE2F5; color:#435354;
     text-align: center;
     padding:2px;
-    font-size: 5px;
+    font-size: 10px;
   }
 
 .spinner {
