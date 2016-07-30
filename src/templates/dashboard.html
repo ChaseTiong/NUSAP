@@ -54,7 +54,7 @@
                                         dnd-moved="semesterMod.splice($index, 1)"
                                         dnd-effect-allowed="move"
                                         ><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
-                                        <span>{{mod.ModuleTitle}} and type</span>
+                                        <span>{{mod.ModuleTitle}}</span>
                                     </li>
                                     <li class="dndPlaceholder">
                                         Drop a <strong>module</strong> here
@@ -110,7 +110,7 @@
                                         dnd-moved="semesterMod.splice($index, 1)"
                                         dnd-effect-allowed="move"
                                     ><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
-                                        <span>{{mod.ModuleTitle}} and type</span>
+                                        <span>{{mod.ModuleTitle}}</span>
                                     </li>
                                     <li class="dndPlaceholder">
                                         Drop a <strong>module</strong> here
@@ -126,16 +126,16 @@
 
 <!-- Graduation Progress using progress bar !-->
    
-   <div class="col-lg-4 col-sm-6 col-xs-12" data-ng-controller="BarCtrl">
+   <div class="col-lg-4 col-sm-6 col-xs-12" data-ng-controller="MasterCtrl">
         <rd-widget>
 			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
               <rd-widget-body>
                   <span class="progress-title"><b>OVERALL&nbsp;:&nbsp;</b></span>
                   <div class ="progress">
-                     <div data-ng-controller ="MasterCtrl" class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{overallProgress}}">
+                     <div data-ng-controller ="MasterCtrl" class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{overallProgress}}" >
                           {{overallProgress}}
                       </div>
-                   
+                     <div role="button" ng-click=""> &nbsp; </div>
                      <!-- <div class="progress-bar progress-bar-striped progress-bar-warning active" role="progressbar" style="width:10%">
                       
                      </div> !-->
@@ -149,7 +149,7 @@
                      <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{currentCore}}">
                         {{currentCore}}
                       </div>
-                   
+                      <div data-ng-controller="MasterCtrl" role="button" data-ng-click="filterCore()"> &nbsp; </div>
                      <!-- <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
                       
                      </div>
@@ -164,7 +164,7 @@
                      <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{currentULR}}">
                           {{currentULR}}
                       </div>
-                   
+                      <div role="button"> &nbsp; </div>
                      <!-- <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
                       
                      </div>
@@ -179,7 +179,7 @@
                      <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:40%">
                           40%
                       </div>
-                   
+                      <div role="button"> &nbsp; </div>
                      <!-- <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
                       
                      </div>
@@ -300,7 +300,7 @@
                                     
                                 ><!--ng-dblclick="$window.open('http://nusmods.com/modules/{{module.ModuleCode}}', '_blank')"-->
                                     <a href="https://nusmods.com/modules/{{module.ModuleCode}}" target="_blank"><strong>{{module.ModuleCode}}</strong> {{module.ModuleTitle}} <button align="right" class="semBtn" align="right" ng-repeat="modAvailableSem in module.Semesters">{{modAvailableSem}}</button></a>
-                                    <span>{{module.ModuleTitle}} and type</span>
+                                    <span>{{module.ModuleTitle}}</span>
                                 </li>
                                 <li class="dndPlaceholder">
                                     Discard a <strong>module</strong> here

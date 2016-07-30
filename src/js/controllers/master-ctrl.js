@@ -237,7 +237,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     }    
     //End of functions of getting Degree Requirements    
     
+
+
+    
     $scope.preclusionList = [];
+    
     function generatePreclusionList(moduleCode, moduleSemester, moduleAcadYear){
         
         getModInfo(moduleCode, moduleSemester, moduleAcadYear).then(
@@ -322,7 +326,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 }
                 //console.log($scope.preclusionList);
                 sessionStorage.setItem("preclusionList",JSON.stringify($scope.preclusionList)); 
-                
+                var UEModules = JSON.parse(sessionStorage.getItem("UEModules"));
+                console.log(UEModules);
+                var UERequireMC = parseInt(sessionStorage.getItem("UERequiredMc"));
                //Start to populate barchart informations
                 var coreModules = JSON.parse(sessionStorage.getItem("coreModules"));
                 var coreRequireMc = parseInt(sessionStorage.getItem("coreRequiredMc"));
@@ -336,9 +342,47 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                            coreRequireMc = 0;
                        }
                        sessionStorage.setItem("coreRequiredMc", coreRequireMc);
+                       angular.forEach(UEModules,function(UEMod,UEModIndex){
+                           if(UEMod.ModuleCode === module){
+                               UEModules.splice(UEModules.indexOf(UEMod),1);
+                               sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                           }
+                           
+                        });
                    }
-                   
                 });
+                angular.forEach(UEModules,function(UEMod,UEModIndex){
+                    //Special Modules 
+                    if(UEMod.ModuleCode === ("CS1101S")){
+                        UEModules.splice(UEModules.indexOf(UEMod),1);
+                        sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                    }
+                    if(UEMod.ModuleCode === ("CS1010R")){
+                        UEModules.splice(UEModules.indexOf(UEMod),1);
+                        sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                    }
+                    if(UEMod.ModuleCode === ("CS2103")){
+                        UEModules.splice(UEModules.indexOf(UEMod),1);
+                        sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                    }
+                    if(UEMod.ModuleCode === ("IS2101")){
+                        UEModules.splice(UEModules.indexOf(UEMod),1);
+                        sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                    }
+                    if(UEMod.ModuleCode === ("ES1102")){
+                        UEModules.splice(UEModules.indexOf(UEMod),1);
+                        sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                    }
+                    if(UEMod.ModuleCode === ("ES1103")){
+                        UEModules.splice(UEModules.indexOf(UEMod),1);
+                        sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                    }
+                    if(UEMod.ModuleCode === ("CFG1010")){
+                        UEModules.splice(UEModules.indexOf(UEMod),1);
+                        sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                    }
+                });
+                
                 
                 var project8thMcModules = JSON.parse(sessionStorage.getItem("project8thMcModules"));
                 var projectRequiredMc = parseInt(sessionStorage.getItem("projectRequiredMc"));
@@ -354,6 +398,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                               projectRequiredMc = 0;
                           }
                           sessionStorage.setItem("projectRequiredMc", projectRequiredMc);
+                          angular.forEach(UEModules,function(UEMod,UEModIndex){
+                              if(UEMod.ModuleCode === module){
+                                  UEModules.splice(UEModules.indexOf(UEMod),1);
+                                  sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                              }
+                          });
                       } 
                    });
                 });
@@ -368,12 +418,24 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         internshipModules[0].splice(internshipModules[0].indexOf(module),1);
                         sessionStorage.setItem("internshipModules",JSON.stringify(internshipModules));
                         internshipRequiredMc = internshipRequiredMc - 12;
+                        angular.forEach(UEModules,function(UEMod,UEModIndex){
+                              if(UEMod.ModuleCode === module){
+                                  UEModules.splice(UEModules.indexOf(UEMod),1);
+                                  sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                              }
+                        });
                     }
                     //found 6MC Internship options
                     else if(internshipModules[1].indexOf(module) != -1){
                         internshipModules[1].splice(internshipModules[1].indexOf(module),1);
                         sessionStorage.setItem("internshipModules",JSON.stringify(internshipModules));
                         internshipRequiredMc = internshipRequiredMc - 6;
+                        angular.forEach(UEModules,function(UEMod,UEModIndex){
+                              if(UEMod.ModuleCode === module){
+                                  UEModules.splice(UEModules.indexOf(UEMod),1);
+                                  sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                              }
+                        });
                     }
                     sessionStorage.setItem("internshipRequiredMc", internshipRequiredMc);
                 });
@@ -390,6 +452,12 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                            if(mathMod.ModuleCode === module){
                                mathSciRequiredMc = mathSciRequiredMc - 4;
                            } 
+                        });
+                        angular.forEach(UEModules,function(UEMod,UEModIndex){
+                              if(UEMod.ModuleCode === module){
+                                  UEModules.splice(UEModules.indexOf(UEMod),1);
+                                  sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                              }
                         });
                         sessionStorage.setItem("mathSciRequiredMc", mathSciRequiredMc);
                    }
@@ -413,16 +481,25 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 angular.forEach($scope.preclusionList, function(module,moduleIndex){
                    //var selectedModule = $scope.preclusionList[];
                     if(breathDepthModules.indexOf(module) != -1){
+                        if(breathDepthRequiredMc <= 0){
+                            if(UEModules.indexOf(module) != -1){
+                                UEModules.splice(UEModules.indexOf(module),1);
+                                sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                                UERequireMC = UERequireMC - 4;
+                                sessionStorage.setItem("UERequiredMc",UERequireMC);
+                            }
+                        }
                         breathDepthModules.splice(breathDepthModules.indexOf(module), 1);
                         sessionStorage.setItem("breathDepthModules",JSON.stringify(breathDepthModules));
-//                        angular.forEach(mathTakenMod,function(mathMod,mathModIndex){
-//                           if(mathMod.ModuleCode === module){
-//                               mathSciRequiredMc = mathSciRequiredMc - 4;
-//                           } 
-//                        });
                         breathDepthRequiredMc = breathDepthRequiredMc - 4;
                         sessionStorage.setItem("breathDepthRequiredMc", breathDepthRequiredMc);
-                   }
+                        angular.forEach(UEModules,function(UEMod,UEModIndex){
+                              if(UEMod.ModuleCode === module){
+                                  UEModules.splice(UEModules.indexOf(UEMod),1);
+                                  sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                              }
+                        });
+                    }
                 }); 
                 
                 var ULRModules = JSON.parse(sessionStorage.getItem("ULRModules"));
@@ -439,8 +516,17 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                            } 
                         });
                         sessionStorage.setItem("ULRRequiredMc", ULRRequiredMc);
+                        angular.forEach(UEModules,function(UEMod,UEModIndex){
+                              if(UEMod.ModuleCode === module){
+                                  UEModules.splice(UEModules.indexOf(UEMod),1);
+                                  sessionStorage.setItem("UEModules",JSON.stringify(UEModules));
+                              }
+                        });
                    }
                 }); 
+                
+                //UE modules
+                
                     
                 //console.log(ULRModules);
                 //console.log(ULRRequiredMc); 
@@ -451,6 +537,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 $scope.$applyAsync(function(){
                     $scope.currentULR = ((20 - (ULRRequiredMc)) / 20 * 100).toFixed(0) + "%";
                     $scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0) + "%";
+                    //$scope.currentUE = (UEModules.length * 4 - UERequireMC)
                 });
                 
                 //debuging type:core
@@ -542,6 +629,14 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             ]
         }
     ];*/
+    
+    $scope.filterCore = function(){
+        $scope.$applyAsync(function(){
+            $scope.currentCore = "10%";
+        });
+        console.log("tesT");
+        
+    }
     
     //Populate search bar modules
     getModList().then(
@@ -731,6 +826,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     function (responseModTaken) {   
                         $scope.modsCount = responseModTaken.data.Results.length;
                         sessionStorage.setItem("modsTaken", JSON.stringify(responseModTaken.data.Results));
+                        sessionStorage.setItem("UEModules",JSON.stringify(responseModTaken.data.Results));
+                        sessionStorage.setItem("UERequiredMc",20);
                         //Debugging
                         //This is how you retreive the array
                         //console.log(JSON.parse(sessionStorage.getItem("modsTaken")));
@@ -874,10 +971,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                         }
                                     );
                                 }
-
+                                
                             });
-                            
                             $scope.modsPerSem.push(currentSemMod);
+                            //console.log($scope.modsPerSem[0].length);
                             
                             /*for(var i = 0; i <12; i ++){
                                 if($scope.preclusionList.includes($scope.modsPerSem[i].ModuleCode)){
@@ -910,6 +1007,87 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             });*/
                             
                         });
+
+                        $scope.addSemester = function(){
+                            //console.log("test");
+                            var currentTotalSem = [];
+                    //        $scope.showYear2Sem1 = !$scope.showYear2Sem1;
+                            var currentTotalSemCount = JSON.parse(sessionStorage.getItem("userSem")).length;
+                            currentTotalSem = JSON.parse(sessionStorage.getItem("userSem"));
+                            //console.log(currentTotalSem);
+
+                            var previousAcadSem = JSON.parse(sessionStorage.getItem("userSem"))[currentTotalSemCount - 1];
+                            //check previous sem
+                            var previousSem = previousAcadSem.substring(10);
+                            var frontYear = parseInt(previousAcadSem.substring(0,4));
+                            var backYear = parseInt(previousAcadSem.substring(5,9));
+                            var nextAcadSem = "";
+                            var nextSem = 0;
+                            if(previousSem == 1){
+                                nextSem = 2;
+                                nextAcadSem = frontYear + "/" + backYear + "-" + nextSem;
+                            } else{
+                                nextSem = 1;
+                                nextAcadSem = backYear + "/" + (backYear + 1) + "-" + nextSem;
+                            }
+                            currentTotalSem.push(nextAcadSem);
+                            sessionStorage.setItem("userSem", JSON.stringify(currentTotalSem));   
+
+                            $scope.unlockSem[currentTotalSemCount] = true;
+                            $scope.tempStorage = [];
+                            var nextSem = (currentTotalSemCount + 1) % 2;
+                            if(nextSem == 0){
+                                nextSem = 2;
+                            }
+                            //Find out the current Total Sem count --> activate $scope.semmods --> so if want to add modules --> won't cause error
+                            for(var i  = 0; i < 5; i ++){
+                                $scope.tempStorage.push(
+                                    {
+                                        ModuleCode      : "",
+                                        ModuleTitle     : "",
+                                        ModuleCredit    : "",
+                                        ModuleStatus    : "Normal",
+                                        ModuleSuStatus  : ["-"],
+                                        selectedModSuStatus : "-",
+                                        selectedModGrade: "-",
+                                        ModuleGrade     : ["-"],
+                                        AcadYear        : nextAcadSem.substring(0,9),
+                                        Semester        : nextSem
+                                    }
+                                );
+                            }
+                            $scope.modsPerSem.push($scope.tempStorage);
+
+                            //console.log($scope.showYear2Sem1);
+                        }
+                        
+                        console.log(userSem.length);
+                        for(var semCounter = userSem.length; semCounter < 8; semCounter ++){
+                            $scope.addSemester();
+                        }
+                        console.log(userSem.length);
+//                        console.log(userSem.length);
+//                        for(var semCounter = userSem.length; semCounter < 8; semCounter ++){
+//                            var semArray = [];
+//                            for(var modCounter = 0; modCounter < 5; modCounter ++){
+//                                $scope.tempStorage.push(
+//                                    {
+//                                        ModuleCode      : "",
+//                                        ModuleTitle     : "",
+//                                        ModuleCredit    : "",
+//                                        ModuleStatus    : "Normal",
+//                                        ModuleSuStatus  : ["-"],
+//                                        selectedModSuStatus : "-",
+//                                        selectedModGrade: "-",
+//                                        ModuleGrade     : ["-"],
+//                                        AcadYear        : nextAcadSem.substring(0,9),
+//                                        Semester        : nextSem
+//                                    }
+//                                );
+//                            }
+//                        }
+//                        console.log($scope.modsPerSem);
+                        
                         //console.log($scope.unlockSem);
 //                        angular.forEach($scope.takenMods, function(value,key){
 //                            $scope.modules = {
@@ -917,6 +1095,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 //                                selectedModGrade    : $scope.takenMods[key].ModuleGrade[0]
 //                            };
 //                        });
+                        
                         
                     }, function (responseModTaken) {
                         console.log("error no mods found");

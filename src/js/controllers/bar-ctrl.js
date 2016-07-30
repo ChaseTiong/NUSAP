@@ -35,5 +35,7 @@ function BarCtrl($scope, $cookieStore, $http, $location) {
 			responsive: true,
 			barShowStroke: false
 	  	}); 
-    }	
+    }
+    
+
 }    
