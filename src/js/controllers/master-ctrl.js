@@ -526,7 +526,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 }); 
                 
                 //UE modules
-                
                     
                 //console.log(ULRModules);
                 //console.log(ULRRequiredMc); 
@@ -535,8 +534,25 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 
                 //calculating core progress barchart
                 $scope.$applyAsync(function(){
-                    $scope.currentULR = ((20 - (ULRRequiredMc)) / 20 * 100).toFixed(0) + "%";
-                    $scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0) + "%";
+                    $scope.currentULR = ((20 - (ULRRequiredMc)) / 20 * 100).toFixed(0);
+                    $scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0);
+                    if(UEModules.length >= 0){
+                        $scope.currentUE = (UEModules.length / 5 * 100).toFixed(0);
+                        //console.log($scope.currentUE);
+                    } else{
+                        $scope.currentUE = 0;
+                    }
+                    $scope.overallProgress = (parseInt($scope.currentULR) + parseInt($scope.currentCore) + parseInt($scope.currentUE)) / 3;
+                    console.log($scope.overallProgress);
+                    
+                    $scope.overallProgress = $scope.overallProgress + "%";
+                    $scope.currentULR = $scope.currentULR + "%";
+                    $scope.currentCore = $scope.currentCore + "%";
+                    if($scope.currentUE > 100){
+                        $scope.currentUE = "100%";
+                    } else{
+                        $scope.currentUE = $scope.currentUE + "%";
+                    }
                     //$scope.currentUE = (UEModules.length * 4 - UERequireMC)
                 });
                 
@@ -643,14 +659,15 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         function (responseModList) {
             sessionStorage.setItem("modsList", JSON.stringify(responseModList.data));
             var moduleList = JSON.parse(sessionStorage.getItem("modsList"));
-            angular.forEach(moduleList, function(value,key){
-                $scope.modList.push({
-                    ModuleCode      : moduleList[key].ModuleCode,
-                    ModuleTitle     : moduleList[key].ModuleTitle,
-                    Semesters       : moduleList[key].Semesters
-                });
-        });
-        $scope.tempModList = $scope.modList;    
+//            angular.forEach(responseModList.data, function(value,key){
+//                $scope.modList.push({
+//                    ModuleCode      : moduleList[key].ModuleCode,
+//                    ModuleTitle     : moduleList[key].ModuleTitle,
+//                    Semesters       : moduleList[key].Semesters
+//                });
+//            });
+            //$scope.modList = moduleList;
+            $scope.tempModList = moduleList;    
     });
     //$scope.tempModList = $scope.modList;
     
@@ -674,7 +691,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         //$scope.modList = [];
         //angular.forEach($scope.tempModList, function(value,key){
         if(currentText.length < 1){
-            $scope.modList = $scope.tempModList;
+            //$scope.modList = $scope.tempModList;
+            $scope.modList = [];
             $scope.isUpdated = true;
         } else if(oldText.length < currentText.length){
             $scope.modList = [];
@@ -870,7 +888,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                             //Initialising overall progress bar
                                             var totalCreditTaken = parseInt(sessionStorage.getItem("totalCreditTaken"));
                                             $scope.$applyAsync(function(){
-                                                $scope.overallProgress = (totalCreditTaken / 160 * 100).toFixed(0) + "%";
+                                                //$scope.overallProgress = (totalCreditTaken / 160 * 100).toFixed(0) + "%";
                                             });
                                             
                                             if(responseModInfo.data === ""){
