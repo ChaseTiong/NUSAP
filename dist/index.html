@@ -44,18 +44,21 @@
         </li>
         <li class="sidebar-title"><span>NAVIGATION</span></li>
         <li class="sidebar-list">
-          <a href="#/dashboard" ng-show = "showMenu">Planner <span class="menu-icon fa fa-calendar"></span></a>
+          <a href="#/dashboard" title="This will show up in the tooltip" class="masterTooltip"  ng-show = "showMenu">Planner <span class="menu-icon fa fa-calendar"></span></a>
         </li>
         <li class="sidebar-list">
           <a href="#/capCal" ng-show = "showMenu">CAP Calculator <span class="menu-icon fa fa-calculator"></span></a>
         </li>
+        <li class="sidebar-list">
+          <a href="https://nusmods.com" target="_blank" ng-show = "showMenu">NUSMODS <span class="menu-icon fa fa-bookmark"></span></a>
+        </li>
       </ul>
       
       <div class="sidebar-footer">
-        <div class="col-xs-4">
-          <!-- <a href="https://github.com/rdash/rdash-angular" target="_blank">
+        <div class="col-xs-12">
+          <a href="" target="_blank">
             Github
-          </a> !-->
+          </a>
         </div>
         <div class="col-xs-4">
           <!-- <a href="https://github.com/rdash/rdash-angular/blob/master/README.md" target="_blank">
@@ -156,32 +159,27 @@
     </div><!-- End Content Wrapper -->
   </div><!-- End Page Wrapper -->
     <script>
-//    function dragStart(){}
-//        
-//    function dragStart(event) {
-//       console.log("dragStart");
-//    event.dataTransfer.setData("Text", event.target.id);
-//    }
-//
-//    function dragging(event) {
-//        console.log("dragOver");
-//        document.getElementById("dragtarget").style.backgroundColor = "red";
-//    }
-//
-//    function allowDrop(event) {
-//        console.log("-");
-//        event.preventDefault();
-//    }
-//
-//    function drop(event) {
-//        console.log("dropped");
-//        event.preventDefault();
-//        var data = event.dataTransfer.getData("Text");
-//        console.log(data);
-//        event.target.appendChild(document.getElementById(data));
-//        //event.target.style.backgroundColor = "red";
-//        //document.getElementById("demo").innerHTML = "The p element was dropped";
-//    }
+//    $(document).ready(function() {
+//        // Tooltip only Text
+//        $('.masterTooltip').hover(function(){
+//                // Hover over code
+//                var title = $(this).attr('title');
+//                $(this).data('tipText', title).removeAttr('title');
+//                $('<p class="tooltip"></p>')
+//                .text(title)
+//                .appendTo('body')
+//                .fadeIn('slow');
+//        }, function() {
+//                // Hover out code
+//                $(this).attr('title', $(this).data('tipText'));
+//                $('.tooltip').remove();
+//        }).mousemove(function(e) {
+//                var mousex = e.pageX + 20; //Get X coordinates
+//                var mousey = e.pageY + 10; //Get Y coordinates
+//                $('.tooltip')
+//                .css({ top: mousey, left: mousex })
+//        });
+//    });
     </script>
 </body>
 </html>

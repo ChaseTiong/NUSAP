@@ -14,7 +14,7 @@
   <div class="rect5"></div>
 </div>
 
-<div class="row" ng-show="dashboardLoading == true" data-ng-controller="CapCalCtrl">
+<div class="row" ng-show="dashboardLoading == true" data-ng-controller="MasterCtrl">
      <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
 	<div class="col-lg-8">
 		<rd-widget>
@@ -116,13 +116,13 @@
 
 <!-- Graduation Progress using progress bar !-->
    
-   <div class="col-lg-4 col-sm-6 col-xs-12" data-ng-controller="MasterCtrl">
+   <div class="col-lg-4 col-sm-6 col-xs-12">
         <rd-widget>
 			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
               <rd-widget-body>
                   <span class="progress-title"><b>OVERALL&nbsp;:&nbsp;</b></span>
                   <div class="progress">
-                     <div data-ng-controller="MasterCtrl" class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{overallProgress}}">
+                     <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{overallProgress}}">
                           {{overallProgress}}
                       </div>
                      <div role="button" ng-click=""> &nbsp; </div>
@@ -139,7 +139,7 @@
                      <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{currentCore}}">
                         {{currentCore}}
                       </div>
-                      <div data-ng-controller="MasterCtrl" role="button" data-ng-click="filterCore()"> &nbsp; </div>
+                      <div role="button" data-ng-click="filterCore()"> &nbsp; </div>
                      <!-- <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
                       
                      </div>
@@ -255,7 +255,7 @@
 </div>
 -->
 
-	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right" data-ng-controller="MasterCtrl">
+	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right">
 		
 		
 		<rd-widget>
@@ -276,11 +276,13 @@
 				<div ng-show="searchLoading == true" class="table-responsive typesDemo row">
 					
                     <table class="table fixed-header">
-						<thead>
-                            <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--></tr>
-                        </thead>
+						
                         
                         <tbody>
+                           <thead>
+                            <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--></tr>
+                            </thead>
+                            
                             <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
                                 <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move"><!--ng-dblclick="$window.open('http://nusmods.com/modules/{{module.ModuleCode}}', '_blank')"-->
                                     <a href="https://nusmods.com/modules/{{module.ModuleCode}}" target="_blank"><strong>{{module.ModuleCode}}</strong> {{module.ModuleTitle}} <button align="right" class="semBtn" align="right" ng-repeat="modAvailableSem in module.Semesters">{{modAvailableSem}}</button></a>

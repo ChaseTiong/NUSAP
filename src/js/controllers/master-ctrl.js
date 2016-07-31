@@ -34,13 +34,17 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     /**
      * Sidebar Toggle & Cookie Control
      */
-    $scope.dashboardLoading = false;
-    $scope.searchLoading = true;
+    $scope.$on('$stateChangeSuccess', function () {
+        $scope.dashboardLoading = false;
+        $scope.searchLoading = true;
+        $timeout(function () {
+            $scope.dashboardLoading = true;  
+        }, 6000);
+
+    });
+//    $scope.dashboardLoading = false;
+//    $scope.searchLoading = true;
     //if(sessionStorage.dashboardLoading != true){
-    $timeout(function () {
-      $scope.dashboardLoading = true;
-          
-    }, 6000);
 
     //}
     function get(url) {
@@ -127,6 +131,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         getMajReq().then(
             function(majReq){
                 var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                matricYear = parseInt(matricYear);
+                if(matricYear < 2015){
+                    matricYear = 2015;
+                }
                 //console.log(matricYear);
                 //getting matric year to access json data type : core
                 var mYear = "matric" + matricYear;
@@ -146,6 +154,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         getMajReq().then(
             function(majReq){
                 var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                matricYear = parseInt(matricYear);
+                if(matricYear < 2015){
+                    matricYear = 2015;
+                }                
                 //console.log(matricYear);
                 //getting matric year to access json data type : 8thMC
                 var mYear = "matric" + matricYear;
@@ -168,6 +180,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         getMajReq().then(
             function(majReq){
                 var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                matricYear = parseInt(matricYear);
+                if(matricYear < 2015){
+                    matricYear = 2015;
+                }                
                 //console.log(matricYear);
                 //getting matric year to access json data type : 8thMC
                 var mYear = "matric" + matricYear;
@@ -190,6 +206,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         getMajReq().then(
             function(majReq){
                 var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                matricYear = parseInt(matricYear);
+                if(matricYear < 2015){
+                    matricYear = 2015;
+                }                
                 //console.log(matricYear);
                 //getting matric year to access json data type : core
                 var mYear = "matric" + matricYear;
@@ -207,6 +227,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         getMajReq().then(
             function(majReq){
                 var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                matricYear = parseInt(matricYear);
+                if(matricYear < 2015){
+                    matricYear = 2015;
+                }                
                 //console.log(matricYear);
                 //getting matric year to access json data type : core
                 var mYear = "matric" + matricYear;
@@ -224,6 +248,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         getMajReq().then(
             function(majReq){
                 var matricYear = (JSON.parse(sessionStorage.getItem("matricYear")));
+                matricYear = parseInt(matricYear);
+                if(matricYear < 2015){
+                    matricYear = 2015;
+                }                
                 //console.log(matricYear);
                 //getting matric year to access json data type : core
                 var mYear = "matric" + matricYear;
@@ -327,7 +355,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 //console.log($scope.preclusionList);
                 sessionStorage.setItem("preclusionList",JSON.stringify($scope.preclusionList)); 
                 var UEModules = JSON.parse(sessionStorage.getItem("UEModules"));
-                console.log(UEModules);
+                
                 var UERequireMC = parseInt(sessionStorage.getItem("UERequiredMc"));
                //Start to populate barchart informations
                 var coreModules = JSON.parse(sessionStorage.getItem("coreModules"));
@@ -543,9 +571,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         $scope.currentUE = 0;
                     }
                     $scope.overallProgress = (parseInt($scope.currentULR) + parseInt($scope.currentCore) + parseInt($scope.currentUE)) / 3;
-                    console.log($scope.overallProgress);
+                    //console.log($scope.overallProgress);
                     
-                    $scope.overallProgress = $scope.overallProgress + "%";
+                    $scope.overallProgress = ($scope.overallProgress).toFixed(0) + "%";
                     $scope.currentULR = $scope.currentULR + "%";
                     $scope.currentCore = $scope.currentCore + "%";
                     if($scope.currentUE > 100){
@@ -647,11 +675,18 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     ];*/
     
     $scope.filterCore = function(){
+//        $scope.$applyAsync(function(){
+//            $scope.currentCore = "10%";
+//            console.log(JSON.stringify(sessionStorage));
+//        });
+//        console.log("tesT");
         $scope.$applyAsync(function(){
             $scope.currentCore = "10%";
+            console.log(JSON.parse(sessionStorage.getItem("coreModules")));
+            
         });
-        console.log("tesT");
         
+        //$scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0);
     }
     
     //Populate search bar modules
@@ -1186,100 +1221,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 			}
 		);
 	}
-    /*
-	$scope.modsTaken = function(){
-		var req = {
-			method : 'GET',
-			url    : 'index.php?id=modsTaken&token=' + token +'&studentID=' + sessionStorage['netid']
-		}
-		$http(req).then(
-			function (response) {
-                sessionStorage.setItem("test","Success");
-                $scope.modsCount = response.data.Results.length;
-                sessionStorage.setItem("ModsTaken", JSON.stringify(response.data.Results));
-                //console.log(JSON.parse(sessionStorage.getItem("ModsTaken")));
-                //console.log(response.data.Results);
-                $scope.takenMods = [];
-                $scope.specialMods = [];
-                var specialModsCount = 0;
-                
-                //$scope.takenMods = response.data.Results;
-                var count = 0;
-                //use a unique mod count to keep track poly mod/ unique mod
-                for(var i = 0; i < $scope.modsCount; i ++){
-                    //geting the result from IVLE API
-                   
-                  
-                    //accessing NUSmods API
-                    if(response.data.Results[i].Semester == 1){
-                        
-                        
-                        //$scope.$applyAsync(function(){
-                            var currentMod = response.data.Results[i].ModuleCode;
-                            console.log("currentmod: " + currentMod);
-                            var currentTitle = response.data.Results[i].ModuleTitle;
-                            console.log("curr title: " + currentTitle);
-                            var semester = response.data.Results[i].Semester;
-                        
-                        
-                            $scope.specialMods.push({
-                                ModuleCode: currentMod,
-                                ModuleTitle: currentTitle,
-                                ModuleCredit: 4
-                            });
-                            console.log(currentMod);
-                            var modsReq = {
-                                method : 'GET',
-                                url    : 'index.php?id=checkMod&modCode=' + currentMod + '&sem=' + semester
-                            }
-                            $http(modsReq). then(
-                                function (response2) {
-                                    console.log("current count : " + count);
-                                   
-                                    if(response2.data == ""){
-                                        
-                                        $scope.takenMods.push({
-                                            ModuleCode: $scope.specialMods[count].ModuleCode,
-                                            ModuleTitle: $scope.specialMods[count].ModuleTitle,
-                                            ModuleCredit: $scope.specialMods[count].ModuleCredit
-                                        });
-                                    }
-                                    else{
-                                        $scope.takenMods.push({
-                                            ModuleCode: response2.data.ModuleCode,
-                                            ModuleTitle: response2.data.ModuleTitle,
-                                            ModuleCredit: response2.data.ModuleCredit
-                                            
-                                        });
-                                    }
-                                    count = count + 1;
-                                    console.log($scope.takenMods[count]);
-                                    
-                                },function (response2){
-                                    console.log("error");
-                                }
-                            );
-                        //});
-                        
-                        //$scope.takenMods[count] = response.data.Results[i];
-                        
-                    }
-                }
-                //$scope.mods = response.data.Results.length;
-                //console.log(response.data.Results[0].Name);
-			//sessionStorage.setItem("userName", $scope.username);
-			//sessionStorage.setItem("netid", response.data.Results[0].UserID);
-			// success function
-			//console.log(response.data.Results[0]);
-			//$scope.username = response.data;
-			}, function (response) {
-                console.log("error");
-			// Failure Function
-			//$scope.username = "Invalid User";
-			}
-		);
-	}        
-	*/
+	
     $scope.getWidth = function() {
         return window.innerWidth;
     };
@@ -1313,6 +1255,29 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             textbox.attr('value', url);
         });
     });
+    
+    //mouseover event for sidebar
+//    $(document).ready(function() {
+//        // Tooltip only Text
+//        $('.masterTooltip').hover(function(){
+//                // Hover over code
+//                var title = $(this).attr('title');
+//                $(this).data('tipText', title).removeAttr('title');
+//                $('<p class="tooltip"></p>')
+//                .text(title)
+//                .appendTo('body')
+//                .fadeIn('slow');
+//        }, function() {
+//                // Hover out code
+//                $(this).attr('title', $(this).data('tipText'));
+//                $('.tooltip').remove();
+//        }).mousemove(function(e) {
+//                var mousex = e.pageX + 20; //Get X coordinates
+//                var mousey = e.pageY + 10; //Get Y coordinates
+//                $('.tooltip')
+//                .css({ top: mousey, left: mousex })
+//        });
+//    });
 
     
     $scope.$watch($scope.getWidth, function(newValue, oldValue) {
