@@ -498,10 +498,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     mathSciRequiredMc = mathSciRequiredMc - 4;
                     sessionStorage.setItem("mathSciRequiredMc", mathSciRequiredMc);                    
                 }
-//                    if(mathSciRequiredMc <= 0){
-//                        mathSciRequiredMc = 0;
-//                        sessionStorage.setItem("mathSciRequiredMc", mathSciRequiredMc);
-//                    }
                 
                 var breathDepthModules = JSON.parse(sessionStorage.getItem("breathDepthModules"));
                 var breathDepthRequiredMc = parseInt(sessionStorage.getItem("breathDepthRequiredMc"));
@@ -552,14 +548,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         });
                    }
                 }); 
-                
-                //UE modules
-                    
-                //console.log(ULRModules);
-                //console.log(ULRRequiredMc); 
-                
 
-                
                 //calculating core progress barchart
                 $scope.$applyAsync(function(){
                     $scope.currentULR = ((20 - (ULRRequiredMc)) / 20 * 100).toFixed(0);
@@ -581,51 +570,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     } else{
                         $scope.currentUE = $scope.currentUE + "%";
                     }
-                    //$scope.currentUE = (UEModules.length * 4 - UERequireMC)
                 });
-                
-                //debuging type:core
-                //console.log("result :");
-                //console.log(coreModules);
-                    
-                
-                //console.log(coreModules);
-                //console.log(coreRequireMc);
-                //console.log(JSON.parse(sessionStorage.getItem("coreModules")));
-                //var matricYear = sessionStorage.getItem("matricYear");
-                //start to populate barchart with modules Taken & preclusion list
-                //$scope.barChartModTaken = JSON.parse(sessionStorage.getItem("modsTaken"));
-                //console.log("barChartModules");
-                //console.log($scope.barChartModTaken);
-//                getMajReq().then(
-//                    function(majReq){
-//                        //getting matric year to access json data
-//                        var mYear = "matric" + matricYear;
-//                        var result = (majReq.data[mYear]);
-//                        var preclusionList = JSON.parse(sessionStorage.getItem("preclusionList"));
-//                        //debug
-//                        //console.log(result.length);
-//                        //console.log(result[0].totalModules.length);
-//                        //end debug
-//                        var coreModules = result[0].totalModules[0].mods;
-//                        //console.log(coreModules);
-//                        console.log($scope.preclusionList);
-//                        console.log($scope.preclusionList.length);
-//                        for(var i = 0; i < $scope.preclusionList.length; i ++){
-//                            //console.log("current Module : ");
-//                            //console.log(preclusionList[i]);
-//                            if(coreModules.indexOf(preclusionList[i]) != -1){
-//                                coreModules.splice(coreModules.indexOf(preclusionList[i],1));
-//                                console.log(coreModules);
-//                            }
-//                        }
-
-//                    }
-//                );
-                //end of populate barchart                         
-            }
-            
-           
+                       
+            }           
         );  
         // console.log(precludedList);
         //return JSON.stringify(precludedList);
@@ -650,6 +597,199 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         
         //$scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0);
     }
+       
+    //filter search bar function
+    $scope.filterULR = function(){
+        $scope.modList = [];
+        $scope.$applyAsync(function(){
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = parseInt(date.getMonth()) + 1;
+            var sem = 1;
+            if(month < 7){
+                year = parseInt(year) - 1;
+                sem = 2;
+            }
+            var acadYear = year + "/" + (parseInt(year) + 1);
+            $scope.modList.length = 0;
+            $scope.searchLoading = false;
+            $timeout(function () {
+                $scope.searchLoading = true;
+            }, 3000);
+            var ULRModulesArray = JSON.parse(sessionStorage.getItem("ULRModules"));
+            angular.forEach(ULRModulesArray,function(ULRMod,ULRModIndex){
+                getModInfo(ULRMod,sem,acadYear).then(
+                    function(ULRModInfo){
+                        if(ULRModInfo.data != ""){
+                            //console.log(coreModInfo);
+                            //console.log(coreModInfo.data.Semester);
+                            $scope.modList.push({
+                                ModuleCode : ULRModInfo.data.ModuleCode,
+                                ModuleTitle : ULRModInfo.data.ModuleTitle,
+                                ModuleCredit : ULRModInfo.data.ModuleCredit,
+                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                modFound : true,
+                                selectedModGrade : "-",
+                                selectedModSuStatus : "No",
+                                
+                            });
+                        }
+                    }
+                );
+            });
+        });
+    }
+    
+    $scope.filterCore = function(){
+        $scope.modList = [];
+//        $scope.$applyAsync(function(){
+//            $scope.currentCore = "10%";
+//            console.log(JSON.stringify(sessionStorage));
+//        });
+//        console.log("tesT");
+        
+        $scope.$applyAsync(function(){
+            $scope.searchLoading = false;
+            $timeout(function () {
+                $scope.searchLoading = true;
+            }, 3000);
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = parseInt(date.getMonth()) + 1;
+            var sem = 1;
+            if(month < 7){
+                year = parseInt(year) - 1;
+                sem = 2;
+            }
+            var acadYear = year + "/" + (parseInt(year) + 1);
+            //reseting UI 
+            $scope.modList.length = 0; 
+            
+            var coreModulesArray = JSON.parse(sessionStorage.getItem("coreModules"));
+            var breathDepthModulesArray = JSON.parse(sessionStorage.getItem("breathDepthModules"));
+            //console.log(breathDepthModulesArray);
+            var internshipRequiredMc = parseInt(sessionStorage.getItem("internshipRequiredMc"));
+            if(internshipRequiredMc < 12){
+                var internshipModulesArray = JSON.parse(sessionStorage.getItem("internshipModules"))[1];
+            } else{
+                var internshipModulesArray = JSON.parse(sessionStorage.getItem("internshipModules"))[1];
+                internshipModulesArray.unshift(JSON.parse(sessionStorage.getItem("internshipModules"))[0][0]);
+            }
+            var mathSciModulesArray = JSON.parse(sessionStorage.getItem("mathSciModules"));
+            var projectModulesArray = JSON.parse(sessionStorage.getItem("project8thMcModules"));
+            //console.log(coreModulesArray);
+            
+            //populate leftover core modules
+            angular.forEach(coreModulesArray,function(coreMod,coreModIndex){
+                getModInfo(coreMod,sem,acadYear).then(
+                    function(coreModInfo){
+                        if(coreModInfo.data != ""){
+                            //console.log(coreModInfo);
+                            //console.log(coreModInfo.data.Semester);
+                            $scope.modList.push({
+                                ModuleCode : coreModInfo.data.ModuleCode,
+                                ModuleTitle : coreModInfo.data.ModuleTitle,
+                                ModuleCredit : coreModInfo.data.ModuleCredit,
+                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                modFound : true,
+                                selectedModGrade : "-",
+                                selectedModSuStatus : "No",
+                                //Semesters: coreModInfo.data.Semester
+                            });
+                        }
+                    }
+                );
+            });
+            
+            angular.forEach(mathSciModulesArray,function(mathSciMod,mathSciModIndex){
+                getModInfo(mathSciMod,sem,acadYear).then(
+                    function(mathSciModInfo){
+                        if(mathSciModInfo.data != ""){
+                            $scope.modList.push({
+                                ModuleCode : mathSciModInfo.data.ModuleCode,
+                                ModuleTitle : mathSciModInfo.data.ModuleTitle,
+                                ModuleCredit : mathSciModInfo.data.ModuleCredit,
+                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                modFound : true,
+                                selectedModGrade : "-",
+                                selectedModSuStatus : "No"
+                            });
+                        }
+                    }
+                );
+            });            
+            
+            angular.forEach(internshipModulesArray,function(internshipModule,internshipModuleIndex){
+                getModInfo(internshipModule,sem,acadYear).then(
+                    function(internshipModInfo){
+                        if(internshipModInfo.data != ""){
+                            $scope.modList.push({
+                                ModuleCode : internshipModInfo.data.ModuleCode,
+                                ModuleTitle : internshipModInfo.data.ModuleTitle,
+                                ModuleCredit : internshipModInfo.data.ModuleCredit,
+                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                modFound : true,
+                                selectedModGrade : "-",
+                                selectedModSuStatus : "No"
+                            });
+                            //console.log($scope.modList);
+                        }
+                    }
+                );
+            });
+
+            angular.forEach(breathDepthModulesArray,function(breathDepthModule,breathDepthModuleIndex){
+                getModInfo(breathDepthModule,sem,acadYear).then(
+                    function(breathDepthModInfo){
+                        if(breathDepthModInfo.data != ""){
+                            $scope.modList.push({
+                                ModuleCode : breathDepthModInfo.data.ModuleCode,
+                                ModuleTitle : breathDepthModInfo.data.ModuleTitle,
+                                ModuleCredit : breathDepthModInfo.data.ModuleCredit,
+                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                modFound : true,
+                                selectedModGrade : "-",
+                                selectedModSuStatus : "No"
+                            });
+                            //console.log($scope.modList);
+                        }
+                    }
+                );
+            });            
+    
+            angular.forEach(projectModulesArray,function(projectModuleArr,projectModuleArrIndex){
+                for(var i = 0; i < projectModuleArr.length; i ++){
+                    getModInfo(projectModuleArr[i],sem,acadYear).then(
+                        function(projectModInfo){
+                            if(projectModInfo.data != ""){
+                                $scope.modList.push({
+                                    ModuleCode : projectModInfo.data.ModuleCode,
+                                    ModuleTitle : projectModInfo.data.ModuleTitle,
+                                    ModuleCredit : projectModInfo.data.ModuleCredit,
+                                    ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                    ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                    modFound : true,
+                                    selectedModGrade : "-",
+                                    selectedModSuStatus : "No"
+                                });
+                                //console.log($scope.modList);
+                            }
+                        }
+                    );
+                }
+
+            }); 
+        });
+        
+        //$scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0);
+    }
+    //end of search bar function
+    
     
     //Populate search bar modules
     getModList().then(
@@ -787,7 +927,14 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     }
                 }
             }
-            //console.log(resultArr);
+            
+            var modSem = parseInt(JSON.parse(sessionStorage.getItem("modsTaken"))[0].Semester);
+            if(modSem == 2){
+                var lastResult = resultArr[resultArr.length - 1];
+                var result = (JSON.parse(sessionStorage.getItem("modsTaken"))[0].AcadYear.substring(0,9));
+                result = result + "-2";
+                resultArr.push(result);
+            }
             return resultArr;
         }
         
@@ -902,7 +1049,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     selectedModGrade: null,
                                                     ModuleGrade     : ["-"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
-                                                    Semester        : userModsTaken[key].Semester
+                                                    Semester        : userModsTaken[key].Semester,
+                                                    type            : "UE"
                                                 });
                                                 
                                                 $scope.takenMods.push({
@@ -915,7 +1063,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     selectedModGrade: null,
                                                     ModuleGrade     : ["-"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
-                                                    Semester        : userModsTaken[key].Semester
+                                                    Semester        : userModsTaken[key].Semester,
+                                                    type            : "UE"
                                                 });
 
                                                 //console.log($scope.takenMods[count]);
@@ -932,7 +1081,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                         selectedModGrade: null,
                                                         ModuleGrade     : "-",
                                                         AcadYear        : userModsTaken[key].AcadYear,
-                                                        Semester        : userModsTaken[key].Semester
+                                                        Semester        : userModsTaken[key].Semester,
+                                                        type            : "UE"
                                                     }
                                                 ));
                                             } else{
@@ -1067,7 +1217,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                         selectedModGrade: "-",
                                         ModuleGrade     : ["-"],
                                         AcadYear        : nextAcadSem.substring(0,9),
-                                        Semester        : nextSem
+                                        Semester        : nextSem,
+                                        type            : null
                                     }
                                 );
                             }
@@ -1096,23 +1247,34 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         }
                         
                         //colour code modules' background colour according to their catagories
-                        $scope.findType = function(){
+                        $scope.findType = function(module){
+                            //console.log(module);
                             var type = document.getElementById("type");
-                            var ULRModules = JSON.parse(sessionStorage.getItem("ULRModules"));
-                            var UEModules = JSON.parse(sessionStorage.getItem("UEModules"));
-                            var coreModules = JSON.parse(sessionStorage.getItem("coreModules"));
-                            console.log(type);
-                            if (coreModules.indexOf(type.value) !== -1) {
-                                type.style.backgroundColor = "#ffedc4";//yellow
-                            }
-                            else if (UEModules.indexOf(type.value) !== -1){
-                                type.style.backgroundColor = "#baeee0";//green
-                            }
-                            else if (ULRModules.indexOf(type.value) !== -1){
-                                type.style.backgroundColor = "#fbbaca";//pink
-                            }
-                            else
-                                type.style.backgroundColor = "#cff2fd";//blue
+                            //if(module.ModuleCode === "CS1101S"){
+                                //type.style.backgroundColor = "#ffedc4";//yellow 
+                            //}
+                            //this.style.backgroundColor = "#ffedc4";
+//                            if(module.type == "UE"){
+//                               type.style.backgroundColor = "#ffedc4";//yellow 
+//                            } else if(module.type == null){
+//                                type.style.backgroundColor = "#cff2fd";//blue
+//                            }
+//                          var ULRModules = JSON.parse(sessionStorage.getItem("ULRModules"));
+//                          var UEModules = JSON.parse(sessionStorage.getItem("UEModules"));
+//                          var coreModules = JSON.parse(sessionStorage.getItem("coreModules"));
+                            //console.log(type);
+                            //console.log(coreModules);
+//                            if (coreModules.indexOf(type.value) !== -1) {
+//                                type.style.backgroundColor = "#ffedc4";//yellow
+//                            }
+//                            else if (UEModules.indexOf(type.value) !== -1){
+//                                type.style.backgroundColor = "#baeee0";//green
+//                            }
+//                            else if (ULRModules.indexOf(type.value) !== -1){
+//                                type.style.backgroundColor = "#fbbaca";//pink
+//                            }
+//                            else
+//                                type.style.backgroundColor = "#cff2fd";//blue
                         }
                         
 //                        console.log(userSem.length);

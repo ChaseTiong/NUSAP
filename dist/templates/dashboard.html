@@ -31,8 +31,9 @@
                 </thead>
                 <tbody style="height: 100px; overflow-y: scroll">
                     <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 == 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
+                       <!-- style="background-color:#ffedc4" !-->
                         <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
-                            <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" data-ng-init="findType()" id="type"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
+                            <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" data-ng-init="findType(mod)" id="type"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
                                 <span>{{mod.ModuleTitle}}</span>
                             </li>
                             <li class="dndPlaceholder">
@@ -66,7 +67,7 @@
         <rd-widget>
 			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
               <rd-widget-body>
-                  <span class="progress-title"><b>OVERALL&nbsp;:&nbsp;</b></span>
+                <span class="progress-title"><b>OVERALL&nbsp;:&nbsp;</b></span>
                   <div class="progress">
                      <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{overallProgress}}">
                           {{overallProgress}}
@@ -85,7 +86,7 @@
                      <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{currentCore}}">
                         {{currentCore}}
                       </div>
-                      <div role="button" data-ng-click="filterCore()"> &nbsp; </div>
+                      <div role="button" class="masterTooltip" title="Click to populate CORE modules" data-ng-click="filterCore()"> &nbsp; </div>
                      <!-- <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
                       
                      </div>
@@ -100,7 +101,7 @@
                      <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" style="width:{{currentULR}}">
                           {{currentULR}}
                       </div>
-                      <div role="button"> &nbsp; </div>
+                      <div role="button" class="masterTooltip" title="Click to populate ULR modules" data-ng-click="filterULR()"> &nbsp; </div>
                      <!-- <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">
                       
                      </div>
@@ -129,25 +130,6 @@
        </rd-widget>      
    </div>
             
-   <!-- End of Graduation Progess !-->   	
-    
-    <!-- Graduation Progress
-	<div class="col-lg-4 col-sm-6 col-xs-12">
-        <rd-widget>
-			<rd-widget-header icon="fa-users" title="Graduation Requirements"></rd-widget-header>
-                <tr ng-repeat="modules in takenMods">     
-                    <td><progressbar animate="false" value="modules.progress" type="{{modules.type}}" 
-                    data-ng-class="{ 'progress-bar-success' : modules.type == 'success' , 'progress-bar-info': modules.type == 'info', 'progress-bar-warning' : modules.type == 'warning' , 'progress-bar-danger': modules.type == 'danger'}"   >  
-                        <b>{{modules.progress}} </b></progressbar></td>
-                </tr>
-                <div data-ng-controller="BarCtrl" data-ng-init="getBarChart()">
-                    <canvas class="col-lg-4 col-sm-6 col-xs-12 pull-right" id="canvas" height="220"></canvas>
-                </div>
-        </rd-widget>
-    </div> -->
-    
-   
-
 	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right">
 		<rd-widget>
 			<rd-widget-header icon="fa-search" title="Module Search">
