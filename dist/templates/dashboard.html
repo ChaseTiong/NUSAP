@@ -18,99 +18,45 @@
      <!--class="row" data-ng-controller="AcadPlannerCtrl" data-ng-init="moduleTaken()">-->
 	<div class="col-lg-8">
 		<rd-widget>
-
             <rd-widget-header class="no-padding" icon="fa-tasks" title="Academic Planner">
 				<!--<a target = "_blank" href="https://nusmods.com">NUSmods</a>-->
-                <div class="input-group">
-                        <input type="text" id="invite-link" class="form-control input-md" placeholder="Copy planner link to clipboard">
-                        <span class="input-group-btn">
-                          <button class="btn btn-secondary invite-link" type="button">
-                            <i class="fa fa-clipboard"></i>
-                          </button>
-                        </span>
-                    </div>
-                <div align="center"> 
-                    <button data-ng-click="addSemester()" type="submit" class="btn-nusap btn-class">Add another Semester! </button> 
-                </div> 
-				
-      		</rd-widget-header>
-      		<rd-widget-body classes="medium no-padding">
-                <div class="table-responsive typesDemo row">
-					<table class="table">
-                        <thead>
-                           <tr>
-                                <th class="text-center" ng-repeat="semesterMod in modsPerSem track by $index" ng-if="$index%2 == 0">{{semesterMod[0].AcadYear}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th colspan="100%" class="text-center">Semester 1</th>
-                            </tr>
-                            <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 == 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
-                                <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
-                                    <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
-                                        <span>{{mod.ModuleTitle}}</span>
-                                    </li>
-                                    <li class="dndPlaceholder">
-                                        Drop a <strong>module</strong> here
-                                    </li>
-                                </ul>
-                            </td>
-                        </tbody>
-                    </table>
-                </div>
-				<!--<div class="table-responsive typesDemo row">
-					<table class="table">
-						<thead>
-                           <tr>
-                                <th class="text-center" ng-repeat="year in plannerSize track by $index">{{year.candidatureYear}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th colspan="100%" class="text-center" >Semester 1</th>
-                            </tr>
-                            <tr>
-                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" >
-                                    <button data-ng-repeat = "modules in takenMods | orderBy:'ModuleCode' track by $index" style="word-wrap: break-word" data-ng-mousedown="preRequisite()" data-ng-dblclick="nusmodsWeb()" type="submit" class="btn btn-info" draggable="true" ondragstart="dragStart(event)" id="dragtarget" data-ng-init="modValidation()">{{modules.ModuleCode}}</button></td>
-                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="dragStart(event)"></td>
-                                <td class="text-center" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="dragStart(event)"></td>
-                            </tr>
-                            <tr>
-                                <th colspan="100%" class="text-center">Semester 2</th>
-                            </tr>
-                            </tr>
-                            
-                        </tbody>
-					</table>-->
-				
-			</rd-widget-body>
-            <rd-widget-body classes="medium no-padding">
-                <div class="table-responsive typesDemo row">
-					<table class="table">
-                        <thead>
-                           <tr>
-                                <th class="text-center" ng-repeat="semesterMod in modsPerSem track by $index" ng-if="$index%2 == 0">{{semesterMod[0].AcadYear}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th colspan="100%" class="text-center">Semester 2</th>
-                            </tr>
-                            <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 != 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
-                                <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
-                                    <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
-                                        <span>{{mod.ModuleTitle}}</span>
-                                    </li>
-                                    <li class="dndPlaceholder">
-                                        Drop a <strong>module</strong> here
-                                    </li>
-                                </ul>
-                            </td>
-                        </tbody>
-                    </table>
-                </div>
-            </rd-widget-body>
+                 <button data-ng-click="addSemester()" type="submit" class="btn-nusap btn-class">Add another Semester! </button>  
+      		</rd-widget-header>   
+            <table class="table table-responsive no-padding typesDemo row">
+                <thead>
+                    <tr>
+                        <th class="text-center" ng-repeat="semesterMod in modsPerSem track by $index" ng-if="$index%2 == 0">{{semesterMod[0].AcadYear}}</th>
+                    </tr>
+                    <tr><th colspan="100%" class="text-center">Semester 1</th></tr>
+                </thead>
+                <tbody style="height: 100px; overflow-y: scroll">
+                    <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 == 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
+                        <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
+                            <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" data-ng-init="findType()" id="type"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
+                                <span>{{mod.ModuleTitle}}</span>
+                            </li>
+                            <li class="dndPlaceholder">
+                                Drop a <strong>module</strong> here
+                            </li>
+                        </ul>
+                    </td>
+                </tbody>
+                <thead>
+                    <tr><th colspan="100%" class="text-center">Semester 2</th></tr>
+                </thead>
+                <tbody>
+                    <td data-ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 != 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
+                        <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
+                            <li class="text-center info background-findType()" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" data-ng-init="findType()" id="type"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
+                                <span>{{mod.ModuleTitle}}</span>
+                            </li>
+                            <li class="dndPlaceholder">
+                                Drop a <strong>module</strong> here
+                            </li>
+                        </ul>
+                    </td>
+                </tbody>
+            </table>
 		</rd-widget>
 	</div>
 
@@ -199,65 +145,10 @@
                 </div>
         </rd-widget>
     </div> -->
-            
-	<!-- End of Graduation Progress
-    <div data-ng-controller="stackedBarCtrl" id="stackedBar" data-ng-init="getBarChart()">
-        <canvas class="col-lg-4 pull-right" id="canvas" height="50"></canvas>
-        Placeholder for chart
     
-    </div> 
-    
-   <!-- 
-	<div class="col-lg-3 col-md-6 col-xs-12">
-		<rd-widget>
-			<rd-widget-body>
-				<div class="widget-icon green pull-left">
-					<i class="fa fa-users"></i>
-				</div>
-				<div class="title">100</div>
-				<div class="comment">Users</div>
-			</rd-widget-body>
-		</rd-widget>
-	</div>
-	<div class="col-lg-3 col-md-6 col-xs-12">
-		<rd-widget>
-			<rd-widget-body>
-				<div class="widget-icon red pull-left">
-					<i class="fa fa-tasks"></i>
-				</div>
-				<div class="title">16</div>
-				<div class="comment">Servers</div>
-			</rd-widget-body>
-		</rd-widget>
-	</div>
-	<div class="col-lg-3 col-md-6 col-xs-12">
-		<rd-widget>
-			<rd-widget-body>
-				<div class="widget-icon orange pull-left">
-					<i class="fa fa-sitemap"></i>
-				</div>
-				<div class="title">225</div>
-				<div class="comment">Documents</div>
-			</rd-widget-body>
-		</rd-widget>
-	</div>
-	<div class="col-lg-3 col-md-6 col-xs-12">
-		<rd-widget>
-			<rd-widget-body>
-				<div class="widget-icon blue pull-left">
-					<i class="fa fa-support"></i>
-				</div>
-				<div class="title">62</div>
-				<div class="comment">Tickets</div>
-			</rd-widget-body>
-		</rd-widget>
-	</div>
-</div>
--->
+   
 
 	<div class="col-lg-4 col-sm-6 col-xs-12 pull-right">
-		
-		
 		<rd-widget>
 			<rd-widget-header icon="fa-search" title="Module Search">
 			    
@@ -283,8 +174,10 @@
                             <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--></tr>
                             </thead>
                             
-                            <ul dnd-list="takenMods" dnd-allowed-types="year.candidatureYear" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
-                                <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move"><!--ng-dblclick="$window.open('http://nusmods.com/modules/{{module.ModuleCode}}', '_blank')"-->
+                            <ul dnd-list="modsPerSem" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
+                                <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move"><!--data-ng-init="findType()"
+                                    id="type"
+                                    ng-dblclick="$window.open('http://nusmods.com/modules/{{module.ModuleCode}}', '_blank')"-->
                                     <a href="https://nusmods.com/modules/{{module.ModuleCode}}" target="_blank"><strong>{{module.ModuleCode}}</strong> {{module.ModuleTitle}} <button align="right" class="semBtn" align="right" ng-repeat="modAvailableSem in module.Semesters">{{modAvailableSem}}</button></a>
                                     <span>{{module.ModuleTitle}}</span>
                                 </li>
@@ -292,54 +185,22 @@
                                     Discard a <strong>module</strong> here
                                 </li>
                             </ul>
-                            <!--<tr data-ng-repeat="modules in modList | filter: { ModuleCode: searchBox }" ondrop="drop(event)" ondragover="allowDrop(event)" >
-                                <td class="text-center col-md-2">
-                                    <button data-ng-mousedown="preRequisite()" data-ng-dblclick="nusmodsWeb()" type="submit" class="btn btn-info" draggable="true" ondragstart="dragStart(event)" id="dragtarget" data-ng-init="modValidation()">{{modules.Semesters}}</button> 
-                                </td>
-                           </tr>-->
                         </tbody>
 					</table> 
         		</div>
 			</rd-widget-body>
 		<rd-widget>
 	</rd-widget></rd-widget></div>
-</div>
-<!--<div class="typesDemo row" data-ng-controller="MasterCtrl">
-
-    <div ng-repeat="list in lists" class="col-md-4">
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title">List of {{list.label}} (max. {{list.max}})</h3>
-            </div>
-            <div class="panel-body">
-                <ul dnd-list="list.people" dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.people.length >= list.max">
-
-                    <li ng-repeat="person in list.people"
-                        dnd-draggable="person"
-                        dnd-type="person.type"
-                        dnd-disable-if="person.type == 'unknown'"
-                        dnd-moved="list.people.splice($index, 1)"
-                        dnd-effect-allowed="move"
-                        class="background-{{person.type}}"
-                        >
-                        <dnd-nodrag>
-                          <div dnd-handle class="handle">:::</div>
-                          <div class="name">
-                              <input type="text" ng-model="person.name" class="background-{{person.type}} form-control input-sm">
-                          </div>
-                        </dnd-nodrag>
-                    </li>
-
-                    <li class="dndPlaceholder">
-                        Drop an <strong>{{list.allowedTypes.join(' or ')}}</strong> here
-                    </li>
-
-                </ul>
-            </div>
-        </div>
+    <div class="input-group">
+        <input type="text" id="invite-link" class="form-control input-md" placeholder="Copy planner link to clipboard">
+        <span class="input-group-btn">
+          <button class="btn btn-secondary invite-link" type="button">
+            <i class="fa fa-clipboard"></i>
+          </button>
+        </span>
     </div>
-
 </div>
+
         
 <!--
 <div class="row">

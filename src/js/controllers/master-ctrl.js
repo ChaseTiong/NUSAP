@@ -632,47 +632,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     }    
  
     $scope.modList = [];
-    $scope.plannedMods = {
-        selected: null,
-        years: {"2015/2016": [], "2016/2017": []}
-    };
     $scope.notPrecluded = true;
     $scope.prerequisiteNotFulfill = true;
-    /*need to push takenMods into plannedMods into a nested array similar to the $scope.lists below
-    $scope.lists = [
-        {
-            label: "Men",
-            allowedTypes: ['man'],
-            max: 4,
-            people: [
-                {name: "Bob", type: "man"},
-                {name: "Charlie", type: "man"},
-                {name: "Dave", type: "man"}
-            ]
-        },
-        {
-            label: "Women",
-            allowedTypes: ['woman'],
-            max: 4,
-            people: [
-                {name: "Alice", type: "woman"},
-                {name: "Eve", type: "woman"},
-                {name: "Peggy", type: "woman"}
-            ]
-        },
-        {
-            label: "People",
-            allowedTypes: ['man', 'woman'],
-            max: 6,
-            people: [
-                {name: "Frank", type: "man"},
-                {name: "Mallory", type: "woman"},
-                {name: "Alex", type: "unknown"},
-                {name: "Oscar", type: "man"},
-                {name: "Wendy", type: "woman"}
-            ]
-        }
-    ];*/
+   
     
     $scope.filterCore = function(){
 //        $scope.$applyAsync(function(){
@@ -1060,7 +1022,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             });*/
                             
                         });
-
+                        
                         $scope.addSemester = function(){
                             //console.log("test");
                             var currentTotalSem = [];
@@ -1119,6 +1081,40 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             $scope.addSemester();
                         }
                         console.log(userSem.length);
+                        
+                        //remove 1 empty mod and the mod from search list (suppose to put in dashboard.html line 195)
+                        $scope.removeMod = function($index) { 
+                            angular.forEach($scope.modsPerSem, function(value,sem){
+                                console.log("--");
+                                    if($scope.modsPerSem[sem].ModuleTitle == ""){
+                                        console.log("-");
+                                        $scope.modsPerSem[sem].splice(0, 1);
+                                        return;   
+                                    }
+                                });
+                            $scope.modList.splice($index, 1);
+                        }
+                        
+                        //colour code modules' background colour according to their catagories
+                        $scope.findType = function(){
+                            var type = document.getElementById("type");
+                            var ULRModules = JSON.parse(sessionStorage.getItem("ULRModules"));
+                            var UEModules = JSON.parse(sessionStorage.getItem("UEModules"));
+                            var coreModules = JSON.parse(sessionStorage.getItem("coreModules"));
+                            console.log(type);
+                            if (coreModules.indexOf(type.value) !== -1) {
+                                type.style.backgroundColor = "#ffedc4";//yellow
+                            }
+                            else if (UEModules.indexOf(type.value) !== -1){
+                                type.style.backgroundColor = "#baeee0";//green
+                            }
+                            else if (ULRModules.indexOf(type.value) !== -1){
+                                type.style.backgroundColor = "#fbbaca";//pink
+                            }
+                            else
+                                type.style.backgroundColor = "#cff2fd";//blue
+                        }
+                        
 //                        console.log(userSem.length);
 //                        for(var semCounter = userSem.length; semCounter < 8; semCounter ++){
 //                            var semArray = [];
