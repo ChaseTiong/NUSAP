@@ -617,23 +617,28 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 $scope.searchLoading = true;
             }, 3000);
             var ULRModulesArray = JSON.parse(sessionStorage.getItem("ULRModules"));
+            var currentPreclusionList = JSON.parse(sessionStorage.getItem("preclusionList"));
+            
             angular.forEach(ULRModulesArray,function(ULRMod,ULRModIndex){
                 getModInfo(ULRMod,sem,acadYear).then(
                     function(ULRModInfo){
                         if(ULRModInfo.data != ""){
                             //console.log(coreModInfo);
                             //console.log(coreModInfo.data.Semester);
-                            $scope.modList.push({
-                                ModuleCode : ULRModInfo.data.ModuleCode,
-                                ModuleTitle : ULRModInfo.data.ModuleTitle,
-                                ModuleCredit : ULRModInfo.data.ModuleCredit,
-                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
-                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
-                                modFound : true,
-                                selectedModGrade : "-",
-                                selectedModSuStatus : "No",
-                                
-                            });
+                            //If module found is not in preclusion list, add into search value
+                            if(currentPreclusionList.indexOf(ULRModInfo.data.ModuleCode) == -1){
+                                $scope.modList.push({
+                                    ModuleCode : ULRModInfo.data.ModuleCode,
+                                    ModuleTitle : ULRModInfo.data.ModuleTitle,
+                                    ModuleCredit : ULRModInfo.data.ModuleCredit,
+                                    ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                    ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                    modFound : true,
+                                    selectedModGrade : "-",
+                                    selectedModSuStatus : "No",
+                                    colorCode           : "#f08080"
+                                });
+                            }
                         }
                     }
                 );
@@ -665,7 +670,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             var acadYear = year + "/" + (parseInt(year) + 1);
             //reseting UI 
             $scope.modList.length = 0; 
-            
+            var currentPreclusionList = JSON.parse(sessionStorage.getItem("preclusionList"));
             var coreModulesArray = JSON.parse(sessionStorage.getItem("coreModules"));
             var breathDepthModulesArray = JSON.parse(sessionStorage.getItem("breathDepthModules"));
             //console.log(breathDepthModulesArray);
@@ -687,17 +692,20 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                         if(coreModInfo.data != ""){
                             //console.log(coreModInfo);
                             //console.log(coreModInfo.data.Semester);
-                            $scope.modList.push({
-                                ModuleCode : coreModInfo.data.ModuleCode,
-                                ModuleTitle : coreModInfo.data.ModuleTitle,
-                                ModuleCredit : coreModInfo.data.ModuleCredit,
-                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
-                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
-                                modFound : true,
-                                selectedModGrade : "-",
-                                selectedModSuStatus : "No",
-                                //Semesters: coreModInfo.data.Semester
-                            });
+                            if(currentPreclusionList.indexOf(coreModInfo.data.ModuleCode) == -1){
+                                $scope.modList.push({
+                                    ModuleCode : coreModInfo.data.ModuleCode,
+                                    ModuleTitle : coreModInfo.data.ModuleTitle,
+                                    ModuleCredit : coreModInfo.data.ModuleCredit,
+                                    ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                    ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                    modFound : true,
+                                    selectedModGrade : "-",
+                                    selectedModSuStatus : "No",
+                                    colorCode : "#cff2fd"
+                                    //Semesters: coreModInfo.data.Semester
+                                });
+                            }
                         }
                     }
                 );
@@ -707,16 +715,19 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 getModInfo(mathSciMod,sem,acadYear).then(
                     function(mathSciModInfo){
                         if(mathSciModInfo.data != ""){
-                            $scope.modList.push({
-                                ModuleCode : mathSciModInfo.data.ModuleCode,
-                                ModuleTitle : mathSciModInfo.data.ModuleTitle,
-                                ModuleCredit : mathSciModInfo.data.ModuleCredit,
-                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
-                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
-                                modFound : true,
-                                selectedModGrade : "-",
-                                selectedModSuStatus : "No"
-                            });
+                            if(currentPreclusionList.indexOf(mathSciModInfo.data.ModuleCode) == -1){
+                                $scope.modList.push({
+                                    ModuleCode : mathSciModInfo.data.ModuleCode,
+                                    ModuleTitle : mathSciModInfo.data.ModuleTitle,
+                                    ModuleCredit : mathSciModInfo.data.ModuleCredit,
+                                    ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                    ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                    modFound : true,
+                                    selectedModGrade : "-",
+                                    selectedModSuStatus : "No",
+                                    colorCode : "#baeee0"
+                                });
+                            }
                         }
                     }
                 );
@@ -726,16 +737,19 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 getModInfo(internshipModule,sem,acadYear).then(
                     function(internshipModInfo){
                         if(internshipModInfo.data != ""){
-                            $scope.modList.push({
-                                ModuleCode : internshipModInfo.data.ModuleCode,
-                                ModuleTitle : internshipModInfo.data.ModuleTitle,
-                                ModuleCredit : internshipModInfo.data.ModuleCredit,
-                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
-                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
-                                modFound : true,
-                                selectedModGrade : "-",
-                                selectedModSuStatus : "No"
-                            });
+                            if(currentPreclusionList.indexOf(internshipModInfo.data.ModuleCode) == -1){
+                                $scope.modList.push({
+                                    ModuleCode : internshipModInfo.data.ModuleCode,
+                                    ModuleTitle : internshipModInfo.data.ModuleTitle,
+                                    ModuleCredit : internshipModInfo.data.ModuleCredit,
+                                    ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                    ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                    modFound : true,
+                                    selectedModGrade : "-",
+                                    selectedModSuStatus : "No",
+                                    colorCode : "#cff2fd"
+                                });
+                            }
                             //console.log($scope.modList);
                         }
                     }
@@ -746,16 +760,19 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 getModInfo(breathDepthModule,sem,acadYear).then(
                     function(breathDepthModInfo){
                         if(breathDepthModInfo.data != ""){
-                            $scope.modList.push({
-                                ModuleCode : breathDepthModInfo.data.ModuleCode,
-                                ModuleTitle : breathDepthModInfo.data.ModuleTitle,
-                                ModuleCredit : breathDepthModInfo.data.ModuleCredit,
-                                ModuleSuStatus : ["No","Yes","Exempted","Waived"],
-                                ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
-                                modFound : true,
-                                selectedModGrade : "-",
-                                selectedModSuStatus : "No"
-                            });
+                            if(currentPreclusionList.indexOf(breathDepthModInfo.data.ModuleCode) == -1){
+                                $scope.modList.push({
+                                    ModuleCode : breathDepthModInfo.data.ModuleCode,
+                                    ModuleTitle : breathDepthModInfo.data.ModuleTitle,
+                                    ModuleCredit : breathDepthModInfo.data.ModuleCredit,
+                                    ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                    ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                    modFound : true,
+                                    selectedModGrade : "-",
+                                    selectedModSuStatus : "No",
+                                    colorCode : "#cff2fd"
+                                });
+                            }
                             //console.log($scope.modList);
                         }
                     }
@@ -767,16 +784,19 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     getModInfo(projectModuleArr[i],sem,acadYear).then(
                         function(projectModInfo){
                             if(projectModInfo.data != ""){
-                                $scope.modList.push({
-                                    ModuleCode : projectModInfo.data.ModuleCode,
-                                    ModuleTitle : projectModInfo.data.ModuleTitle,
-                                    ModuleCredit : projectModInfo.data.ModuleCredit,
-                                    ModuleSuStatus : ["No","Yes","Exempted","Waived"],
-                                    ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
-                                    modFound : true,
-                                    selectedModGrade : "-",
-                                    selectedModSuStatus : "No"
-                                });
+                                if(currentPreclusionList.indexOf(projectModInfo.data.ModuleCode) == -1){
+                                    $scope.modList.push({
+                                        ModuleCode : projectModInfo.data.ModuleCode,
+                                        ModuleTitle : projectModInfo.data.ModuleTitle,
+                                        ModuleCredit : projectModInfo.data.ModuleCredit,
+                                        ModuleSuStatus : ["No","Yes","Exempted","Waived"],
+                                        ModuleGrade : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                        modFound : true,
+                                        selectedModGrade : "-",
+                                        selectedModSuStatus : "No",
+                                        colorCode : "#cff2fd"
+                                    });
+                                }
                                 //console.log($scope.modList);
                             }
                         }
@@ -824,23 +844,39 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
         //console.log($scope.updateModList);
         currentText = currentText.toUpperCase();
         console.log("current Text : " + currentText);
-        //console.log("previous Text : " + previousText);
-        //$scope.modList = [];
-        //angular.forEach($scope.tempModList, function(value,key){
+
+//                                                    ModuleCode      : userModsTaken[key].ModuleCode,
+//                                                    ModuleTitle     : userModsTaken[key].ModuleTitle,
+//                                                    ModuleCredit    : 4,
+//                                                    ModuleStatus    : "Exempted",
+//                                                    ModuleSuStatus  : ["Exempted"],
+//                                                    selectedModSuStatus : null,
+//                                                    selectedModGrade: null,
+//                                                    ModuleGrade     : ["-"],
+//                                                    AcadYear        : userModsTaken[key].AcadYear,
+//                                                    Semester        : userModsTaken[key].Semester,
+//                                                    type            : "UE",
+//                                                    colorCode       : "#ffedc4"        
+        
         if(currentText.length < 1){
             //$scope.modList = $scope.tempModList;
             $scope.modList = [];
             $scope.isUpdated = true;
         } else if(oldText.length < currentText.length){
             $scope.modList = [];
+            var currentPreclusionList = JSON.parse(sessionStorage.getItem("preclusionList"));
+
             for(var key = 0 ; key < $scope.tempModList.length; key ++){    
                 //console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
                 if($scope.tempModList[key].ModuleCode.includes(currentText)){
-                    $scope.modList.push({
-                        ModuleCode      : $scope.tempModList[key].ModuleCode,
-                        ModuleTitle     : $scope.tempModList[key].ModuleTitle,
-                        Semesters       : $scope.tempModList[key].Semesters
-                    });   
+                    //console.log($scope.tempModList[key]);
+                    if(currentPreclusionList.indexOf($scope.tempModList[key].ModuleCode) == -1){
+                        $scope.modList.push({
+                            ModuleCode      : $scope.tempModList[key].ModuleCode,
+                            ModuleTitle     : $scope.tempModList[key].ModuleTitle,
+                            Semesters       : $scope.tempModList[key].Semesters
+                        }); 
+                    }
                 }
             }            
         }else{
@@ -872,6 +908,10 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 }
             }
             sessionStorage.setItem("oldText",currentText);
+        }
+        //console.log($scope.modList.length);
+        if($scope.modList.length == 0){
+            console.log("TEST");
         }
             //console.log($scope.tempModList);
             //console.log($scope.modList);
@@ -1035,6 +1075,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                 //$scope.overallProgress = (totalCreditTaken / 160 * 100).toFixed(0) + "%";
                                             });
                                             
+                                            //Found unrestricted elective
+                                            //colorcode : yellow : #ffedc4
                                             if(responseModInfo.data === ""){
                                                 totalCreditTaken = totalCreditTaken + 4;
                                                 sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
@@ -1050,7 +1092,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     ModuleGrade     : ["-"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester,
-                                                    type            : "UE"
+                                                    type            : "UE",
+                                                    colorCode       : "#ffedc4"
                                                 });
                                                 
                                                 $scope.takenMods.push({
@@ -1064,7 +1107,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     ModuleGrade     : ["-"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
                                                     Semester        : userModsTaken[key].Semester,
-                                                    type            : "UE"
+                                                    type            : "UE",
+                                                    colorCode       : "#ffedc4"
                                                 });
 
                                                 //console.log($scope.takenMods[count]);
@@ -1082,7 +1126,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                         ModuleGrade     : "-",
                                                         AcadYear        : userModsTaken[key].AcadYear,
                                                         Semester        : userModsTaken[key].Semester,
-                                                        type            : "UE"
+                                                        type            : "UE",
+                                                        colorCode       : "#ffedc4"
                                                     }
                                                 ));
                                             } else{
@@ -1090,6 +1135,29 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                 sessionStorage.setItem("totalCreditTaken",totalCreditTaken);
                                                 generatePreclusionList(responseModInfo.data.ModuleCode, userModsTaken[key].Semester, userModsTaken[key].AcadYear);
                                                 //console.log("Success : " + responseModInfo.data.ModuleCode);
+                                                //console.log(responseModInfo.data.ModuleCode);
+                                                
+                                                //Core Module : Blue
+                                                if((responseModInfo.data.ModuleCode).indexOf("CS") != -1 || (responseModInfo.data.ModuleCode).indexOf("CP") != -1){
+                                                    //console.log("TEST");
+                                                    var colorCode = "#cff2fd";
+                                                }
+                                                //Math & Sci Module : Green
+                                                else if((responseModInfo.data.ModuleCode).indexOf("MA") != -1 || (responseModInfo.data.ModuleCode).indexOf("LSM") != -1 || (responseModInfo.data.ModuleCode).indexOf("PC") != -1 || (responseModInfo.data.ModuleCode).indexOf("CM") != -1 || (responseModInfo.data.ModuleCode).indexOf("ST") != -1 ){
+                                                    var colorCode = "#baeee0";
+                                                }
+                                                //IS Module : Red
+                                                else if((responseModInfo.data.ModuleCode).indexOf("IS") != -1){
+                                                    var colorCode = "#fbbaca";
+                                                }
+                                                //GEM Module : orange red
+                                                else if((responseModInfo.data.ModuleCode).indexOf("GE") != -1){
+                                                    var colorCode = "#f08080";
+                                                }
+                                                //Unrestricted Elective Module : Yellow
+                                                else{
+                                                    var colorCode = "#ffedc4";
+                                                }
                                                 currentSemMod.push({
                                                     ModuleCode      : responseModInfo.data.ModuleCode,
                                                     ModuleTitle     : responseModInfo.data.ModuleTitle,
@@ -1100,7 +1168,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     selectedModGrade: null,
                                                     ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
-                                                    Semester        : userModsTaken[key].Semester
+                                                    Semester        : userModsTaken[key].Semester,
+                                                    type            : "CORE",
+                                                    colorCode       : colorCode
                                                 });
                                                 
                                                 
@@ -1114,7 +1184,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                     selectedModGrade: null,
                                                     ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
                                                     AcadYear        : userModsTaken[key].AcadYear,
-                                                    Semester        : userModsTaken[key].Semester
+                                                    Semester        : userModsTaken[key].Semester,
+                                                    type            : "CORE",
+                                                    colorCode       : colorCode
                                                 });
                                                 //console.log($scope.takenMods[count]);
                                                 //count ++;
@@ -1128,7 +1200,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                         selectedModGrade: null,
                                                         ModuleGrade     : "-",
                                                         AcadYear        : userModsTaken[key].AcadYear,
-                                                        Semester        : userModsTaken[key].Semester
+                                                        Semester        : userModsTaken[key].Semester,
+                                                        type            : "CORE",
+                                                        colorCode       : colorCode
                                                     }
                                                 ));
 
@@ -1218,7 +1292,8 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                         ModuleGrade     : ["-"],
                                         AcadYear        : nextAcadSem.substring(0,9),
                                         Semester        : nextSem,
-                                        type            : null
+                                        type            : null,
+                                        colorCode       : "#ffedc4"
                                     }
                                 );
                             }

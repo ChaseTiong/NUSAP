@@ -38,9 +38,7 @@
                                 dnd-type="mod.AcadYear"
                                 dnd-moved="semesterMod.splice($index, 1)"
                                 dnd-effect-allowed="move"
-                                data-ng-init="findType(mod)"
-                                id="type"
-                                
+                                style="background-color:{{mod.colorCode}};"
                                 ><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
                                 <span>{{mod.ModuleTitle}}</span>
                             </li>
@@ -61,8 +59,7 @@
                                 dnd-type="mod.AcadYear"
                                 dnd-moved="semesterMod.splice($index, 1)"
                                 dnd-effect-allowed="move"
-                                data-ng-init="findType()"
-                                id="type"
+                                style="background-color:{{mod.colorCode}};"
                             ><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
                                 <span>{{mod.ModuleTitle}}</span>
                             </li>
@@ -177,6 +174,8 @@
                                     dnd-type="module.AcadYear"
                                     dnd-moved="modList.splice($index, 1)"
                                     dnd-effect-allowed="move"
+                                    style="background-color:{{module.colorCode}};"
+                                    
                                 ><!--data-ng-init="findType()"
                                     id="type"
                                     ng-dblclick="$window.open('http://nusmods.com/modules/{{module.ModuleCode}}', '_blank')"-->

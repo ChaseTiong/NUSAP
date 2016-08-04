@@ -33,7 +33,7 @@
                     <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 == 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
                        <!-- style="background-color:#ffedc4" !-->
                         <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
-                            <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" data-ng-init="findType(mod)" id="type"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
+                            <li class="text-center info" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" style="background-color:{{mod.colorCode}}"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
                                 <span>{{mod.ModuleTitle}}</span>
                             </li>
                             <li class="dndPlaceholder">
@@ -48,7 +48,7 @@
                 <tbody>
                     <td data-ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 != 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
                         <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
-                            <li class="text-center info background-findType()" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" data-ng-init="findType()" id="type"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
+                            <li class="text-center info background-findType()" ng-repeat="mod in semesterMod" dnd-draggable="mod" dnd-type="mod.AcadYear" dnd-moved="semesterMod.splice($index, 1)" dnd-effect-allowed="move" style="background-color:{{mod.colorCode}}"><a href="https://nusmods.com/modules/{{mod.ModuleCode}}" ng-dlbclick="" target="_blank"><strong>{{mod.ModuleCode}}</strong></a>
                                 <span>{{mod.ModuleTitle}}</span>
                             </li>
                             <li class="dndPlaceholder">
@@ -157,7 +157,7 @@
                             </thead>
                             
                             <ul dnd-list="modsPerSem" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
-                                <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move"><!--data-ng-init="findType()"
+                                <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move" style="background-color:{{module.colorCode}}"><!--data-ng-init="findType()"
                                     id="type"
                                     ng-dblclick="$window.open('http://nusmods.com/modules/{{module.ModuleCode}}', '_blank')"-->
                                     <a href="https://nusmods.com/modules/{{module.ModuleCode}}" target="_blank"><strong>{{module.ModuleCode}}</strong> {{module.ModuleTitle}} <button align="right" class="semBtn" align="right" ng-repeat="modAvailableSem in module.Semesters">{{modAvailableSem}}</button></a>
