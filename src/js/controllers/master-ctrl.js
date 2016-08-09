@@ -34,6 +34,16 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     /**
      * Sidebar Toggle & Cookie Control
      */
+    //refreshed page
+    $window.onload = function() {
+        //console.log("page refreshed");
+        $scope.capResult = "0.00";
+        totalGradedMC = 0;
+        totalGradePoint = 0;
+        sessionStorage.setItem("totalGradedPoint", 0);
+        sessionStorage.setItem("totalGradedMC", 0);
+    }    
+    
     $scope.$on('$stateChangeSuccess', function () {
         $scope.dashboardLoading = false;
         $scope.searchLoading = true;
