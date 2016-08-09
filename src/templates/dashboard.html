@@ -161,14 +161,20 @@
 				<div ng-show ="searchLoading == true" class="table-responsive typesDemo row">
 					
                     <table class="table fixed-header">
-						
+				        <!-- <thead ng-show ="!toDisplayMessage"> !-->
+                        <thead>   
+                            <!-- <tr>
+                                <th class="text-center">{{displayMessage}}</th>
+                            </tr> !-->
+                        </thead>
                         
                         <tbody>
-                           <thead>
-                            <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--></tr>
-                            </thead>
-                            
+                           <!-- <thead> !-->
+                            <!-- <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--><!--</tr> !-->
+                            <!-- </thead> !-->
+
                             <ul dnd-list="modsPerSem" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
+                            
                                 <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }"
                                     dnd-draggable="module"
                                     dnd-type="module.AcadYear"
@@ -186,6 +192,7 @@
                                     Discard a <strong>module</strong> here
                                 </li>
                             </ul>
+
                         </tbody>
 					</table> 
         		</div>

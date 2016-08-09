@@ -64,6 +64,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 	$scope.username = "";
 	$scope.showProfile = function(){
 		$scope.userProfile = !$scope.userProfile;
+        $scope.toDisplayMessage = true;
 	
 	}
     
@@ -583,24 +584,25 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     $scope.prerequisiteNotFulfill = true;
    
     
-    $scope.filterCore = function(){
+//    $scope.filterCore = function(){
+////        $scope.$applyAsync(function(){
+////            $scope.currentCore = "10%";
+////            console.log(JSON.stringify(sessionStorage));
+////        });
+////        console.log("tesT");
 //        $scope.$applyAsync(function(){
 //            $scope.currentCore = "10%";
-//            console.log(JSON.stringify(sessionStorage));
+//            console.log(JSON.parse(sessionStorage.getItem("coreModules")));
+//            
 //        });
-//        console.log("tesT");
-        $scope.$applyAsync(function(){
-            $scope.currentCore = "10%";
-            console.log(JSON.parse(sessionStorage.getItem("coreModules")));
-            
-        });
-        
-        //$scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0);
-    }
+//        
+//        //$scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0);
+//    }
        
     //filter search bar function
     $scope.filterULR = function(){
         $scope.modList = [];
+        //$scope.toDisplayMessage = false;
         $scope.$applyAsync(function(){
             var date = new Date();
             var year = date.getFullYear();
@@ -648,6 +650,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
     
     $scope.filterCore = function(){
         $scope.modList = [];
+        //$scope.toDisplayMessage = false;
 //        $scope.$applyAsync(function(){
 //            $scope.currentCore = "10%";
 //            console.log(JSON.stringify(sessionStorage));
@@ -804,6 +807,21 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                 }
 
             }); 
+            $scope.$applyAsync(function(){
+                console.log($scope.modList);
+                if($scope.modList.length == 0){
+                    
+                        $scope.displayMessage = "No other modules left!" ;
+                        $scope.toDisplayMessage = false;
+                    
+                } else{
+                    
+                        $scope.displayMessage = "" ;
+                        $scope.toDisplayMessage = true;
+                 
+                }  
+            });
+
         });
         
         //$scope.currentCore = ((120 - (breathDepthRequiredMc + coreRequireMc + projectRequiredMc + internshipRequiredMc + mathSciRequiredMc)) / 120 * 100).toFixed(0);
@@ -857,30 +875,128 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 //                                                    Semester        : userModsTaken[key].Semester,
 //                                                    type            : "UE",
 //                                                    colorCode       : "#ffedc4"        
-        
+        //if search box is empty
         if(currentText.length < 1){
             //$scope.modList = $scope.tempModList;
             $scope.modList = [];
             $scope.isUpdated = true;
+        //if user continue typing    
         } else if(oldText.length < currentText.length){
+            //console.log("enter");
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = parseInt(date.getMonth()) + 1;
+            var sem = 1;
+            if(month < 7){
+                year = parseInt(year) - 1;
+                sem = 2;
+            }
+            var acadYear = year + "/" + (parseInt(year) + 1);
             $scope.modList = [];
             var currentPreclusionList = JSON.parse(sessionStorage.getItem("preclusionList"));
-
-            for(var key = 0 ; key < $scope.tempModList.length; key ++){    
+            //console.log(acadYear);
+            //console.log(sem);
+            angular.forEach($scope.tempModList,function(tempMod,key){
+                
+            
+            //for(var key = 0 ; key < $scope.tempModList.length; key ++){    
                 //console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
                 if($scope.tempModList[key].ModuleCode.includes(currentText)){
                     //console.log($scope.tempModList[key]);
                     if(currentPreclusionList.indexOf($scope.tempModList[key].ModuleCode) == -1){
-                        $scope.modList.push({
-                            ModuleCode      : $scope.tempModList[key].ModuleCode,
-                            ModuleTitle     : $scope.tempModList[key].ModuleTitle,
-                            Semesters       : $scope.tempModList[key].Semesters
-                        }); 
+                        //CS1010J not included in preclusion list
+                        if(currentPreclusionList.indexOf("CS1010") != -1 && $scope.tempModList[key].ModuleCode === "CS1010J"){
+                            
+                        }else{
+                            //if($scope.tempModList[key].ModuleCode.startsWith("MA")){
+                                //console.log("Math");
+                            //}
+                            
+                            //Core Module : Blue
+                            //console.log(responseModInfo.data.ModuleCode);
+                            var colorCode = "";
+                            if(($scope.tempModList[key].ModuleCode).startsWith("CS") || ($scope.tempModList[key].ModuleCode).startsWith("CP")){
+                                //console.log("TEST");
+                                var colorCode = "#cff2fd";
+                            }
+                            //Math & Sci Module : Green
+                            else if(($scope.tempModList[key].ModuleCode).startsWith("MA") || ($scope.tempModList[key].ModuleCode).startsWith("LSM") || ($scope.tempModList[key].ModuleCode).startsWith("PC") || ($scope.tempModList[key].ModuleCode).startsWith("CM") || ($scope.tempModList[key].ModuleCode).startsWith("ST") ){
+                                var colorCode = "#baeee0";
+                            }
+                            //IS Module : Red
+                            else if(($scope.tempModList[key].ModuleCode).startsWith("IS")){
+                                var colorCode = "#fbbaca";
+                            }
+                            //GEM Module : orange red
+                            else if(($scope.tempModList[key].ModuleCode).startsWith("GE")){
+                                var colorCode = "#f08080";
+                            }
+                            //Unrestricted Elective Module : Yellow
+                            else{
+                                var colorCode = "#ffedc4";
+                            }
+                            $scope.modList.push({
+                                ModuleCode      : $scope.tempModList[key].ModuleCode,
+                                ModuleTitle     : $scope.tempModList[key].ModuleTitle,
+                                Semesters       : $scope.tempModList[key].Semesters,
+                                ModuleCredit    : 4,
+                                ModuleStatus    : "Normal",
+                                ModuleSuStatus  : ["No","Yes","Exempted","Waived"],
+                                selectedModSuStatus : "No",
+                                selectedModGrade: null,
+                                ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+                                AcadYear        : acadYear,
+                                Semester        : sem,
+                                type            : "CORE",
+                                colorCode       : colorCode
+                            });  
+                            //console.log($scope.tempModList[key].ModuleCode);
+                            //var moduleSemester = $scope.tempModList[key].Semesters;
+                            //var selectedModule = $scope.tempModList[key].ModuleCode;
+                            //console.log(moduleSemester);
+//                            getModInfo($scope.tempModList[key].ModuleCode, sem, acadYear). then(
+//                                function(responseModInfo){
+//                                    
+//                                    if(responseModInfo.data != ""){
+//                                        
+//                                        $scope.$applyAsync(function(){
+//                                           $scope.modList.push({
+//                                                ModuleCode      : responseModInfo.data.ModuleCode,
+//                                                ModuleTitle     : responseModInfo.data.ModuleTitle,
+//                                                //Semesters       : moduleSemester,
+//                                                ModuleCredit    : responseModInfo.data.ModuleCredit,
+//                                                ModuleStatus    : "Normal",
+//                                                ModuleSuStatus  : ["No","Yes","Exempted","Waived"],
+//                                                selectedModSuStatus : "No",
+//                                                selectedModGrade: null,
+//                                                ModuleGrade     : ["A+","A","A-","B+","B","B-","C+","C","D+","D","F"],
+//                                                AcadYear        : acadYear,
+//                                                Semester        : sem,
+//                                                type            : "CORE",
+//                                                colorCode       : colorCode
+//                                            });  
+//                                        });
+//                                            
+//                                    }
+//                                }
+//                            );
+                        }
                     }
                 }
-            }            
+            });
+        //if user ??    
         }else{
-            if($scope.isUpdate == false){
+            console.log("Testing ...");
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = parseInt(date.getMonth()) + 1;
+            var sem = 1;
+            if(month < 7){
+                year = parseInt(year) - 1;
+                sem = 2;
+            }
+            var acadYear = year + "/" + (parseInt(year) + 1);
+            if($scope.isUpdated == false){
                 $scope.modList = [];
                 for(var key = 0 ; key < $scope.tempModList.length; key ++){    
                     //console.log($scope.tempModList[key].ModuleCode.startsWith(currentText));
@@ -910,9 +1026,27 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             sessionStorage.setItem("oldText",currentText);
         }
         //console.log($scope.modList.length);
-        if($scope.modList.length == 0){
-            console.log("TEST");
-        }
+        //console.log(currentText.length);
+        $scope.$applyAsync(function(){
+            if($scope.modList.length == 0 && currentText.length < 1){
+                $scope.$applyAsync(function(){
+                   $scope.displayMessage = "Please search for a module!";
+                   $scope.toDisplayMessage = false;
+                });
+            }
+            else if($scope.modList.length == 0){
+                $scope.$applyAsync(function(){
+                    $scope.displayMessage = "Module is taken/precluded!" ;
+                    $scope.toDisplayMessage = false;
+                }); 
+            } else{
+                $scope.$applyAsync(function(){
+                    $scope.displayMessage = "" ;
+                    $scope.toDisplayMessage = true;
+                }); 
+            }            
+        });
+
             //console.log($scope.tempModList);
             //console.log($scope.modList);
         //});

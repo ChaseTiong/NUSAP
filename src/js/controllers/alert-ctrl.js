@@ -54,7 +54,7 @@ function AlertsCtrl($scope, $http, $timeout) {
 			function (response) {
                 $scope.token = token;
 				$scope.username = response.data.Results[0].Name;   
-				$scope.msg = 'WELCOME BACK, ' + $scope.username + '!';
+				$scope.msg = 'WELCOME ' + $scope.username + '!';
 			}, function (response) {
 			}
     	);
