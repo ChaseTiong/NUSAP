@@ -638,7 +638,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                     modFound : true,
                                     selectedModGrade : "-",
                                     selectedModSuStatus : "No",
-                                    colorCode           : "#f08080"
+                                    colorCode           : "#e6d8ff"
                                 });
                             }
                         }
@@ -705,7 +705,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                     modFound : true,
                                     selectedModGrade : "-",
                                     selectedModSuStatus : "No",
-                                    colorCode : "#cff2fd"
+                                    colorCode : "#c5fbff"
                                     //Semesters: coreModInfo.data.Semester
                                 });
                             }
@@ -728,7 +728,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                     modFound : true,
                                     selectedModGrade : "-",
                                     selectedModSuStatus : "No",
-                                    colorCode : "#baeee0"
+                                    colorCode : "#c5ffc3"
                                 });
                             }
                         }
@@ -750,7 +750,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                     modFound : true,
                                     selectedModGrade : "-",
                                     selectedModSuStatus : "No",
-                                    colorCode : "#cff2fd"
+                                    colorCode : "#c5fbff"
                                 });
                             }
                             //console.log($scope.modList);
@@ -773,7 +773,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                     modFound : true,
                                     selectedModGrade : "-",
                                     selectedModSuStatus : "No",
-                                    colorCode : "#cff2fd"
+                                    colorCode : "#c5fbff"
                                 });
                             }
                             //console.log($scope.modList);
@@ -797,7 +797,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                         modFound : true,
                                         selectedModGrade : "-",
                                         selectedModSuStatus : "No",
-                                        colorCode : "#cff2fd"
+                                        colorCode : "#c5fbff"
                                     });
                                 }
                                 //console.log($scope.modList);
@@ -917,11 +917,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             var colorCode = "";
                             if(($scope.tempModList[key].ModuleCode).startsWith("CS") || ($scope.tempModList[key].ModuleCode).startsWith("CP")){
                                 //console.log("TEST");
-                                var colorCode = "#cff2fd";
+                                var colorCode = "#c5fbff";
                             }
                             //Math & Sci Module : Green
                             else if(($scope.tempModList[key].ModuleCode).startsWith("MA") || ($scope.tempModList[key].ModuleCode).startsWith("LSM") || ($scope.tempModList[key].ModuleCode).startsWith("PC") || ($scope.tempModList[key].ModuleCode).startsWith("CM") || ($scope.tempModList[key].ModuleCode).startsWith("ST") ){
-                                var colorCode = "#baeee0";
+                                var colorCode = "#c5ffc3";
                             }
                             //IS Module : Red
                             else if(($scope.tempModList[key].ModuleCode).startsWith("IS")){
@@ -929,7 +929,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             }
                             //GEM Module : orange red
                             else if(($scope.tempModList[key].ModuleCode).startsWith("GE")){
-                                var colorCode = "#f08080";
+                                var colorCode = "#e6d8ff";
                             }
                             //Unrestricted Elective Module : Yellow
                             else{
@@ -1274,11 +1274,11 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                 //Core Module : Blue
                                                 if((responseModInfo.data.ModuleCode).indexOf("CS") != -1 || (responseModInfo.data.ModuleCode).indexOf("CP") != -1){
                                                     //console.log("TEST");
-                                                    var colorCode = "#cff2fd";
+                                                    var colorCode = "#c5fbff";
                                                 }
                                                 //Math & Sci Module : Green
                                                 else if((responseModInfo.data.ModuleCode).indexOf("MA") != -1 || (responseModInfo.data.ModuleCode).indexOf("LSM") != -1 || (responseModInfo.data.ModuleCode).indexOf("PC") != -1 || (responseModInfo.data.ModuleCode).indexOf("CM") != -1 || (responseModInfo.data.ModuleCode).indexOf("ST") != -1 ){
-                                                    var colorCode = "#baeee0";
+                                                    var colorCode = "#c5ffc3";
                                                 }
                                                 //IS Module : Red
                                                 else if((responseModInfo.data.ModuleCode).indexOf("IS") != -1){
@@ -1286,7 +1286,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                                                 }
                                                 //GEM Module : orange red
                                                 else if((responseModInfo.data.ModuleCode).indexOf("GE") != -1){
-                                                    var colorCode = "#f08080";
+                                                    var colorCode = "#e6d8ff";
                                                 }
                                                 //Unrestricted Elective Module : Yellow
                                                 else{
@@ -1466,7 +1466,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 //                            if(module.type == "UE"){
 //                               type.style.backgroundColor = "#ffedc4";//yellow 
 //                            } else if(module.type == null){
-//                                type.style.backgroundColor = "#cff2fd";//blue
+//                                type.style.backgroundColor = "#c5fbff";//blue
 //                            }
 //                          var ULRModules = JSON.parse(sessionStorage.getItem("ULRModules"));
 //                          var UEModules = JSON.parse(sessionStorage.getItem("UEModules"));
@@ -1477,13 +1477,13 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
 //                                type.style.backgroundColor = "#ffedc4";//yellow
 //                            }
 //                            else if (UEModules.indexOf(type.value) !== -1){
-//                                type.style.backgroundColor = "#baeee0";//green
+//                                type.style.backgroundColor = "#c5ffc3";//green
 //                            }
 //                            else if (ULRModules.indexOf(type.value) !== -1){
 //                                type.style.backgroundColor = "#fbbaca";//pink
 //                            }
 //                            else
-//                                type.style.backgroundColor = "#cff2fd";//blue
+//                                type.style.backgroundColor = "#c5fbff";//blue
                         }
                         
 //                        console.log(userSem.length);
