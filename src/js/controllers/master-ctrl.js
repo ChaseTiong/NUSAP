@@ -1397,8 +1397,9 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                     //        $scope.showYear2Sem1 = !$scope.showYear2Sem1;
                             var currentTotalSemCount = JSON.parse(sessionStorage.getItem("userSem")).length;
                             currentTotalSem = JSON.parse(sessionStorage.getItem("userSem"));
-                            //console.log(currentTotalSem);
-
+                            //console.log(currentTotalSemCount);
+                            if (currentTotalSemCount == 12)
+                                return;
                             var previousAcadSem = JSON.parse(sessionStorage.getItem("userSem"))[currentTotalSemCount - 1];
                             //check previous sem
                             var previousSem = previousAcadSem.substring(10);
@@ -1465,36 +1466,6 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
                             $scope.modList.splice($index, 1);
                         }
                         
-                        //colour code modules' background colour according to their catagories
-                        $scope.findType = function(module){
-                            //console.log(module);
-                            var type = document.getElementById("type");
-                            //if(module.ModuleCode === "CS1101S"){
-                                //type.style.backgroundColor = "#ffedc4";//yellow 
-                            //}
-                            //this.style.backgroundColor = "#ffedc4";
-//                            if(module.type == "UE"){
-//                               type.style.backgroundColor = "#ffedc4";//yellow 
-//                            } else if(module.type == null){
-//                                type.style.backgroundColor = "#c5fbff";//blue
-//                            }
-//                          var ULRModules = JSON.parse(sessionStorage.getItem("ULRModules"));
-//                          var UEModules = JSON.parse(sessionStorage.getItem("UEModules"));
-//                          var coreModules = JSON.parse(sessionStorage.getItem("coreModules"));
-                            //console.log(type);
-                            //console.log(coreModules);
-//                            if (coreModules.indexOf(type.value) !== -1) {
-//                                type.style.backgroundColor = "#ffedc4";//yellow
-//                            }
-//                            else if (UEModules.indexOf(type.value) !== -1){
-//                                type.style.backgroundColor = "#c5ffc3";//green
-//                            }
-//                            else if (ULRModules.indexOf(type.value) !== -1){
-//                                type.style.backgroundColor = "#fbbaca";//pink
-//                            }
-//                            else
-//                                type.style.backgroundColor = "#c5fbff";//blue
-                        }
                         
 //                        console.log(userSem.length);
 //                        for(var semCounter = userSem.length; semCounter < 8; semCounter ++){

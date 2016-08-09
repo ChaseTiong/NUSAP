@@ -162,9 +162,7 @@
 
                             <ul dnd-list="modsPerSem" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
                             
-                                <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move" style="background-color:{{module.colorCode}}"><!--data-ng-init="findType()"
-                                    id="type"
-                                    ng-dblclick="$window.open('http://nusmods.com/modules/{{module.ModuleCode}}', '_blank')"-->
+                                <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }" dnd-draggable="module" dnd-type="module.AcadYear" dnd-moved="modList.splice($index, 1)" dnd-effect-allowed="move" style="background-color:{{module.colorCode}}">
                                     <a href="https://nusmods.com/modules/{{module.ModuleCode}}" target="_blank"><strong>{{module.ModuleCode}}</strong> {{module.ModuleTitle}} <button align="right" class="semBtn" align="right" ng-repeat="modAvailableSem in module.Semesters">{{modAvailableSem}}</button></a>
                                     <span>{{module.ModuleTitle}}</span>
                                 </li>
