@@ -29,12 +29,11 @@
                     </tr>
                     <tr><th colspan="100%" class="text-center" >Semester 1</th></tr>
                 </thead>
-                <tbody style="height: 100px; overflow-y: scroll">
+                <tbody>
                     <td ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 == 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
-                        <ul dnd-list="semesterMod" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
+                        <ul dnd-list="semesterMod">
                             <li class="text-center info" ng-repeat="mod in semesterMod" 
                                 dnd-draggable="mod"
-                                dnd-type="mod.AcadYear"
                                 dnd-moved="semesterMod.splice($index, 1)"
                                 dnd-effect-allowed="move"
                                 style="background-color:{{mod.colorCode}};"
@@ -52,10 +51,9 @@
                 </thead>
                 <tbody>
                     <td data-ng-repeat="semesterMod in modsPerSem" ng-if="$index%2 != 0" class="col-md-(12/({{semesterMod.length}}/2)) row-sm-height">
-                        <ul dnd-list="semesterMod" dnd-allowed-types="year.candidatureYear">
+                        <ul dnd-list="semesterMod">
                             <li class="text-center info background-findType()" ng-repeat="mod in semesterMod" 
                                 dnd-draggable="mod"
-                                dnd-type="mod.AcadYear"
                                 dnd-moved="semesterMod.splice($index, 1)"
                                 dnd-effect-allowed="move"
                                 style="background-color:{{mod.colorCode}};"
@@ -172,11 +170,10 @@
                             <!-- <tr><th class="text-center col-md-10" data-ng-click="orderBy('ModuleCode')">Module &amp; Semester</th><!--<th class="text-center col-md-2" data-ng-click="orderBy('Semesters')">Sem</th>--><!--</tr> !-->
                             <!-- </thead> !-->
 
-                            <ul dnd-list="modsPerSem" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
+                            <ul dnd-list="takenMods" style="list-style-type:none" dnd-disable-if="module.ModuleCode === preclusionList">
                             
                                 <li class="text-center info" ng-repeat="module in modList | filter: { ModuleCode: searchBox }"
                                     dnd-draggable="module"
-                                    dnd-type="module.AcadYear"
                                     dnd-moved="modList.splice($index, 1)"
                                     dnd-effect-allowed="move"
                                     style="background-color:{{module.colorCode}};"
@@ -195,15 +192,17 @@
 			</rd-widget-body>
         </rd-widget>
 	</div>
-    <div class="col-lg-4 col-sm-6 col-xs-12 pull-right input-group">
+    <!--<div class="col-lg-4 col-sm-6 col-xs-12 pull-right">
 		<rd-widget>
             <rd-widget-body>
-                <input type="text" id="invite-link" class="form-control input-md" placeholder="Copy planner link to clipboard" />
-                <span class="input-group-btn">
-                  <button class="btn btn-secondary invite-link" type="button">
-                    <i class="fa fa-clipboard"></i>
-                  </button>
-                </span>
+                <div class="input-group">
+                    <input type="text" id="invite-link" class="form-control input-md" placeholder="Copy planner link to clipboard" />
+                        <span class="input-group-btn">
+                          <button class="btn btn-secondary invite-link" type="button">
+                            <i class="fa fa-clipboard"></i>
+                          </button>
+                        </span>
+                </div>
             </rd-widget-body>
         </rd-widget>
     </div>

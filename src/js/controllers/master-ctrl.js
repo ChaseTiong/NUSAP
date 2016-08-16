@@ -1603,7 +1603,7 @@ function MasterCtrl($scope, $cookieStore, $http, $location, $window, $q, $log, $
             textbox.attr('value', url);
         });
     });
-    
+
     //mouseover event for sidebar
 //    $(document).ready(function() {
 //        // Tooltip only Text
