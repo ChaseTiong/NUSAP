@@ -1,10 +1,20 @@
-# RDash rdash-angular
-## Responsive, bloat free, bootstrap powered admin style dashboard!
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# NUSAP
 
-rdash-angular is an AngularJS implementation of the RDash admin dashboard. The dashboard uses a small number of modules to get you started, along with some handy directives and controllers to speed up development using the dashboard.
+## Planning your degree in NUS
 
-Check out the [live example](http://rdash.github.io/)!
+##Overview of Project
+
+### Project Description: 
+* NUSAP is a web-based application that allows NUS students to view their current progress and plan their modules to meet the degree requirement according to their respective major throughout their study in NUS.
+* Project NUSAP is achieved Project Apollo 11 and is managed by Tiong YaoCong and Chen Rui Wen.
+Check out the [live example](http://nusap.me)!
+
+### Features (Currently only working for NUS Computer Science Student admission from AY15/16 & above)
+* NUS Students are allowed to login through IVLE
+* Retrieve student's information from IVLE (Cleared Modules & Status)
+* Able to retrieve all modules from NUSMODS & IVLE
+* Cap Calculator 
+* Color-coded modules to reduce confusion
 
 ## Usage
 ### Requirements
@@ -24,9 +34,6 @@ Ensure your preferred web server points towards the `dist` directory.
 ### Development
 Continue developing the dashboard further by editing the `src` directory. With the `gulp` command, any file changes made will automatically be compiled into the specific location within the `dist` directory.
 
-#### Modules & Packages
-By default, rdash-angular includes [`ui.bootstrap`](http://angular-ui.github.io/bootstrap/), [`ui.router`](https://github.com/angular-ui/ui-router) and [`ngCookies`](https://docs.angularjs.org/api/ngCookies). 
-
 If you'd like to include any additional modules/packages not included with rdash-angular, add them to your `bower.json` file and then update the `src/index.html` file, to include them in the minified distribution output.
 
 ## Credits
@@ -34,3 +41,4 @@ If you'd like to include any additional modules/packages not included with rdash
 * [Leonel Samayoa](https://github.com/lsamayoa)
 * [Mathew Goldsborough](https://github.com/mgoldsborough)
 * [Ricardo Pascua Jr](https://github.com/rdpascua)
+* [Template] (https://github.com/rdash/rdash-angular)
